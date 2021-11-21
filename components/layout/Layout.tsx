@@ -16,6 +16,7 @@ const Layout: React.FC<ILayout> = ({ children, withoutPaths, publicPages }) => {
   if (withoutPaths.includes(path)) {
     return <>{children}</>
   }
+  console.log(123)
 
   if (path.includes('/login') || path.includes('/access_denied')) {
     return (
