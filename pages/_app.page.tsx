@@ -5,7 +5,6 @@ import { makeStore } from '../redux/store'
 import { Provider } from 'react-redux'
 import { NoSsr, ThemeProvider } from '@material-ui/core'
 import theme from '../styles/theme'
-import { SnackbarProvider } from 'notistack'
 import Layout from '../components/layout/Layout'
 
 function myApp({ Component, pageProps, store }: any) {
@@ -26,11 +25,6 @@ function myApp({ Component, pageProps, store }: any) {
 
   const publicPages = getPaths([])
   const withoutLayoutPaths = getPaths([])
-
-  const notistackRef = React.createRef<SnackbarProvider>()
-  const onClickDismiss = (key: any) => {
-    notistackRef?.current?.closeSnackbar(key)
-  }
 
   return (
     <Provider store={store}>
