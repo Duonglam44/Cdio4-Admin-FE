@@ -3,7 +3,6 @@ import { useRouter } from 'next/router'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '../../redux/Reducer_combiner'
 import { getJwt } from '../../utils/Auth'
-import { GetUserDataThunkAction } from '../../redux/login/reducers'
 
 type Token = string | null
 
@@ -22,7 +21,6 @@ const Auth: React.FC<{children: any, publicPages: string[]}> = ({ children, publ
     try {
       const token: Token = getJwt()
 
-      await Promise.resolve(dispatch(GetUserDataThunkAction(token)))
       setLoading(false)
     } catch (error) {
       localStorage.removeItem('access_token')

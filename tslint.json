@@ -31,7 +31,6 @@
         "require-const-for-all-caps"
       ]
     },
-    "typedef": [true, "property-declaration", "object-destructuring"],
     "max-line-length": [true, 130],
     "react-hooks-nesting": {
       "severity": "error",
@@ -53,10 +52,11 @@
     "early-exit": [true, { "max-length": 0, "ignore-constructor": true }],
     "cyclomatic-complexity": [true, 10],
     "newline-before-return": true,
-    "object-literal-shorthand": true,
     "no-default-export": false,
     "quotemark": [true, "single", "avoid-escape", "avoid-template"],
     "no-console": [true, "log", "error"],
-    "jsx-no-lambda": false
+    "jsx-no-lambda": false,
+    "trailing-comma": false,
+    "object-literal-key-quotes": [false, "as-needed"]
   }
 }
