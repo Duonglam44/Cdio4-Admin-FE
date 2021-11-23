@@ -62,13 +62,8 @@ tslint -config:
 
 - file tree: 
 ex: page:
-        + logic: 
-                * actions.ts
-                * reducers.ts
-                * api.ts
-        * type:
-                * index.ts 
-                (...)
         * components: (...).tsx
         * index.page.tsx
+- admin page
+        
 
