@@ -1,5 +1,5 @@
 import React from 'react'
-import '../styles/globals.css'
+import '../styles/scss/styles.scss'
 import withRedux from 'next-redux-wrapper'
 import { makeStore } from '../redux/store'
 import { Provider } from 'react-redux'

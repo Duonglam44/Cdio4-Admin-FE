@@ -57,6 +57,8 @@
     "no-console": [true, "log", "error"],
     "jsx-no-lambda": false,
     "trailing-comma": false,
-    "object-literal-key-quotes": [false, "as-needed"]
+    "object-literal-key-quotes": [false, "as-needed"],
+    "comment-format": [false],
+    "no-string-literal": false
   }
 }

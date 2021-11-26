@@ -1,5 +1,21 @@
-export enum LoginActions  {
-    LOGIN = 'LOGIN',
-    LOGOUT = 'LOGOUT',
-    GET_USER_DATA = 'GET_USER_DATA',
+export enum AUTH_ACTIONS {
+  LOGIN_REQUEST = 'LOGIN_REQUEST',
+  LOGIN_SUCCESS = 'LOGIN_SUCCESS',
+  LOGIN_FAILURE = 'LOGIN_FAILURE',
+  LOGOUT_REQUEST = 'LOGOUT_REQUEST',
+  LOGOUT_SUCCESS = 'LOGOUT_SUCCESS',
+  LOGOUT_FAILURE = 'LOGOUT_FAILURE',
+  GET_USER_DATA_REQUEST = 'GET_USER_DATA_REQUEST',
+  GET_USER_DATA_SUCCESS = 'GET_USER_DATA_SUCCESS',
+  GET_USER_DATA_FAILURE = 'GET_USER_DATA_FAILURE',
+}
+
+export type LoginData = {
+  email: string
+  password: string
+}
+
+export type LoginResponse = {
+  token: string
+  userId: string
 }

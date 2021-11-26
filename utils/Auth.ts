@@ -1,5 +1,4 @@
-import jwtDecode from 'jwt-decode'
-const tokenKey = 'Guru-auth'
+const tokenKey = 'Guru-admin-auth'
 
 export function loginWithJwt(jwt: string) {
   localStorage.setItem(tokenKey, jwt)

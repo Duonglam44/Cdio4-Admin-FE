@@ -1,21 +1,21 @@
-import { LoginActions } from './types'
+import { AUTH_ACTIONS } from './types'
 
-export const Login = (value: string) => {
+export const loginRequest = () => {
   return {
-    type: LoginActions.LOGIN,
-    token: value,
+    type: AUTH_ACTIONS.LOGIN_REQUEST,
   }
 }
 
-export const Logout = (value: string) => {
+export const loginSuccess = (data) => {
   return {
-    type: LoginActions.LOGOUT,
+    data,
+    type: AUTH_ACTIONS.LOGIN_SUCCESS,
   }
 }
 
-export const GetUserData = (res: any) => {
+export const loginFailure = (error) => {
   return {
-    type: LoginActions.GET_USER_DATA,
-    payload: res,
+    error,
+    type: AUTH_ACTIONS.LOGIN_FAILURE,
   }
 }

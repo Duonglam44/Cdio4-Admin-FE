@@ -11,4 +11,7 @@ export interface UserInfo {
   notifications: string[]
   learningCourses?: string[]
   createdAt: string
+  error: string
+  loading: boolean
+  token: string
 }

@@ -1,29 +1,15 @@
 import axios, { Method } from 'axios'
 
+import { getJwt } from './auth'
+import { API_URL_V1 } from '../config/constant'
+
 interface ApiDataType {
   path?: string
   method: Method
   params?: object
   data?: object
   headers?: { [key: string]: string }
-  errorHandler?: (error: any) => void
-  needThrowError?: boolean
-}
-
-const handleThrowError = (
-  error: any,
-  errorHandler: any,
-  needThrowError: any,
-) => {
-  if (needThrowError) {
-    throw error
-  }
-
-  if (errorHandler && typeof errorHandler === 'function') {
-    errorHandler(error)
-  }
-
-  return
+  tokenRequired?: boolean
 }
 
 export const api = async ({
@@ -31,31 +17,38 @@ export const api = async ({
   method,
   params,
   headers,
-  errorHandler,
   data,
-  needThrowError,
+  tokenRequired = true,
 }: ApiDataType) => {
-  try {
-    const token = localStorage.getItem('access_token')
-    if (!token && !headers) {
-      return Promise.reject({ message: 'Missing token' })
-    }
-
-    const paramsAxios = {
-      method,
-      params,
-      data,
-      url: `http://localhost:5000${path}`,
-      headers: headers || {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-    }
-
-    const result = await axios(paramsAxios)
-
-    return result
-  } catch (error) {
-    handleThrowError(error, errorHandler, needThrowError)
+  const token = getJwt()
+  if (tokenRequired && token) {
+    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
   }
+
+  const paramsAxios = {
+    method,
+    params,
+    data,
+    url: `${API_URL_V1}${path}`,
+    headers: headers || {
+      'Content-Type': 'application/json',
+    },
+  }
+
+  return new Promise((resolve, reject) =>
+    axios(paramsAxios)
+      .then((response) => {
+        if (!response) reject('Cannot send request to server!')
+        if (!response.data.success) reject(response.data.message)
+        resolve(response.data.data)
+      })
+      .catch((error) => {
+        const errorMessage =
+          error.response.status === 422
+            ? error.response.data.data[0].msg
+            : error.response.data.message
+
+        reject(errorMessage)
+      })
+  )
 }
