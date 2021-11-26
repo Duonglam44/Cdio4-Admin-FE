@@ -1,4 +1,4 @@
-import axios, { Method } from 'axios'
+import axios, { Method, AxiosResponse } from 'axios'
 
 import { getJwt } from './auth'
 import { API_URL_V1 } from '../config/constant'
@@ -37,12 +37,12 @@ export const api = async ({
 
   return new Promise((resolve, reject) =>
     axios(paramsAxios)
-      .then((response) => {
+      .then((response: AxiosResponse) => {
         if (!response) reject('Cannot send request to server!')
         if (!response.data.success) reject(response.data.message)
         resolve(response.data.data)
       })
-      .catch((error) => {
+      .catch((error: any) => {
         const errorMessage =
           error.response.status === 422
             ? error.response.data.data[0].msg
