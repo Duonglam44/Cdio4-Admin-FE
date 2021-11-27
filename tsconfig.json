@@ -3,10 +3,7 @@
     "allowJs": true,
     "allowSyntheticDefaultImports": true,
     "jsx": "preserve",
-    "lib": [
-      "dom",
-      "es2017"
-    ],
+    "lib": ["dom", "es2017"],
     "module": "esnext",
     "moduleResolution": "node",
     "noUnusedLocals": true,
@@ -21,9 +18,16 @@
     "sourceMap": true,
     "baseUrl": "./",
     "paths": {
-      "@components/*": [
-        "./components/*"
-      ]
+      "@components/*": ["./components/*"],
+      "@config/*": ["./config/*"],
+      "@global/*": ["./global/*"],
+      "@helpers/*": ["./helpers/*"],
+      "@pages/*": ["./pages/*"],
+      "@public/*": ["./public/*"],
+      "@redux/*": ["./redux/*"],
+      "@styles/*": ["./styles/*"],
+      "@types/*": ["./types/*"],
+      "@utils/*": ["./utils/*"]
     },
     "noImplicitAny": false,
     "forceConsistentCasingInFileNames": true,
@@ -33,10 +37,7 @@
     "noEmit": true,
     "incremental": true
   },
-  "exclude": [
-    "node_modules",
-    "**/*.test.ts"
-  ],
+  "exclude": ["node_modules", "**/*.test.ts"],
   "include": [
     "next-env.d.ts",
     "pages/**/*.tsx",

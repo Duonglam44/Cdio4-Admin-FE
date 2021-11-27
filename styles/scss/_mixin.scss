@@ -81,9 +81,34 @@
   }
 }
 
+@mixin size-helper($index, $unit) {
+  .w-#{$index} {
+    width: $index * $unit;
+  }
+
+  .h-#{$index} {
+    height: $index * $unit;
+  }
+}
+
+@mixin size-percent-helper($index) {
+  .wp-#{$index} {
+    width: $index + #{'%'};
+  }
+
+  .hp-#{$index} {
+    height: $index + #{'%'};
+  }
+}
+
 @mixin spacing-helper($index, $unit) {
   @include margin-helper($index, $unit);
   @include padding-helper($index, $unit);
+  @include size-helper($index, $unit);
+}
+
+@mixin spacing-percent-helper($index) {
+  @include size-percent-helper($index);
 }
 
 // reponsive
