@@ -17,11 +17,11 @@ export const loginThunkAction = (data: LoginData) => async (dispatch) => {
     })) as LoginResponse
 
     const token = response.token
-    toast.success('Login successfully!')
     loginWithJwt(token)
-    dispatch(loginSuccess(token))
+    toast.success('Login successfully!')
+    dispatch(loginSuccess(response))
   } catch (error: any) {
-    toast.error(error || 'Login failed!')
+    toast.error(error.message || error || 'Login failed!')
     dispatch(loginFailure(error))
   }
 }

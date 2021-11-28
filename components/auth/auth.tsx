@@ -1,43 +1,38 @@
-import React, { useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../redux/rootReducer';
-import { getJwt } from '../../utils/auth';
+import React, { useEffect, useState } from 'react'
+import { useRouter } from 'next/router'
+import { checkAccessable, getJwt, tokenKey } from '../../utils/auth'
+import { LoaderBall } from '@components/common'
 
-type Token = string | null;
+type Token = string | null
 
 const Auth: React.FC<{ children: any; publicPages: string[] }> = ({
   children,
   publicPages,
 }) => {
-  const path = window.location.pathname;
-  const router = useRouter();
-  const [loading, setLoading] = useState(true);
-  const dispatch = useDispatch();
+  const path = window.location.pathname
+  const router = useRouter()
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    void checkLogin();
-    // eslint-disable-next-line
-  }, []);
+    void checkLogin()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const checkLogin = async () => {
-    try {
-      const token: Token = getJwt();
+    const token: Token = getJwt()
+    setLoading(false)
 
-      setLoading(false);
-    } catch (error) {
-      localStorage.removeItem('access_token');
-      await router.replace('/login');
+    if (token && checkAccessable(token)) return
 
-      return;
-    }
-  };
-
-  if (loading) {
-    return <>loading...</>;
+    localStorage.removeItem(tokenKey)
+    await router.replace('/login')
   }
 
-  return <>{children}</>;
-};
+  if (loading) {
+    return <LoaderBall showInMiddleOfPage />
+  }
 
-export default Auth;
+  return <>{children}</>
+}
+
+export default Auth

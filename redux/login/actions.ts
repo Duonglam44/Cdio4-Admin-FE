@@ -1,4 +1,4 @@
-import { AUTH_ACTIONS } from './types'
+import { AUTH_ACTIONS, LoginResponse } from './types'
 
 export const loginRequest = () => {
   return {
@@ -6,14 +6,14 @@ export const loginRequest = () => {
   }
 }
 
-export const loginSuccess = (data) => {
+export const loginSuccess = (data: LoginResponse) => {
   return {
     data,
     type: AUTH_ACTIONS.LOGIN_SUCCESS,
   }
 }
 
-export const loginFailure = (error) => {
+export const loginFailure = (error: string) => {
   return {
     error,
     type: AUTH_ACTIONS.LOGIN_FAILURE,

@@ -1,14 +1,23 @@
+@import '@styles/scss/vars';
+@import '@styles/scss/mixin';
+
 .page__login {
   &--image-container {
-    display: none;
+    @include mobileScreen {
+      display: none;
+    }
   }
 
   &--image {
     width: 100%;
     height: 100%;
+  }
 
-    @include mobileScreen {
-      display: none;
-    }
+  &--image-logo {
+    width: 20%;
+  }
+
+  &--btn-primary {
+    background-color: #000;
   }
 }

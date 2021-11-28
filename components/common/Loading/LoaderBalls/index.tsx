@@ -13,9 +13,15 @@ const LoaderBall = ({
   color5 = '#669ff1',
   className,
   style,
+  showInMiddleOfPage = false,
 }: Props) => {
   return (
-    <div className={`${className} ${styles.container}`} style={style}>
+    <div
+      className={`${className} ${styles.container} ${
+        showInMiddleOfPage && 'center-page'
+      }`}
+      style={style}
+    >
       <span
         dangerouslySetInnerHTML={{
           __html: '<?xml version="1.0" encoding="utf-8"?>',
@@ -35,7 +41,7 @@ const LoaderBall = ({
         viewBox='0 0 100 100'
         preserveAspectRatio='xMidYMid'
       >
-        <circle cx='84' cy='50' r='10' fill='#669ff1'>
+        <circle cx='84' cy='50' r='10' fill={`${color1}`}>
           <animate
             attributeName='r'
             repeatCount='indefinite'
@@ -56,7 +62,7 @@ const LoaderBall = ({
             begin='0s'
           />
         </circle>
-        <circle cx='16' cy='50' r='10' fill='#669ff1'>
+        <circle cx='16' cy='50' r='10' fill={`${color2}`}>
           <animate
             attributeName='r'
             repeatCount='indefinite'
@@ -78,7 +84,7 @@ const LoaderBall = ({
             begin='0s'
           />
         </circle>
-        <circle cx='50' cy='50' r='10' fill='#4576e2'>
+        <circle cx='50' cy='50' r='10' fill={`${color3}`}>
           <animate
             attributeName='r'
             repeatCount='indefinite'
@@ -100,7 +106,7 @@ const LoaderBall = ({
             begin='-0.6097560975609756s'
           />
         </circle>
-        <circle cx='84' cy='50' r='10' fill='#b6bde5'>
+        <circle cx='84' cy='50' r='10' fill={`${color4}`}>
           <animate
             attributeName='r'
             repeatCount='indefinite'
@@ -122,7 +128,7 @@ const LoaderBall = ({
             begin='-1.2195121951219512s'
           />
         </circle>
-        <circle cx='16' cy='50' r='10' fill='#b4d3f8'>
+        <circle cx='16' cy='50' r='10' fill={`${color5}`}>
           <animate
             attributeName='r'
             repeatCount='indefinite'
@@ -160,6 +166,7 @@ type Props = {
   color5?: string
   className?: string
   style?: React.CSSProperties
+  showInMiddleOfPage?: boolean
 }
 
 export default LoaderBall

@@ -9,7 +9,10 @@ const initialState: UserInfo = {
   dateOfBirth: '',
   address: '',
   email: '',
-  role: {},
+  role: {
+    id: null,
+    name: '',
+  },
   teachingCourses: [],
   notifications: [],
   learningCourses: [],
@@ -17,6 +20,7 @@ const initialState: UserInfo = {
   error: '',
   loading: false,
   token: '',
+  isLoggedIn: false,
 }
 
 export const userInfo = (state = initialState, action: any) => {
@@ -26,13 +30,15 @@ export const userInfo = (state = initialState, action: any) => {
       return {
         ...state,
         loading: true,
-        token: null,
+        token: 'null',
       }
     case AUTH_ACTIONS.LOGIN_SUCCESS:
       return {
         ...state,
         loading: false,
-        token: action.data,
+        token: action.data.token,
+        _id: action.data.userId,
+        isLoggedIn: true,
         error: '',
       }
     case AUTH_ACTIONS.LOGIN_FAILURE:
@@ -40,6 +46,7 @@ export const userInfo = (state = initialState, action: any) => {
         ...state,
         loading: false,
         error: action.error,
+        isLoggedIn: false,
       }
     /***** logout ******/
     case AUTH_ACTIONS.LOGOUT_REQUEST:
@@ -49,9 +56,7 @@ export const userInfo = (state = initialState, action: any) => {
       }
     case AUTH_ACTIONS.LOGOUT_SUCCESS:
       return {
-        ...state,
-        loading: false,
-        token: null,
+        ...initialState,
       }
     case AUTH_ACTIONS.LOGOUT_FAILURE:
       return {

@@ -3,7 +3,10 @@ import { createTheme } from '@material-ui/core/styles'
 const defaultTheme = {
   palette: {
     primary: {
-      main: '#637381',
+      main: '#38B6FF',
+      contrastText: '#fff',
+      light: '#B7E1FA',
+      dark: '#2083BB',
     },
     secondary: {
       main: '#00AB55',

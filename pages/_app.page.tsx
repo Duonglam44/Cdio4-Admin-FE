@@ -10,7 +10,7 @@ import Layout from '../components/layout/Layout'
 import 'react-toastify/dist/ReactToastify.css'
 import '../styles/scss/styles.scss'
 
-function myApp({ Component, pageProps, store }: any) {
+const MyApp = ({ Component, pageProps, store }: any) => {
   const getPaths = (paths: string[]) => {
     const newPaths: string[] = []
 
@@ -26,7 +26,7 @@ function myApp({ Component, pageProps, store }: any) {
     return newPaths
   }
 
-  const publicPages = getPaths([])
+  const publicPages = getPaths(['login'])
   const withoutLayoutPaths = getPaths([])
 
   return (
@@ -43,4 +43,4 @@ function myApp({ Component, pageProps, store }: any) {
   )
 }
 
-export default withRedux(makeStore)(myApp)
+export default withRedux(makeStore)(MyApp)
