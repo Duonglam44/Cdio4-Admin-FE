@@ -1,3 +1,5 @@
+import { NotificationsData } from '@redux/types'
+
 export enum AUTH_ACTIONS {
   LOGIN_REQUEST = 'LOGIN_REQUEST',
   LOGIN_SUCCESS = 'LOGIN_SUCCESS',
@@ -18,4 +20,27 @@ export type LoginData = {
 export type LoginResponse = {
   token: string
   userId: string
+}
+
+export type AllDataUserResponse = {
+  user: {
+    address: {
+      street: string
+      city: string
+      country: string
+    }
+    role: {
+      id: number
+      name: string
+    }
+    _id: string
+    email: string
+    firstName: string
+    lastName: string
+    dateOfBirth: string | Date
+    status: number
+    notifications: NotificationsData[]
+    createdAt: string | Date
+    updatedAt: string | Date
+  }
 }

@@ -1,4 +1,3 @@
-import { isRootOrAdmin } from './../.history/utils/auth_20211127195924'
 export interface UserInfo {
   _id: string
   firstName: string
@@ -12,13 +11,32 @@ export interface UserInfo {
   }
   status?: number
   teachingCourses: string[]
-  notifications: string[]
   learningCourses?: string[]
+  notifications: string[]
   createdAt: string
+  updatedAt: string
   error: string
   loading: boolean
   token: string
   isLoggedIn: boolean
+}
+
+export interface NotificationsData {
+  status: number
+  _id: string
+  userId: {
+    _id: string
+    email: string
+    firstName: string
+    lastName: string
+    status: number
+  }
+  title: string
+  content: string
+  isSeen: false
+  createdAt: string | Date
+  updatedAt: string | Date
+  __v: 0
 }
 
 export interface DecodedTokenData {
@@ -31,4 +49,7 @@ export interface DecodedTokenData {
   }
   status: number
   userId: string
+  firstName: string
+  lastName: string
+  imageUrl?: string
 }

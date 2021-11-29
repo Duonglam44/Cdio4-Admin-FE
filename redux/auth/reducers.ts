@@ -1,6 +1,6 @@
+import { UserInfo } from '@redux/types'
 import { AUTH_ACTIONS } from './types'
 // import { GetUserData } from './actions'
-import { UserInfo } from './../../types'
 
 const initialState: UserInfo = {
   _id: '',
@@ -17,6 +17,7 @@ const initialState: UserInfo = {
   notifications: [],
   learningCourses: [],
   createdAt: '',
+  updatedAt: '',
   error: '',
   loading: false,
   token: '',
@@ -64,40 +65,26 @@ export const userInfo = (state = initialState, action: any) => {
         loading: false,
         error: action.error,
       }
-    /***** get user data ******/
+    /***** get user data (all data) ******/
     case AUTH_ACTIONS.GET_USER_DATA_REQUEST:
       return {
         ...state,
         loading: true,
+      }
+    case AUTH_ACTIONS.GET_USER_DATA_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        ...action.data,
+      }
+    case AUTH_ACTIONS.GET_USER_DATA_FAILURE:
+      return {
+        ...state,
+        loading: false,
+        error: action.error,
       }
 
     default:
       return state
   }
 }
-
-// export const GetUserDataThunkAction =
-//   (token: string | null) => async (dispatch: any) => {
-//     try {
-//       if (!token) {
-//         return;
-//       }
-
-//       const res = await api({
-//         path: '',
-//         method: 'GET',
-//         needThrowError: false,
-//         errorHandler: (error) => {
-//           throw new error('InValid Token');
-//         },
-//       });
-
-//       dispatch(GetUserData({ ...res }));
-//     } catch (error: any) {
-//       if (error?.message === 'invalidToken') {
-//         throw error;
-//       }
-
-//       return;
-//     }
-//   };

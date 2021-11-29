@@ -1,4 +1,3 @@
-import { Formik } from 'formik'
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import Table from 'rc-table'

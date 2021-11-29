@@ -1,0 +1,40 @@
+@import './vars';
+@import './mixin';
+
+.page__home {
+  &--profile {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+
+    &-avatar {
+      float: right;
+    }
+
+    &-username {
+      cursor: pointer;
+      font-size: 20px;
+      margin-left: 15px;
+      max-width: 150px;
+      text-align: center;
+      margin-right: 10px;
+    }
+  }
+
+  &--notification {
+    cursor: pointer;
+
+    &-active {
+      cursor: pointer;
+    }
+    &-active::before {
+      content: '';
+      display: block;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: rgb(245, 77, 77);
+      transform: translate(200%, 70%);
+    }
+  }
+}
