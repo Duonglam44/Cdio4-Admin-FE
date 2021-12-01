@@ -24,7 +24,7 @@ const initialState: UserInfo = {
   isLoggedIn: false,
 }
 
-export const userInfo = (state = initialState, action: any) => {
+export const userInfo = (state = initialState, action: any): UserInfo => {
   switch (action.type) {
     /***** login ******/
     case AUTH_ACTIONS.LOGIN_REQUEST:
@@ -75,7 +75,7 @@ export const userInfo = (state = initialState, action: any) => {
       return {
         ...state,
         loading: false,
-        ...action.data,
+        ...action.data.user,
       }
     case AUTH_ACTIONS.GET_USER_DATA_FAILURE:
       return {

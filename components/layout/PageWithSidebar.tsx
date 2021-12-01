@@ -5,7 +5,7 @@ import { useState } from 'react'
 const PageWithSidebar = ({ children }: any) => {
   const [isCollapsedSidebar, setIsToggleSidebar] = useState(false)
   const handleToggleSidebar = () => {
-    setIsToggleSidebar((prev) => !prev)
+    setIsToggleSidebar(prev => !prev)
   }
 
   return (

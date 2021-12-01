@@ -35,6 +35,26 @@ $positions: center, right, left;
   align-items: center;
 }
 
+.flex-start {
+  display: flex;
+  align-items: flex-start;
+}
+
+.flex-end {
+  display: flex;
+  align-items: flex-end;
+}
+
+.flex-start-center {
+  @extend .flex-start;
+  justify-content: center;
+}
+
+.flex-end-center {
+  @extend .flex-end;
+  justify-content: center;
+}
+
 $justifies: center, space-between, space-around, space-evenly, flex-start,
   flex-end;
 
@@ -249,7 +269,7 @@ html {
   align-items: flex-start;
   justify-content: center;
   width: 100vw;
-  height: 100vh;
+  min-height: 95vh;
 }
 
 .on-bottom-page {
@@ -273,10 +293,10 @@ html {
 
 .content-with-sidebar {
   margin-left: $sidebar-width !important;
-  margin-top: 30px !important;
+  padding-top: 30px !important;
 }
 
 .content-with-sidebar-collapsed {
   margin-left: $sidebar-mini-width !important;
-  margin-top: 30px !important;
+  padding-top: 30px !important;
 }

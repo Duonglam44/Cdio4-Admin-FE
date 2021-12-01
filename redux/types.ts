@@ -12,7 +12,7 @@ export interface UserInfo {
   status?: number
   teachingCourses: string[]
   learningCourses?: string[]
-  notifications: string[]
+  notifications: NotificationsData[]
   createdAt: string
   updatedAt: string
   error: string

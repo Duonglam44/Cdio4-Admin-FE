@@ -15,7 +15,7 @@ import { loginWithJwt, logout } from '../../utils/auth'
 import { toast } from 'react-toastify'
 
 //call login api
-export const loginThunkAction = (data: LoginData) => async (dispatch) => {
+export const loginThunkAction = (data: LoginData) => async (dispatch: any) => {
   dispatch(loginRequest())
 
   try {
@@ -37,7 +37,7 @@ export const loginThunkAction = (data: LoginData) => async (dispatch) => {
   }
 }
 
-export const logoutThunkAction = () => (dispatch) => {
+export const logoutThunkAction = () => (dispatch: any) => {
   dispatch(logoutRequest())
 
   try {
@@ -50,7 +50,7 @@ export const logoutThunkAction = () => (dispatch) => {
   }
 }
 
-export const getAllDataUserThunkAction = () => async (dispatch) => {
+export const getAllDataUserThunkAction = () => async (dispatch: any) => {
   dispatch(getUserDataRequest())
 
   try {
