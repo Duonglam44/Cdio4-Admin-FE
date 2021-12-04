@@ -18,6 +18,9 @@
       max-width: 150px;
       text-align: center;
       margin-right: 10px;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
     }
   }
 
@@ -56,5 +59,9 @@
       cursor: pointer;
       overflow: hidden;
     }
+  }
+
+  &--profile-modal {
+    width: 180px;
   }
 }

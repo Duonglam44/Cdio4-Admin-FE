@@ -1,16 +1,30 @@
-export interface UserInfo {
+export interface UserInfoState {
   _id: string
   firstName: string
   lastName: string
   dateOfBirth?: string
-  address?: string
+  address?: {
+    street?: string
+    city?: string
+    country?: string
+  }
   email: string
   role?: {
     id: number | null
     name: 'root' | 'admin' | 'teacher' | 'learner' | ''
   }
   status?: number
-  teachingCourses: string[]
+  socialLinks?: {
+    facebook?: string
+    twitter?: string
+    linkedin?: string
+    instagram?: string
+    github?: string
+  }
+  phoneNumber?: string
+  description?: string
+  imageUrl?: string
+  teachingCourses?: string[]
   learningCourses?: string[]
   notifications: NotificationsData[]
   createdAt: string
@@ -19,6 +33,13 @@ export interface UserInfo {
   loading: boolean
   token: string
   isLoggedIn: boolean
+}
+
+export interface AccountManagementState {
+  users: AccountManagementData[]
+  error: string
+  loading: boolean
+  totalUsers: number
 }
 
 export interface NotificationsData {
@@ -37,6 +58,39 @@ export interface NotificationsData {
   createdAt: string | Date
   updatedAt: string | Date
   __v: 0
+}
+
+export interface AccountManagementData {
+  _id: string
+  address: {
+    street: string
+    city: string
+    country: string
+  }
+  role: {
+    id: number
+    name: string
+  }
+  socialLinks?: {
+    facebook?: string
+    twitter?: string
+    linkedin?: string
+    instagram?: string
+    github?: string
+  }
+  email: string
+  firstName: string
+  lastName: string
+  dateOfBirth: string | Date
+  phoneNumber?: string
+  description?: string
+  imageUrl?: string
+  status: number
+  totalLearningCourses: number
+  totalTeachingCourses: number
+  notifications: NotificationsData[]
+  createdAt: string | Date
+  updatedAt: string | Date
 }
 
 export interface DecodedTokenData {

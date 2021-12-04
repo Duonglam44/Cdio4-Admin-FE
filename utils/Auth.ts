@@ -5,12 +5,10 @@ import { DecodedTokenData } from '@redux/types'
 export const tokenKey = 'Guru-admin-auth'
 
 export const isRootOrAdmin = (roleId: number) =>
-  // roleId === UserRole.ADMIN.id || roleId === UserRole.ROOT.id
-  true
+  roleId === UserRole.ADMIN.id || roleId === UserRole.ROOT.id
 
 export const accessableStatus = (userStatus: number) =>
-  // userStatus === UserStatus.ACTIVE
-  true
+  userStatus === UserStatus.ACTIVE
 
 export const checkAccessable = (jwt: string) => {
   try {

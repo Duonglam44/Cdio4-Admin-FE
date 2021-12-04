@@ -27,6 +27,11 @@ const defaultTheme = {
       focus: '#00AB55',
     },
   },
+  typography: {
+    button: {
+      textTransform: 'none',
+    },
+  },
 }
 
-export default createTheme(defaultTheme)
+export default createTheme(defaultTheme as any)

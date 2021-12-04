@@ -5,7 +5,7 @@ import { useSpring, animated } from 'react-spring'
 
 // tslint:disable-next-line: no-shadowed-variable
 // tslint:disable-next-line: ter-prefer-arrow-callback
-const Fade = forwardRef(function Fade(props: FadeProps, ref: any) {
+const Fade = forwardRef(function FadeEffect(props: FadeProps, ref: any) {
   const { in: open, children, onEnter, onExited, ...other } = props
   const styles = useSpring({
     from: { opacity: 0 },
@@ -40,16 +40,27 @@ type FadeProps = {
 
 const ModalMain: React.FC<ModalProps> = ({
   open,
-  onClose,
+  onClose = () => {
+    return
+  },
   children,
   className,
-  width = 500,
-  height = 500,
+  width = 'auto',
+  height = 'auto',
   hasBackdrop = true,
   modalClassName,
   position = 'flex-start-center',
+  backdropColor = 'rgba(0,0,0,0.3)',
+  preventBackdropClick = false,
   ...props
 }) => {
+  const handleBackdropClick = () => {
+    if (!preventBackdropClick) {
+      onClose()
+    }
+    return
+  }
+
   return (
     <Modal
       aria-labelledby='spring-modal-title'
@@ -62,8 +73,9 @@ const ModalMain: React.FC<ModalProps> = ({
       BackdropProps={{
         timeout: 500,
         style: {
-          backgroundColor: 'transparent',
+          backgroundColor: backdropColor,
         },
+        onClick: handleBackdropClick,
       }}
       className={`${modalClassName} ${position} ${
         position === 'flex-start-center' && 'mt-120'
@@ -100,6 +112,8 @@ type ModalProps = {
     | 'justify-flex-end'
     | 'flex-start-center'
     | 'flex-end-center'
+  backdropColor?: string
+  preventBackdropClick?: boolean
 } & React.HTMLAttributes<HTMLDivElement>
 
 export default ModalMain

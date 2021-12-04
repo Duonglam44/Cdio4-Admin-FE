@@ -1,13 +1,12 @@
-import { UserInfo } from '@redux/types'
+import { UserInfoState } from '@redux/types'
 import { AUTH_ACTIONS } from './types'
-// import { GetUserData } from './actions'
 
-const initialState: UserInfo = {
+const initialState: UserInfoState = {
   _id: '',
   firstName: '',
   lastName: '',
   dateOfBirth: '',
-  address: '',
+  address: {},
   email: '',
   role: {
     id: null,
@@ -24,7 +23,7 @@ const initialState: UserInfo = {
   isLoggedIn: false,
 }
 
-export const userInfo = (state = initialState, action: any): UserInfo => {
+export const userInfo = (state = initialState, action: any): UserInfoState => {
   switch (action.type) {
     /***** login ******/
     case AUTH_ACTIONS.LOGIN_REQUEST:

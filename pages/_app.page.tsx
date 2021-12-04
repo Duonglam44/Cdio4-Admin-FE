@@ -8,13 +8,14 @@ import { NoSsr, ThemeProvider } from '@material-ui/core'
 import theme from '../styles/theme'
 import Layout from '../components/layout/Layout'
 import 'react-toastify/dist/ReactToastify.css'
+import 'react-phone-number-input/style.css'
 import '../styles/scss/styles.scss'
 
 const MyApp = ({ Component, pageProps, store }: any) => {
   const getPaths = (paths: string[]) => {
     const newPaths: string[] = []
 
-    paths.map((path) => {
+    paths.map(path => {
       if (path === '/') {
         newPaths.push(path)
 

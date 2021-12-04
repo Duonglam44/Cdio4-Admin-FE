@@ -80,13 +80,16 @@ const SidebarMain: React.FC<Props> = ({
                 <Link href='/manage-accounts'>All</Link>
               </MenuItem>
               <MenuItem>
-                <Link href='/manage-accounts/admin'>Root & Admin</Link>
+                <Link href='/manage-accounts?role=root'>Root</Link>
               </MenuItem>
               <MenuItem>
-                <Link href='/manage-accounts/teacher'>Teacher</Link>
+                <Link href='/manage-accounts?role=admin'>Admin</Link>
               </MenuItem>
               <MenuItem>
-                <Link href='/manage-accounts/learner'>Learner</Link>
+                <Link href='/manage-accounts?role=teacher'>Teacher</Link>
+              </MenuItem>
+              <MenuItem>
+                <Link href='/manage-accounts?role=learner'>Learner</Link>
               </MenuItem>
             </SubMenu>
             <SubMenu title='Courses' icon={<MdOutlineLibraryBooks size={20} />}>

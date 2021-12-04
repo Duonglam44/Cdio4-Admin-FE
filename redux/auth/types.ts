@@ -24,6 +24,7 @@ export type LoginResponse = {
 
 export type AllDataUserResponse = {
   user: {
+    _id: string
     address: {
       street: string
       city: string
@@ -33,7 +34,6 @@ export type AllDataUserResponse = {
       id: number
       name: string
     }
-    _id: string
     email: string
     firstName: string
     lastName: string
