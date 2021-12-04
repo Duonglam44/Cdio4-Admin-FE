@@ -97,7 +97,7 @@ const AccountForm: NextPage<Props> = ({ onClose, accountId }) => {
     confirmPassword: '',
   }
 
-  const handleSubmit = values => {
+  const handleSubmit = (values: any) => {
     //  dispatch(loginThunkAction(values))
   }
 
@@ -107,7 +107,7 @@ const AccountForm: NextPage<Props> = ({ onClose, accountId }) => {
     onSubmit: handleSubmit,
   })
 
-  console.log(formik.values)
+  // console.log(formik.values)
 
   return (
     <form onSubmit={formik.handleSubmit}>

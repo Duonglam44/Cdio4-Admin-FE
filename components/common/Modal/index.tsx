@@ -58,6 +58,7 @@ const ModalMain: React.FC<ModalProps> = ({
     if (!preventBackdropClick) {
       onClose()
     }
+
     return
   }
 

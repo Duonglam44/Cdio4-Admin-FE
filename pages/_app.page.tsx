@@ -15,7 +15,7 @@ const MyApp = ({ Component, pageProps, store }: any) => {
   const getPaths = (paths: string[]) => {
     const newPaths: string[] = []
 
-    paths.map(path => {
+    paths.map((path: any) => {
       if (path === '/') {
         newPaths.push(path)
 
