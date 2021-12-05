@@ -1,7 +1,7 @@
-import { AccountManagementState } from './../types'
+import { AccountsManagementState } from './../types'
 import { ACCOUNT_ACTIONS } from './types'
 
-const initialState: AccountManagementState = {
+const initialState: AccountsManagementState = {
   users: [],
   error: '',
   loading: false,
@@ -12,7 +12,7 @@ const initialState: AccountManagementState = {
 export const accountsManagement = (
   state = initialState,
   action: any
-): AccountManagementState => {
+): AccountsManagementState => {
   switch (action.type) {
     //-----------get accounts management-----------------
     case ACCOUNT_ACTIONS.GET_ACCOUNTS_MANAGEMENT_REQUEST:

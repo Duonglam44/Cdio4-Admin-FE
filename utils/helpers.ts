@@ -1,9 +1,9 @@
 import moment from 'moment'
 import { nanoid } from 'nanoid'
 
-import { UserStatus } from '../config/constant'
+import { CourseStatus, UserStatus } from '../config/constant'
 
-export const getAccountStatus = (statusId: number) => {
+export const getAccountStatusText = (statusId: number) => {
   switch (statusId) {
     case UserStatus.ACTIVE:
       return 'Active'
@@ -13,6 +13,21 @@ export const getAccountStatus = (statusId: number) => {
       return 'Inactive'
     case UserStatus.BANNED:
       return 'Banned'
+    default:
+      return 'Unknown'
+  }
+}
+
+export const getCourseStatusText = (statusId: number) => {
+  switch (statusId) {
+    case CourseStatus.ACTIVE:
+      return 'Active'
+    case CourseStatus.PENDING:
+      return 'Pending'
+    case CourseStatus.INACTIVE:
+      return 'Inactive'
+    case CourseStatus.DRAFT:
+      return 'Draft'
     default:
       return 'Unknown'
   }

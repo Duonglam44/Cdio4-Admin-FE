@@ -1,6 +1,6 @@
 import axios, { Method, AxiosResponse } from 'axios'
 
-import { getJwt } from './auth'
+import { getJwt, logout } from './auth'
 import { API_URL_V1 } from '../config/constant'
 
 interface ApiDataType {
@@ -47,6 +47,10 @@ export const api = async ({
           error.response.status === 422
             ? error.response.data.data[0].msg
             : error.response.data.message
+
+        if (errorMessage === 'jwt expired') {
+          logout()
+        }
 
         reject(errorMessage)
       })

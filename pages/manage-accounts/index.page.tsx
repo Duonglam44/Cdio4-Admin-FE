@@ -11,14 +11,13 @@ import { RootState } from 'redux/rootReducer'
 import { getAccountsManagementThunkAction } from '@redux/accounts/thunks'
 import moment from 'moment'
 import { LoaderBall } from '@components/common'
-import { getAccountStatus } from '@utils/helpers'
+import { getAccountStatusText } from '@utils/helpers'
 import ModalMain from '@components/common/Modal'
 import PaginationLink from '@components/PaginationLink'
 import { COUNT_PER_PAGE } from '@config/constant'
 import AccountForm from './AccountDetailForm'
 import { useRouter } from 'next/router'
 import { Button } from '@material-ui/core'
-import { BiPlusCircle } from 'react-icons/bi'
 
 const columns = [
   {
@@ -106,7 +105,7 @@ const ManageAccount: NextPage<Props> = ({}) => {
     dateOfBirth: moment(account.dateOfBirth).format('DD/MM/YYYY'),
     name: `${account.firstName} ${account.lastName}`,
     role: account.role.name,
-    status: getAccountStatus(account.status),
+    status: getAccountStatusText(account.status),
     key: account._id,
     phoneNumber: account.phoneNumber ? account.phoneNumber : '--',
   }))
@@ -139,7 +138,7 @@ const ManageAccount: NextPage<Props> = ({}) => {
         <title>Manage Account</title>
         <meta
           name='description'
-          content='Manage account to GuruAcademy ADMIN'
+          content='Manage account of GuruAcademy ADMIN'
         />
         <link rel='icon' href='/favicon.ico' />
       </Head>
