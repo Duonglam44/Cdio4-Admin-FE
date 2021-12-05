@@ -28,7 +28,7 @@ const Login: NextPage = () => {
     password: '',
   }
 
-  const handleSubmit = values => {
+  const handleSubmit = (values: LoginData) => {
     dispatch(loginThunkAction(values))
   }
 

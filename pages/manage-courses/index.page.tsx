@@ -181,7 +181,7 @@ const ManageAccount: NextPage<Props> = ({}) => {
             preventBackdropClick
             label={'Account Detail'}
           >
-            <div className='modal-main'></div>
+            <div className='modal-main'>abc</div>
           </ModalMain>
           {accountsState.loading && !showAccountInfoModal ? (
             <LoaderBall />

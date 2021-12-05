@@ -52,6 +52,7 @@ const FileUpload: React.FC<Props> = ({
   const onDrop = (acceptedFiles: File[], fileRejections: FileRejection[]) => {
     if (!!numberAllow && acceptedFiles.length > numberAllow) {
       toast.error(`Can not upload more than ${numberAllow} files`)
+
       return
     }
 
