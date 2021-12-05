@@ -5,6 +5,11 @@
 @import './modal-helpers';
 @import './sidebar';
 @import '@pages/login/styles.scss';
+@import './pages';
+@import './table';
+@import './input';
+@import './file-upload';
+@import './cmp';
 
 * {
   margin: 0;

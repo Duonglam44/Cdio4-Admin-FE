@@ -1,5 +1,6 @@
 @import './mixin';
 @import './vars';
+@import './sidebar';
 
 // Helper mixins
 @mixin text($position) {
@@ -32,6 +33,26 @@ $positions: center, right, left;
 .flex-center {
   display: flex;
   align-items: center;
+}
+
+.flex-start {
+  display: flex;
+  align-items: flex-start;
+}
+
+.flex-end {
+  display: flex;
+  align-items: flex-end;
+}
+
+.flex-start-center {
+  @extend .flex-start;
+  justify-content: center;
+}
+
+.flex-end-center {
+  @extend .flex-end;
+  justify-content: center;
 }
 
 $justifies: center, space-between, space-around, space-evenly, flex-start,
@@ -205,6 +226,13 @@ html {
   top: calc(#{$navbar-height} + 8px);
 }
 
+.input-card {
+  padding: 8px 20px 13px;
+  border-radius: 18px;
+  background-color: $sidebar-bg-color;
+  margin: 5px;
+}
+
 .section {
   &__container {
     background: $color-white;
@@ -222,8 +250,8 @@ html {
     font-size: 24px;
   }
   &__card {
-    background: $color-primary-background;
     border-radius: 18px;
+    background: $color-primary-background;
     padding: 24px;
     margin: 14px;
     box-shadow: $default-shadow;
@@ -234,4 +262,46 @@ html {
   @extend .justify-center;
   width: 100vw;
   height: 100vh;
+}
+
+.on-top-page {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  width: 100vw;
+  min-height: 95vh;
+}
+
+.on-bottom-page {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  width: 100vw;
+  height: 100vh;
+}
+
+.btn__hover {
+  &:hover {
+    background: $color-black-500 !important;
+    color: $color-white !important;
+
+    svg {
+      color: $color-white !important;
+    }
+  }
+}
+
+.content-with-sidebar {
+  margin-left: $sidebar-width !important;
+  padding-top: 30px !important;
+}
+
+.content-with-sidebar-collapsed {
+  margin-left: $sidebar-mini-width !important;
+  padding-top: 30px !important;
+}
+
+.label-text {
+  color: #808080;
+  font-size: 12.5px;
 }

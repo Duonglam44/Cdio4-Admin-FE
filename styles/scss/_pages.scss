@@ -1,0 +1,80 @@
+@import './vars';
+@import './mixin';
+
+.page__header {
+  &--profile {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+
+    &-avatar {
+      float: right;
+    }
+
+    &-username {
+      cursor: pointer;
+      font-size: 20px;
+      margin-left: 15px;
+      max-width: 150px;
+      text-align: center;
+      margin-right: 10px;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+  }
+
+  &--notification {
+    cursor: pointer;
+
+    &-active {
+      cursor: pointer;
+    }
+    &-active::before {
+      content: '';
+      display: block;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: rgb(245, 77, 77);
+      transform: translate(200%, 70%);
+    }
+  }
+
+  &--notification-modal {
+    width: 400px;
+    overflow: auto;
+
+    &--header {
+      background: rgb(226, 216, 211);
+      padding: 16px 24px;
+    }
+
+    &--body {
+      overflow: auto;
+      max-height: 500px;
+    }
+
+    &--content {
+      cursor: pointer;
+      overflow: hidden;
+    }
+  }
+
+  &--profile-modal {
+    width: 180px;
+  }
+}
+
+.page-account-management {
+  &-- footer {
+    position: relative;
+  }
+  &--button-footer {
+    position: absolute;
+    bottom: 15px;
+    right: 15px;
+    display: flex;
+    align-items: center;
+  }
+}

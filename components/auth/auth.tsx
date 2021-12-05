@@ -2,6 +2,11 @@ import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import { checkAccessable, getJwt, tokenKey } from '../../utils/auth'
 import { LoaderBall } from '@components/common'
+import { useDispatch } from 'react-redux'
+import {
+  getAllDataUserThunkAction,
+  logoutThunkAction,
+} from '@redux/auth/thunks'
 
 type Token = string | null
 
@@ -13,6 +18,8 @@ const Auth: React.FC<{ children: any; publicPages: string[] }> = ({
   const router = useRouter()
   const [loading, setLoading] = useState(true)
 
+  const dispatch = useDispatch()
+
   useEffect(() => {
     void checkLogin()
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -22,9 +29,11 @@ const Auth: React.FC<{ children: any; publicPages: string[] }> = ({
     const token: Token = getJwt()
     setLoading(false)
 
-    if (token && checkAccessable(token)) return
+    if (token && checkAccessable(token)) {
+      return dispatch(getAllDataUserThunkAction())
+    }
 
-    localStorage.removeItem(tokenKey)
+    dispatch(logoutThunkAction())
     await router.replace('/login')
   }
 
