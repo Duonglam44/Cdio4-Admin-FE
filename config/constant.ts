@@ -40,3 +40,20 @@ export const UserRole = {
     name: 'teacher',
   },
 }
+
+export const UploadFileType = {
+  IMAGE: {
+    accept: 'image/jpg, image/jpeg, image/png, image/webp',
+    maxSize: 5 * 1024 * 1024, //5MB
+  },
+  VIDEO: {
+    accept:
+      'video/gif, video/mp4, video/ogg, video/wmv, video/webm, video/avi, video/mkv, video/x-flv, video/flv, video/quicktime, video/mov',
+    maxSize: 500 * 1024 * 1024, //500MB
+  },
+  FILE: {
+    accept:
+      'application/pdf, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/zip, text/plain,application/vnd.openxmlformats-officedocument.presentationml.presentation, application/vnd.ms-powerpoint,application/gzip,application/vnd.rar',
+    maxSize: 50 * 1024 * 1024, //500MB
+  },
+}

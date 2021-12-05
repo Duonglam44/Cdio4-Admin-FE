@@ -1,7 +1,8 @@
 import React, { forwardRef } from 'react'
-import { Backdrop, Modal } from '@material-ui/core'
+import { Backdrop, Grid, Modal } from '@material-ui/core'
 import { Callback } from '@utils/types'
 import { useSpring, animated } from 'react-spring'
+import { MdClose } from 'react-icons/md'
 
 // tslint:disable-next-line: no-shadowed-variable
 // tslint:disable-next-line: ter-prefer-arrow-callback
@@ -52,6 +53,7 @@ const ModalMain: React.FC<ModalProps> = ({
   position = 'flex-start-center',
   backdropColor = 'rgba(0,0,0,0.3)',
   preventBackdropClick = false,
+  label,
   ...props
 }) => {
   const handleBackdropClick = () => {
@@ -86,12 +88,33 @@ const ModalMain: React.FC<ModalProps> = ({
         <div
           className={`${className} section__card`}
           style={{
-            width: `${width}px`,
-            height: `${height}px`,
+            position: 'relative',
+            height: `${
+              typeof height === 'number' ? `${height + 140}` : height
+            }px`,
           }}
-          {...props}
         >
-          {children}
+          <Grid
+            container
+            direction='row'
+            alignItems='center'
+            justifyContent='space-between'
+            className='modal-main__header mb-20'
+          >
+            <h4 className='text-is-20'>{label}</h4>
+            <MdClose size={20} cursor='pointer' onClick={onClose} />
+          </Grid>
+          <div
+            style={{
+              width: `${width}px`,
+              height: `${height}px`,
+              overflowY: 'auto',
+              overflowX: 'hidden',
+            }}
+            {...props}
+          >
+            {children}
+          </div>
         </div>
       </Fade>
     </Modal>
@@ -115,6 +138,7 @@ type ModalProps = {
     | 'flex-end-center'
   backdropColor?: string
   preventBackdropClick?: boolean
+  label?: string
 } & React.HTMLAttributes<HTMLDivElement>
 
 export default ModalMain

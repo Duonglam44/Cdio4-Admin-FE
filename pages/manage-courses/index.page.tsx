@@ -15,23 +15,22 @@ import { getAccountStatus } from '@utils/helpers'
 import ModalMain from '@components/common/Modal'
 import PaginationLink from '@components/PaginationLink'
 import { COUNT_PER_PAGE } from '@config/constant'
-import AccountForm from './AccountDetailForm'
 import { useRouter } from 'next/router'
 import { Button } from '@material-ui/core'
 import { BiPlusCircle } from 'react-icons/bi'
 
 const columns = [
   {
-    title: 'Email',
-    dataIndex: 'email',
-    key: 'email',
+    title: 'Title',
+    dataIndex: 'title',
+    key: 'title',
     width: 200,
     ellipsis: true,
   },
   {
-    title: 'Name',
-    dataIndex: 'name',
-    key: 'name',
+    title: 'Description',
+    dataIndex: 'description',
+    key: 'description',
     width: 200,
     ellipsis: true,
   },
@@ -43,16 +42,30 @@ const columns = [
     align: 'center' as AlignType,
   },
   {
-    title: 'Phone',
-    dataIndex: 'phoneNumber',
-    key: 'phoneNumber',
+    title: 'Author',
+    dataIndex: 'author',
+    key: 'author',
     width: 200,
     align: 'center' as AlignType,
   },
   {
-    title: 'Role',
-    dataIndex: 'role',
-    key: 'role',
+    title: 'Topic',
+    dataIndex: 'topic',
+    key: 'topic',
+    width: 150,
+    align: 'center' as AlignType,
+  },
+  {
+    title: 'Price',
+    dataIndex: 'price',
+    key: 'price',
+    width: 150,
+    align: 'center' as AlignType,
+  },
+  {
+    title: 'Discount',
+    dataIndex: 'discount',
+    key: 'discount',
     width: 150,
     align: 'center' as AlignType,
   },
@@ -64,16 +77,30 @@ const columns = [
     align: 'center' as AlignType,
   },
   {
-    title: 'Learning Courses',
-    dataIndex: 'totalLearningCourses',
-    key: 'totalLearningCourses',
+    title: 'Learners',
+    dataIndex: 'totalLearners',
+    key: 'totalLearners',
     width: 150,
     align: 'center' as AlignType,
   },
   {
-    title: 'Teacher Courses',
-    dataIndex: 'totalTeachingCourses',
-    key: 'totalTeachingCourses',
+    title: 'Streams',
+    dataIndex: 'totalStreams',
+    key: 'totalStreams',
+    width: 150,
+    align: 'center' as AlignType,
+  },
+  {
+    title: 'Feedbacks',
+    dataIndex: 'feedbacks',
+    key: 'feedbacks',
+    width: 150,
+    align: 'center' as AlignType,
+  },
+  {
+    title: 'Chapters',
+    dataIndex: 'totalChapters',
+    key: 'totalChapters',
     width: 150,
     align: 'center' as AlignType,
   },
@@ -154,13 +181,7 @@ const ManageAccount: NextPage<Props> = ({}) => {
             preventBackdropClick
             label={'Account Detail'}
           >
-            <div className='modal-main'>
-              <AccountForm
-                accountId={selectedAccountId}
-                onClose={handleCloseAccountInfoModal}
-                previousQueryUrl={query}
-              />
-            </div>
+            <div className='modal-main'></div>
           </ModalMain>
           {accountsState.loading && !showAccountInfoModal ? (
             <LoaderBall />

@@ -28,7 +28,7 @@ const Login: NextPage = () => {
     password: '',
   }
 
-  const handleSubmit = (values) => {
+  const handleSubmit = values => {
     dispatch(loginThunkAction(values))
   }
 
@@ -97,7 +97,6 @@ const Login: NextPage = () => {
               <form onSubmit={formik.handleSubmit}>
                 <Grid container direction='column'>
                   <TextField
-                    id='outlined-error-helper-text-1'
                     label='Email'
                     type='email'
                     name='email'

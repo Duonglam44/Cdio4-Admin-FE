@@ -65,3 +65,16 @@
     width: 180px;
   }
 }
+
+.page-account-management {
+  &-- footer {
+    position: relative;
+  }
+  &--button-footer {
+    position: absolute;
+    bottom: 15px;
+    right: 15px;
+    display: flex;
+    align-items: center;
+  }
+}

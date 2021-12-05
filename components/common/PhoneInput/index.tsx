@@ -1,5 +1,5 @@
-import { colors } from '@material-ui/core'
 import { Callback } from '@utils/types'
+import classNames from 'classnames'
 import { E164Number } from 'libphonenumber-js/types'
 import { Fragment } from 'react'
 import PhoneInputWithCountrySelect, {
@@ -28,18 +28,10 @@ const PhoneInput: React.FC<Props> = ({
 
   return (
     <Fragment>
-      <p
-        style={{
-          color: colors.grey[700],
-          fontSize: '12.5px',
-        }}
-        className={labelClassName}
-      >
-        {label}
-      </p>
+      <p className={classNames(labelClassName, 'label-text')}>{label}</p>
       <PhoneInputWithCountrySelect
         {...props}
-        className={`cmp-phone-input--content ${props.className}`}
+        className={classNames('cmp-phone-input--content', props.className)}
         onChange={handleChange}
         onBlur={handleBlur}
       />
