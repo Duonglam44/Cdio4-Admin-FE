@@ -1,43 +1,38 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import PageWithHeader from '@components/header'
 import PageWithSidebar from '@components/layout/PageWithSidebar'
-import { useEffect, useState, useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import Table from 'rc-table'
 import { AlignType } from 'rc-table/lib/interface'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from 'redux/rootReducer'
-import { getAccountsManagementThunkAction } from '@redux/accounts/thunks'
-import moment from 'moment'
+import { getCoursesManagementThunkAction } from '@redux/courses/thunks'
 import { LoaderBall } from '@components/common'
-import { getAccountStatus } from '@utils/helpers'
-import ModalMain from '@components/common/Modal'
 import PaginationLink from '@components/PaginationLink'
 import { COUNT_PER_PAGE } from '@config/constant'
 import { useRouter } from 'next/router'
-import { Button } from '@material-ui/core'
-import { BiPlusCircle } from 'react-icons/bi'
+import { getCourseStatusText } from '@utils/helpers'
 
 const columns = [
   {
-    title: 'Title',
+    title: 'Course',
     dataIndex: 'title',
     key: 'title',
     width: 200,
-    ellipsis: true,
   },
   {
-    title: 'Description',
-    dataIndex: 'description',
-    key: 'description',
-    width: 200,
-    ellipsis: true,
+    title: 'ID',
+    dataIndex: '_id',
+    key: '_id',
+    width: 150,
   },
+
   {
-    title: 'Day of Birth',
-    dataIndex: 'dateOfBirth',
-    key: 'dateOfBirth',
+    title: 'Category',
+    dataIndex: 'category',
+    key: 'category',
     width: 200,
     align: 'center' as AlignType,
   },
@@ -52,61 +47,61 @@ const columns = [
     title: 'Topic',
     dataIndex: 'topic',
     key: 'topic',
-    width: 150,
+    width: 200,
     align: 'center' as AlignType,
   },
   {
     title: 'Price',
     dataIndex: 'price',
     key: 'price',
-    width: 150,
+    width: 100,
     align: 'center' as AlignType,
   },
   {
     title: 'Discount',
     dataIndex: 'discount',
     key: 'discount',
-    width: 150,
+    width: 100,
     align: 'center' as AlignType,
   },
   {
     title: 'Status',
     dataIndex: 'status',
     key: 'status',
-    width: 150,
+    width: 100,
     align: 'center' as AlignType,
   },
   {
     title: 'Learners',
     dataIndex: 'totalLearners',
     key: 'totalLearners',
-    width: 150,
-    align: 'center' as AlignType,
-  },
-  {
-    title: 'Streams',
-    dataIndex: 'totalStreams',
-    key: 'totalStreams',
-    width: 150,
-    align: 'center' as AlignType,
-  },
-  {
-    title: 'Feedbacks',
-    dataIndex: 'feedbacks',
-    key: 'feedbacks',
-    width: 150,
+    width: 100,
     align: 'center' as AlignType,
   },
   {
     title: 'Chapters',
     dataIndex: 'totalChapters',
     key: 'totalChapters',
-    width: 150,
+    width: 100,
+    align: 'center' as AlignType,
+  },
+  {
+    title: 'Streams',
+    dataIndex: 'totalStreams',
+    key: 'totalStreams',
+    width: 100,
+    align: 'center' as AlignType,
+  },
+  {
+    title: 'Feedbacks',
+    dataIndex: 'totalFeedbacks',
+    key: 'totalFeedbacks',
+    width: 100,
     align: 'center' as AlignType,
   },
 ]
 
-const ManageAccount: NextPage<Props> = ({}) => {
+const ManageCourse: NextPage<Props> = ({}) => {
   const query = useMemo(
     () => new URLSearchParams(location.search),
     [location.search]
@@ -118,80 +113,55 @@ const ManageAccount: NextPage<Props> = ({}) => {
   if (!count) query.set('count', COUNT_PER_PAGE.toString())
 
   const dispatch = useDispatch()
-  const accountsState = useSelector(
-    (state: RootState) => state.accountsManagement
-  )
+  const courseState = useSelector((state: RootState) => state.coursesManagement)
 
-  const totalPage = Math.ceil(accountsState.totalUsers / COUNT_PER_PAGE)
+  const totalPage = Math.ceil(courseState.totalCourses / COUNT_PER_PAGE)
 
-  const [showAccountInfoModal, setShowAccountInfoModal] =
-    useState<boolean>(false)
-  const [selectedAccountId, setSelectedAccountId] = useState<string>('')
+  // const [selectedCourseId, setSelectedCourseId] = useState<string>('')
 
-  const accountsData = accountsState.users.map(account => ({
-    ...account,
-    dateOfBirth: moment(account.dateOfBirth).format('DD/MM/YYYY'),
-    name: `${account.firstName} ${account.lastName}`,
-    role: account.role.name,
-    status: getAccountStatus(account.status),
-    key: account._id,
-    phoneNumber: account.phoneNumber ? account.phoneNumber : '--',
+  const coursesData = courseState.courses.map(course => ({
+    ...course,
+    category: course.topic.courseCategoryId.title,
+    author: course.author.email,
+    topic: course.topic.title,
+    totalLearners: course.totalLearners,
+    totalStreams: course.totalStreams,
+    totalFeedbacks: course.totalFeedbacks,
+    price: `$${course.price}`,
+    discount: `$${course.discount}`,
+    status: getCourseStatusText(course.status),
   }))
 
   useEffect(() => {
-    dispatch(getAccountsManagementThunkAction(query))
+    dispatch(getCoursesManagementThunkAction(query))
   }, [dispatch, query])
 
-  const handleShowAccountInfoModal = () => {
-    setShowAccountInfoModal(true)
-  }
-
-  const handleCloseAccountInfoModal = () => {
-    setShowAccountInfoModal(false)
-  }
-
-  const handleRowClick = (record: any, index) => {
-    setSelectedAccountId(record._id)
-    handleShowAccountInfoModal()
-  }
-
-  const handleCreateAccountClick = () => {
-    setSelectedAccountId('')
-    handleShowAccountInfoModal()
+  const handleRowClick = async (record: any, index) => {
+    // setSelectedCourseId(record._id)
+    await router.push(`/manage-courses/${record._id}`)
   }
 
   return (
-    <div className='page-account-management'>
+    <div className='page-course-management'>
       <Head>
-        <title>Manage Account</title>
+        <title>Manage Courses</title>
         <meta
           name='description'
-          content='Manage account to GuruAcademy ADMIN'
+          content='Manage courses to GuruAcademy ADMIN'
         />
         <link rel='icon' href='/favicon.ico' />
       </Head>
       <PageWithSidebar>
-        <PageWithHeader title='Account Management'>
-          <ModalMain
-            open={showAccountInfoModal}
-            onClose={handleCloseAccountInfoModal}
-            width={600}
-            height={500}
-            position='flex-start-center'
-            preventBackdropClick
-            label={'Account Detail'}
-          >
-            <div className='modal-main'>abc</div>
-          </ModalMain>
-          {accountsState.loading && !showAccountInfoModal ? (
+        <PageWithHeader title='Courses Management'>
+          {courseState.loading ? (
             <LoaderBall />
           ) : (
             <Table
               tableLayout='auto'
               scroll={{ y: 'calc(100vh - 310px)' }}
-              rowKey={record => record.key}
+              rowKey={record => record._id}
               columns={columns}
-              data={accountsData}
+              data={coursesData}
               onRow={(record, index) => ({
                 onClick: () => handleRowClick(record, index),
                 style: {
@@ -199,21 +169,7 @@ const ManageAccount: NextPage<Props> = ({}) => {
                 },
               })}
               footer={_ => (
-                <div className='page-account-management--footer'>
-                  <PaginationLink
-                    totalPage={totalPage}
-                    count={COUNT_PER_PAGE}
-                  />
-                  <div className='page-account-management--button-footer'>
-                    <Button
-                      onClick={handleCreateAccountClick}
-                      className='has-text-warning'
-                      variant='outlined'
-                    >
-                      New Account
-                    </Button>
-                  </div>
-                </div>
+                <PaginationLink totalPage={totalPage} count={COUNT_PER_PAGE} />
               )}
             />
           )}
@@ -225,4 +181,4 @@ const ManageAccount: NextPage<Props> = ({}) => {
 
 type Props = {}
 
-export default ManageAccount
+export default ManageCourse

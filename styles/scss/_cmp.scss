@@ -148,3 +148,22 @@
     font-size: 14px;
   }
 }
+
+.cmp-view-item {
+  &__label {
+    font-weight: 500;
+    font-size: 14px;
+    color: $color-black-200;
+    line-height: 24px;
+  }
+
+  &__value {
+    font-size: 14px;
+  }
+
+  &__empty {
+    @include mobileScreen {
+      display: none;
+    }
+  }
+}

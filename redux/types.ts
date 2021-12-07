@@ -1,3 +1,4 @@
+import { CourseDetailData, CourseOverviewData } from './courses/types'
 export interface UserInfoState {
   _id: string
   firstName: string
@@ -35,11 +36,24 @@ export interface UserInfoState {
   isLoggedIn: boolean
 }
 
-export interface AccountManagementState {
+export interface AccountsManagementState {
   users: AccountManagementData[]
   error: string
   loading: boolean
   totalUsers: number
+}
+
+export interface CoursesManagementState {
+  courses: (CourseOverviewData & {
+    totalLearners: number
+    totalStreams: number
+    totalChapters: number
+    totalFeedbacks: number
+  })[]
+  error: string
+  loading: boolean
+  totalCourses: number
+  currentCourse: CourseDetailData | null
 }
 
 export interface NotificationsData {

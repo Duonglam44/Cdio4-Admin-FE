@@ -78,3 +78,25 @@
     align-items: center;
   }
 }
+
+.page-course-detail {
+  &__title {
+    font-size: 22px;
+    font-weight: 300;
+    transition: all 0.3s ease;
+
+    &:hover {
+      font-weight: bold;
+    }
+  }
+  &__section {
+    border: $default-border;
+    border-radius: $default-border-radius;
+    border-style: dashed;
+    margin-top: 15px !important;
+    margin-bottom: 15px !important;
+  }
+  &__course-info {
+    width: 100%;
+  }
+}

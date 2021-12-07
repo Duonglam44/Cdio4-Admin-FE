@@ -64,6 +64,10 @@ const ModalMain: React.FC<ModalProps> = ({
     return
   }
 
+  const windowHeight = window.innerHeight
+  const extraWidthForFooter =
+    windowHeight > 800 ? 140 : windowHeight > 650 ? 60 : 0
+
   return (
     <Modal
       aria-labelledby='spring-modal-title'
@@ -81,7 +85,7 @@ const ModalMain: React.FC<ModalProps> = ({
         onClick: handleBackdropClick,
       }}
       className={`${modalClassName} ${position} ${
-        position === 'flex-start-center' && 'mt-120'
+        position === 'flex-start-center' && 'mt-100'
       }`}
     >
       <Fade in={open}>
@@ -90,7 +94,9 @@ const ModalMain: React.FC<ModalProps> = ({
           style={{
             position: 'relative',
             height: `${
-              typeof height === 'number' ? `${height + 140}` : height
+              typeof height === 'number'
+                ? `${height + extraWidthForFooter}`
+                : height
             }px`,
           }}
         >
@@ -108,6 +114,7 @@ const ModalMain: React.FC<ModalProps> = ({
             style={{
               width: `${width}px`,
               height: `${height}px`,
+              maxHeight: '55vh',
               overflowY: 'auto',
               overflowX: 'hidden',
             }}

@@ -165,9 +165,9 @@ const AccountForm: NextPage<Props> = ({
                     fullWidth
                     disabled={formik.values.id !== ''}
                     inputProps={{
-                      autocomplete: 'new-password',
+                      autoComplete: 'new-password',
                       form: {
-                        autocomplete: 'off',
+                        autoComplete: 'off',
                       },
                     }}
                   />

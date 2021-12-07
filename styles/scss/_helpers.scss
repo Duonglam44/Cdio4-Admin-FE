@@ -122,10 +122,6 @@ $fontFizes: 12, 14, 16, 18, 20, 22, 24, 32, 36, 40, 56;
   white-space: pre-wrap;
 }
 
-.has-text-secondary {
-  color: $color-secondary;
-}
-
 .is-full-width {
   width: 100vw;
   margin-left: calc(-50vw + 50%);
@@ -191,6 +187,9 @@ html {
   }
   .has-text-black {
     color: $color-text;
+  }
+  .has-text-secondary {
+    color: $color-secondary;
   }
 }
 
