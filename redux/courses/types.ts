@@ -8,12 +8,12 @@ export enum COURSE_ACTIONS {
   DELETE_COURSE_REQUEST = 'courses-management/DELETE_COURSE_REQUEST',
   DELETE_COURSE_SUCCESS = 'courses-management/DELETE_COURSE_SUCCESS',
   DELETE_COURSE_FAILURE = 'courses-management/DELETE_COURSE_FAILURE',
-  CREATE_COURSE_REQUEST = 'courses-management/CREATE_COURSE_REQUEST',
-  CREATE_COURSE_SUCCESS = 'courses-management/CREATE_COURSE_SUCCESS',
-  CREATE_COURSE_FAILURE = 'courses-management/CREATE_COURSE_FAILURE',
+  GET_COURSE_REQUEST = 'courses-management/GET_COURSE_REQUEST',
+  GET_COURSE_SUCCESS = 'courses-management/GET_COURSE_SUCCESS',
+  GET_COURSE_FAILURE = 'courses-management/GET_COURSE_FAILURE',
 }
 
-export interface CourseDetailData {
+export interface CourseOverviewData {
   _id: string
   title: string
   description: string
@@ -55,8 +55,125 @@ export interface CourseDetailData {
 }
 
 export type CoursesManagementResponse = {
-  courses: CourseDetailData[]
+  courses: CourseOverviewData[]
   totalCourses: number
+}
+
+export type learnersDetailData = {
+  payment: {
+    status: number
+    price: number
+    brandId: any
+    methodId: any
+    invoiceId: any
+    discount: number
+  }
+  _id: string
+  userId?: {
+    _id: string
+    email: string
+    firstName: string
+    lastName: string
+    phoneNumber: string
+  }
+  isDone: boolean
+  status: number
+  certificate: boolean
+  testResults: any[]
+  createdAt: string
+  updatedAt: string
+  __v: number
+}
+
+export type ChapterDetailData = {
+  _id: string
+  courseId?: string
+  status: number
+  lessons: string[]
+  number?: number
+  title: string
+  slug: string
+  description?: string
+  createdAt: string
+  updatedAt: string
+  __v: 0
+}
+
+export type StreamDetailData = {
+  _id: string
+  courseId?: string
+  title: string
+  participateNumber?: number
+  createdAt: string
+  updatedAt: string
+  status: number
+}
+
+export type FeedbackDetailData = {
+  _id: string
+  courseId?: string
+  userId?: {
+    _id: string
+    email: string
+    firstName: string
+    lastName: string
+    phoneNumber: string
+  }
+  rating: number
+  content: string
+  status: number
+  createdAt: string
+  updatedAt: string
+  __v: number
+}
+
+export type CourseDetailData = {
+  _id: string
+  title: string
+  description: string
+  author: {
+    socialLinks: {
+      facebook?: string
+      twitter?: string
+      linkedin?: string
+      instagram?: string
+      github?: string
+    }
+    _id: string
+    email: string
+    firstName: string
+    lastName: string
+    description?: string
+  }
+  topic: {
+    _id: string
+    title: string
+    courseCategoryId: {
+      _id: string
+      title: string
+      status: number
+      discountPercent: number
+      slug: string
+      __v: number
+    }
+    status: number
+    discountPercent: number
+    slug: string
+    __v: number
+  }
+  tags: string[]
+  price: number
+  discount: number
+  status: number
+  learnersDetail: learnersDetailData[]
+  streams: StreamDetailData[]
+  feedbacks: FeedbackDetailData[]
+  chapters: ChapterDetailData[]
+  createdAt: string
+  updatedAt: string
+  slug: string
+  __v: number
+  imageUrl: string
 }
 
 export type CourseDetailsResponse = {

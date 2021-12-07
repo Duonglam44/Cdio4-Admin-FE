@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import PageWithHeader from '@components/header'
 import PageWithSidebar from '@components/layout/PageWithSidebar'
-import { useEffect, useState, useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import Table from 'rc-table'
@@ -117,7 +117,7 @@ const ManageCourse: NextPage<Props> = ({}) => {
 
   const totalPage = Math.ceil(courseState.totalCourses / COUNT_PER_PAGE)
 
-  const [selectedCourseId, setSelectedCourseId] = useState<string>('')
+  // const [selectedCourseId, setSelectedCourseId] = useState<string>('')
 
   const coursesData = courseState.courses.map(course => ({
     ...course,
@@ -137,7 +137,7 @@ const ManageCourse: NextPage<Props> = ({}) => {
   }, [dispatch, query])
 
   const handleRowClick = async (record: any, index) => {
-    setSelectedCourseId(record._id)
+    // setSelectedCourseId(record._id)
     await router.push(`/manage-courses/${record._id}`)
   }
 

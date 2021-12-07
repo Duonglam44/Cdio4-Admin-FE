@@ -1,15 +1,15 @@
 import { api } from '../../utils/api'
 import { toast } from 'react-toastify'
 import {
-  createCourseFailure,
-  createCourseRequest,
-  createCourseSuccess,
   deleteCourseFailure,
   deleteCourseRequest,
   deleteCourseSuccess,
+  getCourseFailure,
+  getCourseRequest,
   getCoursesManagementFailure,
   getCoursesManagementRequest,
   getCoursesManagementSuccess,
+  getCourseSuccess,
   updateCourseFailure,
   updateCourseRequest,
   updateCourseSuccess,
@@ -46,6 +46,24 @@ export const getCoursesManagementThunkAction =
     }
   }
 
+export const getCourseDetailsThunkAction =
+  (id: string) => async (dispatch: any) => {
+    dispatch(getCourseRequest())
+
+    try {
+      const response = (await api({
+        tokenRequired: true,
+        path: `/courses/${id}?sort=date`,
+        method: 'GET',
+      })) as CourseDetailsResponse
+
+      dispatch(getCourseSuccess(response))
+    } catch (error: any) {
+      toast.error(error?.message || error || 'Fetch data failed!')
+      dispatch(getCourseFailure(error))
+    }
+  }
+
 // export const updateCourseDetailsThunkAction =
 //   (
 //     payload: UpdateCoursePayload,
@@ -70,33 +88,6 @@ export const getCoursesManagementThunkAction =
 //     } catch (error: any) {
 //       toast.error(error?.message || error || 'Update data failed!')
 //       dispatch(updateCourseFailure(error))
-//     }
-//   }
-
-// export const createCourseDetailsThunkAction =
-//   (
-//     payload: CreateCoursePayload,
-//     previousQueryUrl: URLSearchParams,
-//     callback: Callback
-//   ) =>
-//   async (dispatch: any) => {
-//     dispatch(createCourseRequest())
-
-//     try {
-//       const response = (await api({
-//         tokenRequired: true,
-//         path: '/admin/users/profile',
-//         method: 'POST',
-//         data: payload,
-//       })) as CourseDetailsResponse
-
-//       dispatch(createCourseSuccess(response))
-//       toast.success('Course created successfully!')
-//       callback()
-//       dispatch(getCoursesManagementThunkAction(previousQueryUrl))
-//     } catch (error: any) {
-//       toast.error(error?.message || error || 'Create Course failed!')
-//       dispatch(createCourseFailure(error))
 //     }
 //   }
 

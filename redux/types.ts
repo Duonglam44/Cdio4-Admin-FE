@@ -1,4 +1,4 @@
-import { CourseDetailData } from './courses/types'
+import { CourseDetailData, CourseOverviewData } from './courses/types'
 export interface UserInfoState {
   _id: string
   firstName: string
@@ -44,7 +44,7 @@ export interface AccountsManagementState {
 }
 
 export interface CoursesManagementState {
-  courses: (CourseDetailData & {
+  courses: (CourseOverviewData & {
     totalLearners: number
     totalStreams: number
     totalChapters: number
@@ -53,6 +53,7 @@ export interface CoursesManagementState {
   error: string
   loading: boolean
   totalCourses: number
+  currentCourse: CourseDetailData | null
 }
 
 export interface NotificationsData {

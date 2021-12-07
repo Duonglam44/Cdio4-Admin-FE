@@ -18,7 +18,7 @@ export const getAccountStatusText = (statusId: number) => {
   }
 }
 
-export const getCourseStatusText = (statusId: number) => {
+export const getCourseStatusText = (statusId: number | undefined) => {
   switch (statusId) {
     case CourseStatus.ACTIVE:
       return 'Active'
@@ -27,6 +27,23 @@ export const getCourseStatusText = (statusId: number) => {
     case CourseStatus.INACTIVE:
       return 'Inactive'
     case CourseStatus.DRAFT:
+      return 'Draft'
+    default:
+      return 'Unknown'
+  }
+}
+
+export const getStatusText = (statusId: number | undefined) => {
+  switch (statusId) {
+    case 0:
+      return 'Inactive'
+    case 1:
+      return 'Active'
+    case 2:
+      return 'Pending'
+    case 10:
+      return 'Banned'
+    case 20:
       return 'Draft'
     default:
       return 'Unknown'
@@ -55,3 +72,17 @@ export const isNumeric = (num: any) => {
 }
 
 export const getRandomId = (): string => nanoid()
+
+export const getFullNameFromFirstAndLastName = (
+  firstName: string | undefined | null,
+  lastName: string | undefined | null
+) => {
+  if (!firstName) return '--'
+  if (!lastName) return firstName
+  return `${firstName} ${lastName}`
+}
+
+export const paginate = (array: any[], count: number, page: number) => {
+  // human-readable page numbers usually start with 1, so we reduce 1 in the first argument
+  return array.slice((page - 1) * count, page * count)
+}

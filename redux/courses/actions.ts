@@ -24,6 +24,24 @@ export const getCoursesManagementFailure = (error: string) => {
     type: COURSE_ACTIONS.GET_COURSES_MANAGEMENT_FAILURE,
   }
 }
+//-------------------getCourse-------------------
+export const getCourseRequest = () => {
+  return {
+    type: COURSE_ACTIONS.GET_COURSE_REQUEST,
+  }
+}
+export const getCourseSuccess = (payload: CourseDetailsResponse) => {
+  return {
+    payload,
+    type: COURSE_ACTIONS.GET_COURSE_SUCCESS,
+  }
+}
+export const getCourseFailure = (error: string) => {
+  return {
+    error,
+    type: COURSE_ACTIONS.GET_COURSE_FAILURE,
+  }
+}
 //-------------------updateCourse-------------------
 export const updateCourseRequest = () => {
   return {
@@ -43,24 +61,6 @@ export const updateCourseFailure = (error: string) => {
   }
 }
 
-//-------------------createCourse-------------------
-export const createCourseRequest = () => {
-  return {
-    type: COURSE_ACTIONS.CREATE_COURSE_REQUEST,
-  }
-}
-export const createCourseSuccess = (payload: CourseDetailsResponse) => {
-  return {
-    payload,
-    type: COURSE_ACTIONS.CREATE_COURSE_SUCCESS,
-  }
-}
-export const createCourseFailure = (error: string) => {
-  return {
-    error,
-    type: COURSE_ACTIONS.CREATE_COURSE_FAILURE,
-  }
-}
 //-------------------deleteCourse-------------------
 export const deleteCourseRequest = () => {
   return {

@@ -6,6 +6,7 @@ const initialState: CoursesManagementState = {
   error: '',
   loading: false,
   totalCourses: 0,
+  currentCourse: null,
 }
 
 // tslint:disable-next-line: cyclomatic-complexity
@@ -14,7 +15,7 @@ export const coursesManagement = (
   action: any
 ): CoursesManagementState => {
   switch (action.type) {
-    //-----------get accounts management-----------------
+    //-----------get courses management-----------------
     case COURSE_ACTIONS.GET_COURSES_MANAGEMENT_REQUEST:
       return {
         ...state,
@@ -34,7 +35,26 @@ export const coursesManagement = (
         loading: false,
         error: action.error,
       }
-    //-----------update account-----------------
+    //-----------get course-----------------
+    case COURSE_ACTIONS.GET_COURSE_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      }
+    case COURSE_ACTIONS.GET_COURSE_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        error: '',
+        currentCourse: action.payload.course,
+      }
+    case COURSE_ACTIONS.GET_COURSE_FAILURE:
+      return {
+        ...state,
+        loading: false,
+        error: action.error,
+      }
+    //-----------update course-----------------
     case COURSE_ACTIONS.UPDATE_COURSE_REQUEST:
       return {
         ...state,
@@ -52,7 +72,7 @@ export const coursesManagement = (
         loading: false,
         error: action.error,
       }
-    //-----------delete account-----------------
+    //-----------delete course-----------------
     case COURSE_ACTIONS.DELETE_COURSE_REQUEST:
       return {
         ...state,
@@ -65,24 +85,6 @@ export const coursesManagement = (
         error: '',
       }
     case COURSE_ACTIONS.DELETE_COURSE_FAILURE:
-      return {
-        ...state,
-        loading: false,
-        error: action.error,
-      }
-    //-----------create account-----------------
-    case COURSE_ACTIONS.CREATE_COURSE_REQUEST:
-      return {
-        ...state,
-        loading: true,
-      }
-    case COURSE_ACTIONS.CREATE_COURSE_SUCCESS:
-      return {
-        ...state,
-        loading: false,
-        error: '',
-      }
-    case COURSE_ACTIONS.CREATE_COURSE_FAILURE:
       return {
         ...state,
         loading: false,
