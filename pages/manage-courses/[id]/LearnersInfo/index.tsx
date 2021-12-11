@@ -115,7 +115,7 @@ const LearnersInfo = ({ data }: Props) => {
     data?.filter(learner => !learner?.isDone).length - bannedLearners
   const doneLearners = totalLearners - learningLearners - bannedLearners
 
-  const handleRowClick = async (record: any, index) => {
+  const handleRowClick =  (record: any, index) => {
     // setSelectedCourseId(record._id)
     // await router.push(`/manage-courses/${record._id}`)
   }

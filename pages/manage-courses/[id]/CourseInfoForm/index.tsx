@@ -37,20 +37,14 @@ const CourseInfoForm: NextPage<Props> = ({ onClose, selectedCourse }) => {
     useState<boolean>(false)
   const [selectedCategory, setSelectedCategory] = useState<CategoryDetailData>()
   const [selectedTopic, setSelectedTopic] = useState<TopicDetailData>()
-
-  const categoriesOption = categoriesState.categories?.map((category) => {
-    return {
-      label: category.title,
-      value: category._id,
-    }
-  })
-
-  const topicsOption = selectedCategory?.topics.map((topic) => {
-    return {
-      label: topic.title,
-      value: topic._id,
-    }
-  })
+  const categoriesOption = categoriesState.categories?.map(category => ({
+    label: category.title,
+    value: category._id,
+  }))
+  const topicsOption = selectedCategory?.topics.map(topic => ({
+    label: topic.title,
+    value: topic._id,
+  }))
 
   const handleAccordionChange = (panel: number) => (_, isExpanded) => {
     setExpanded(isExpanded ? panel : 0)
@@ -103,25 +97,21 @@ const CourseInfoForm: NextPage<Props> = ({ onClose, selectedCourse }) => {
     onSubmit: handleSubmit,
   })
 
-  useEffect(
-    () =>
-      setSelectedCategory(
-        categoriesState.categories?.find(
-          (category) => category._id === formik.values.categoryId
-        )
-      ),
-    [formik.values.categoryId]
-  )
+  useEffect(() => {
+    setSelectedCategory(
+      categoriesState.categories?.find(
+        category => category._id === formik.values.categoryId
+      )
+    )
+  }, [formik.values.categoryId])
 
-  useEffect(
-    () =>
-      setSelectedTopic(
-        selectedCategory?.topics?.find(
-          (topic) => topic._id === formik.values.topicId
-        )
-      ),
-    [formik.values.topicId]
-  )
+  useEffect(() => {
+    setSelectedTopic(
+      selectedCategory?.topics?.find(
+        topic => topic._id === formik.values.topicId
+      )
+    )
+  }, [formik.values.topicId])
 
   return (
     <form onSubmit={formik.handleSubmit}>

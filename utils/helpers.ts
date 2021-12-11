@@ -79,6 +79,7 @@ export const getFullNameFromFirstAndLastName = (
 ) => {
   if (!firstName) return '--'
   if (!lastName) return firstName
+
   return `${firstName} ${lastName}`
 }
 
