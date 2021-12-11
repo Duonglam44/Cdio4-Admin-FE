@@ -9,6 +9,8 @@
 /coverage
 /.history
 /.vscode
+/next.json.js
+/.babelrc
 
 # next.js
 /.next/

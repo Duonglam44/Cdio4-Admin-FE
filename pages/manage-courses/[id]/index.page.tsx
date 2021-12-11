@@ -1,25 +1,23 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import PageWithHeader from '@components/header'
 import PageWithSidebar from '@components/layout/PageWithSidebar'
-import { useMemo, Fragment, useState, useEffect } from 'react'
+import { Fragment, useState, useEffect } from 'react'
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from 'redux/rootReducer'
 import { LoaderBall } from '@components/common'
 import { useRouter } from 'next/router'
-import { Button, Grid } from '@material-ui/core'
+import { Grid } from '@material-ui/core'
 import { getCourseDetailsThunkAction } from '@redux/courses/thunks'
+import { getCategoriesThunkAction } from '@redux/categories/thunks'
 import CourseInfo from './CourseInfo'
 import LearnersInfo from './LearnersInfo'
 import AccordionSection from './Accordion'
+import CourseInfoForm from './CourseInfoForm'
+import ModalMain from '@components/common/Modal'
 
 const CourseDetail: NextPage<Props> = ({}) => {
-  const query = useMemo(
-    () => new URLSearchParams(location.search),
-    [location.search]
-  )
-
   const router = useRouter()
 
   const { id } = router.query
@@ -32,19 +30,27 @@ const CourseDetail: NextPage<Props> = ({}) => {
   const [expanded, setExpanded] = useState<number>(1)
   const [showCourseInfoModal, setShowCourseInfoModal] = useState<boolean>(false)
 
-  const handleAccordionChange = (panel: number) => (event, isExpanded) => {
+  const handleAccordionChange = (panel: number) => (_, isExpanded) => {
     setExpanded(isExpanded ? panel : 0)
+  }
+
+  const handleShowCourseInfoModal = () => {
+    setShowCourseInfoModal(true)
+  }
+  const handleCloseCourseInfoModal = () => {
+    setShowCourseInfoModal(false)
   }
 
   const handleEditClickCourseInfo = (
     event: React.MouseEvent<HTMLElement, MouseEvent>
   ) => {
     event.stopPropagation()
-    setShowCourseInfoModal(true)
+    handleShowCourseInfoModal()
   }
 
   useEffect(() => {
     dispatch(getCourseDetailsThunkAction(id as string))
+    dispatch(getCategoriesThunkAction())
   }, [dispatch, id])
 
   return (
@@ -60,6 +66,25 @@ const CourseDetail: NextPage<Props> = ({}) => {
             <LoaderBall />
           ) : (
             <Fragment>
+              {/* Modals */}
+              {showCourseInfoModal && (
+                <ModalMain
+                  open={showCourseInfoModal}
+                  onClose={handleCloseCourseInfoModal}
+                  width={600}
+                  height={500}
+                  position='flex-start-center'
+                  preventBackdropClick
+                  label={'Course Detail'}
+                >
+                  {' '}
+                  <CourseInfoForm
+                    selectedCourse={selectedCourse}
+                    onClose={handleCloseCourseInfoModal}
+                  />
+                </ModalMain>
+              )}
+              {/* Main content */}
               <Grid
                 container
                 spacing={3}
