@@ -13,14 +13,22 @@ import {
 } from '@utils/helpers'
 import FileUpload from '@components/common/FileUpload'
 import Select from '@components/common/Select'
-import { CourseFormSchema, CourseInfoFormType, getUpdateCoursePayload, statusOptions } from './helpers'
+import {
+  CourseFormSchema,
+  CourseInfoFormType,
+  getUpdateCoursePayload,
+  statusOptions,
+} from './helpers'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import View from '@components/common/View'
 import { CourseDetailData } from '@redux/courses/types'
 import { LoaderBall } from '@components/common'
 import ConfirmModal from '@components/ConfirmModal'
 import { CategoryDetailData, TopicDetailData } from '@redux/categories/types'
-import { deleteCourseThunkAction, updateCourseDetailsThunkAction } from '@redux/courses/thunks'
+import {
+  deleteCourseThunkAction,
+  updateCourseDetailsThunkAction,
+} from '@redux/courses/thunks'
 import { useRouter } from 'next/router'
 
 // tslint:disable-next-line: cyclomatic-complexity
@@ -84,12 +92,12 @@ const CourseInfoForm: NextPage<Props> = ({ onClose, selectedCourse }) => {
     )
   }
 
-  const handleDeleteAccount =  () => {
+  const handleDeleteAccount = () => {
     if (!selectedCourse || !selectedCourse?._id) return
     dispatch(
-    deleteCourseThunkAction(selectedCourse._id, async () => {
-      await router.replace('/manage-courses')
-    })
+      deleteCourseThunkAction(selectedCourse._id, async () => {
+        await router.replace('/manage-courses')
+      })
     )
   }
 
@@ -347,11 +355,11 @@ const CourseInfoForm: NextPage<Props> = ({ onClose, selectedCourse }) => {
                 <Grid item md={12} className='modal-main__body--item'>
                   <TextField
                     label='Total'
-                    value={
-                      ((formik.values.price - formik.values.discount) *
+                    value={(
+                      (formik.values.price - formik.values.discount) *
                       (1 - (selectedCategory?.discountPercent || 0) / 100) *
-                      (1 - (selectedTopic?.discountPercent || 0) / 100)).toFixed(2)
-                    }
+                      (1 - (selectedTopic?.discountPercent || 0) / 100)
+                    ).toFixed(2)}
                     fullWidth
                     disabled
                   />

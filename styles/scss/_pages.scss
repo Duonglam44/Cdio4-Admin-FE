@@ -99,4 +99,11 @@
   &__course-info {
     width: 100%;
   }
+  &__chapter-info {
+    &--item {
+      &:hover {
+        background: rgba(1, 151, 252, 0.05) !important;
+      }
+    }
+  }
 }
