@@ -87,3 +87,22 @@ export const paginate = (array: any[], count: number, page: number) => {
   // human-readable page numbers usually start with 1, so we reduce 1 in the first argument
   return array.slice((page - 1) * count, page * count)
 }
+
+// convert array - object to object - object after get api if api return to much values
+export function convertArrayObjectToObject<T extends { [key: string]: any }>(
+  array: T[],
+  keyObj: string
+) {
+  if (!array?.length) {
+    return {}
+  }
+  const obj: { [key: string]: T } = {}
+
+  array.forEach((item: T) => {
+    const keyValue = item[keyObj]
+
+    return (obj[keyValue] = item)
+  })
+
+  return obj
+}

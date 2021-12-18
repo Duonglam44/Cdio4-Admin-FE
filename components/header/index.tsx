@@ -24,6 +24,7 @@ const PageWithHeader: React.FC<Props> = ({
   children,
   title = 'Dashboard',
   pagePosition = 'on-top-page',
+  showSearchBar = false,
   ...props
 }) => {
   const [search, setSearch] = useState<string>('')
@@ -76,26 +77,30 @@ const PageWithHeader: React.FC<Props> = ({
         >
           <Grid item md={7}>
             <Grid container alignItems='center'>
-              <Grid item md={3} ml='10px'>
+              <Grid item md={showSearchBar ? 3 : 8} ml='10px'>
                 <h3>{title}</h3>
               </Grid>
-              <Grid item md={8}>
-                <div className='input-card page__header--search'>
-                  <TextField
-                    id='input-with-icon-textfield'
-                    placeholder='Search'
-                    style={{ width: '100%' }}
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position='start'>
-                          <IoMdSearch />
-                        </InputAdornment>
-                      ),
-                    }}
-                    variant='standard'
-                  />
-                </div>
-              </Grid>
+              {showSearchBar && (
+                <Grid item md={8}>
+                  <div className='input-card page__header--search'>
+                    <TextField
+                      id='input-with-icon-textfield'
+                      placeholder='Search'
+                      style={{ width: '100%' }}
+                      InputProps={{
+                        startAdornment: (
+                          <InputAdornment position='start'>
+                            <IoMdSearch />
+                          </InputAdornment>
+                        ),
+                      }}
+                      variant='standard'
+                      value={search}
+                      onChange={e => setSearch(e.target.value)}
+                    />
+                  </div>
+                </Grid>
+              )}
             </Grid>
           </Grid>
           <Grid item md={4}>
@@ -163,6 +168,7 @@ type Props = {
   children?: React.ReactNode
   title?: string
   pagePosition?: 'on-top-page' | 'on-bottom-page' | 'center-page'
+  showSearchBar?: boolean
 }
 
 export default PageWithHeader

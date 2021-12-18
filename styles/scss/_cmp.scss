@@ -167,3 +167,33 @@
     }
   }
 }
+.cmp-accordion {
+  &__title {
+    &--primary {
+      font-size: 22px;
+      font-weight: 300;
+      transition: all 0.3s ease;
+
+      &:hover {
+        font-weight: bold;
+      }
+    }
+    &--secondary {
+      font-size: 14px;
+      font-weight: 500;
+      color: $color-black-200;
+      transition: all 0.3s ease;
+
+      &:hover {
+        color: $color-black-500;
+      }
+    }
+  }
+  &__section {
+    border: $default-border;
+    border-radius: $default-border-radius;
+    border-style: dashed;
+    margin-top: 15px !important;
+    margin-bottom: 15px !important;
+  }
+}

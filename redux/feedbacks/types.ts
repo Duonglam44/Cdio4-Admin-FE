@@ -1,5 +1,5 @@
-import {CourseDetailData} from '../courses/types'
-import {AccountDetails} from '../accounts/types'
+import { CourseDetailData } from '../courses/types'
+import { AccountDetails } from '../accounts/types'
 
 export enum FEEDBACK_ACTIONS {
   GET_FEEDBACK_REQUEST = 'feedback-management/GET_FEEDBACK_REQUEST',
@@ -35,4 +35,3 @@ export type UpdateFeedbackPayload = {
   status: number
   rating: number
 }
-

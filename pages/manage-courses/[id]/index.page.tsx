@@ -11,11 +11,12 @@ import { useRouter } from 'next/router'
 import { Grid } from '@material-ui/core'
 import { getCourseDetailsThunkAction } from '@redux/courses/thunks'
 import { getCategoriesThunkAction } from '@redux/categories/thunks'
-import CourseInfo from './CourseInfo'
-import LearnersInfo from './LearnersInfo'
-import AccordionSection from './Accordion'
-import CourseInfoForm from './CourseInfoForm'
+import CourseInfo from './components/CourseInfo'
+import LearnersInfo from './components/LearnersInfo'
+import AccordionSection from '../../../components/common/Accordion'
+import CourseInfoForm from './components/CourseInfoForm'
 import ModalMain from '@components/common/Modal'
+import ChaptersInfo from './components/ChaptersInfo'
 
 const CourseDetail: NextPage<Props> = ({}) => {
   const router = useRouter()
@@ -62,7 +63,7 @@ const CourseDetail: NextPage<Props> = ({}) => {
       </Head>
       <PageWithSidebar>
         <PageWithHeader title='Course Detail'>
-          {courseState.loading ? (
+          {courseState.loading && !showCourseInfoModal ? (
             <LoaderBall />
           ) : (
             <Fragment>
@@ -77,7 +78,6 @@ const CourseDetail: NextPage<Props> = ({}) => {
                   preventBackdropClick
                   label={'Course Detail'}
                 >
-                  {' '}
                   <CourseInfoForm
                     selectedCourse={selectedCourse}
                     onClose={handleCloseCourseInfoModal}
@@ -114,7 +114,7 @@ const CourseDetail: NextPage<Props> = ({}) => {
                   onAccordionChange={handleAccordionChange(3)}
                   label='Chapters'
                 >
-                  <LearnersInfo data={selectedCourse?.learnersDetail} />
+                  <ChaptersInfo data={selectedCourse?.chapters} />
                 </AccordionSection>
               </Grid>
               <Grid container spacing={3}>

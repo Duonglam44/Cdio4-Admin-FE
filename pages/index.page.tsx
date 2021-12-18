@@ -14,8 +14,8 @@ const Home: NextPage = () => {
       </Head>
       <main>
         <PageWithSidebar>
-          <PageWithHeader>
-            <h1>Welcome to GuruAcademy ADMIN</h1>
+          <PageWithHeader showSearchBar>
+            <h3 className='text-center my-36'>Welcome to GuruAcademy ADMIN</h3>
           </PageWithHeader>
         </PageWithSidebar>
       </main>

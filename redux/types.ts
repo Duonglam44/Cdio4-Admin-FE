@@ -1,7 +1,8 @@
-import { CourseDetailData, CourseOverviewData } from './courses/types'
 import { CategoryDetailData } from './categories/types'
 import { StreamDetailData } from './streams/types'
-import {FeedbackDetailData} from './feedbacks/types'
+import { FeedbackDetailData } from './feedbacks/types'
+import { CourseDetailData, CourseOverviewData } from './courses/types'
+import { ChapterDetailsData } from './chapters/types'
 
 export interface UserInfoState {
   _id: string
@@ -45,24 +46,6 @@ export interface AccountsManagementState {
   error: string
   loading: boolean
   totalUsers: number
-}
-
-export interface NotificationsData {
-  status: number
-  _id: string
-  userId: {
-    _id: string
-    email: string
-    firstName: string
-    lastName: string
-    status: number
-  }
-  title: string
-  content: string
-  isSeen: false
-  createdAt: string | Date
-  updatedAt: string | Date
-  __v: 0
 }
 
 export interface AccountManagementData {
@@ -144,5 +127,47 @@ export interface FeedbackManagementState {
   loading: boolean
 }
 
+export interface ChapterManagementState {
+  chapter: ChapterDetailsData | null
+  error: string
+  loading: boolean
+}
 
+export interface FilesState {
+  loading: boolean
+  uploadLoading: boolean
+  uploadedUrl: string
+}
 
+export interface NotificationsData {
+  status: number
+  _id: string
+  userId: {
+    _id: string
+    email: string
+    firstName: string
+    lastName: string
+    status: number
+  }
+  title: string
+  content: string
+  isSeen: false
+  createdAt: string | Date
+  updatedAt: string | Date
+  __v: 0
+}
+
+export interface DecodedTokenData {
+  email: string
+  exp: number
+  iat: number
+  role: {
+    id: number
+    name: 'root' | 'admin' | 'teacher' | 'learner'
+  }
+  status: number
+  userId: string
+  firstName: string
+  lastName: string
+  imageUrl?: string
+}

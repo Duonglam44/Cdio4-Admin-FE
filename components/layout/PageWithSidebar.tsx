@@ -1,4 +1,4 @@
-import SidebarMain from '@components/common/Sidebar/SidebarMain'
+import SidebarMain from '@components/Sidebar/SidebarMain'
 import { Grid } from '@material-ui/core'
 import { useState } from 'react'
 

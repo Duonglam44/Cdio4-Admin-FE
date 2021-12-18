@@ -17,11 +17,19 @@ import {
   MdOutlineNotificationsNone,
   MdOutlineTopic,
   MdCategory,
+  MdOndemandVideo,
+  MdOutlineFeedback,
 } from 'react-icons/md'
-import { BiMenuAltLeft, BiUserCircle } from 'react-icons/bi'
+import {
+  BiCommentDetail,
+  BiGridHorizontal,
+  BiMenuAltLeft,
+  BiUserCircle,
+} from 'react-icons/bi'
 
 import LogoImg from '@public/images/logo.png'
 import RoundIconButton from '@components/common/Button/RoundButton'
+import { AiOutlineFileDone, AiOutlineFileText } from 'react-icons/ai'
 
 const SidebarMain: React.FC<Props> = ({
   isCollapsed = false,
@@ -97,23 +105,37 @@ const SidebarMain: React.FC<Props> = ({
                 <Link href='/manage-courses'>All</Link>
               </MenuItem>
               <MenuItem>
-                <Link href='/manage-courses/lessons'>Lessons</Link>
+                <Link href='/manage-courses/lessons'>By Category</Link>
               </MenuItem>
               <MenuItem>
-                <Link href='/manage-courses/tests'>Tests</Link>
-              </MenuItem>
-              <MenuItem>
-                <Link href='/manage-courses/feedbacks'>Feedbacks</Link>
-              </MenuItem>
-              <MenuItem>
-                <Link href='/manage-courses/comments'>Comments</Link>
+                <Link href='/manage-courses/tests'>By Topic</Link>
               </MenuItem>
             </SubMenu>
             <MenuItem icon={<MdCategory size={20} />}>
-              <Link href='/manage-category'>Categories</Link>
+              <Link href='/manage-category'>Category</Link>
             </MenuItem>
             <MenuItem icon={<MdOutlineTopic size={20} />}>
               <Link href='/manage-topic'>Topics</Link>
+            </MenuItem>
+          </Menu>
+          <Menu iconShape='circle' className='sidebar__main--content__menu'>
+            <MenuItem icon={<BiGridHorizontal size={20} />}>
+              <Link href='/manage-category'>Browse Chapters</Link>
+            </MenuItem>
+            <MenuItem icon={<MdOndemandVideo size={20} />}>
+              <Link href='/manage-category'>Browse Lessons</Link>
+            </MenuItem>
+            <MenuItem icon={<AiOutlineFileDone size={20} />}>
+              <Link href='/manage-category'>Browse Tests</Link>
+            </MenuItem>
+            <MenuItem icon={<AiOutlineFileText size={20} />}>
+              <Link href='/manage-category'>Browse Attachments</Link>
+            </MenuItem>
+            <MenuItem icon={<BiCommentDetail size={20} />}>
+              <Link href='/manage-category'>Browse Comments</Link>
+            </MenuItem>
+            <MenuItem icon={<MdOutlineFeedback size={20} />}>
+              <Link href='/manage-category'>Browse Feedbacks</Link>
             </MenuItem>
           </Menu>
           <Menu iconShape='circle' className='sidebar__main--content__profile'>

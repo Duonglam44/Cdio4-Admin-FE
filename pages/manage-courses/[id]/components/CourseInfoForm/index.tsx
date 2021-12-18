@@ -13,23 +13,29 @@ import {
 } from '@utils/helpers'
 import FileUpload from '@components/common/FileUpload'
 import Select from '@components/common/Select'
-import { CourseFormSchema, CourseInfoFormType, getUpdateCoursePayload, statusOptions } from './helpers'
+import {
+  CourseFormSchema,
+  CourseInfoFormType,
+  getUpdateCoursePayload,
+  statusOptions,
+} from './helpers'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import View from '@components/common/View'
 import { CourseDetailData } from '@redux/courses/types'
 import { LoaderBall } from '@components/common'
 import ConfirmModal from '@components/ConfirmModal'
 import { CategoryDetailData, TopicDetailData } from '@redux/categories/types'
-import { deleteCourseThunkAction, updateCourseDetailsThunkAction } from '@redux/courses/thunks'
+import {
+  deleteCourseThunkAction,
+  updateCourseDetailsThunkAction,
+} from '@redux/courses/thunks'
 import { useRouter } from 'next/router'
 
 // tslint:disable-next-line: cyclomatic-complexity
 const CourseInfoForm: NextPage<Props> = ({ onClose, selectedCourse }) => {
   const router = useRouter()
   const dispatch = useDispatch()
-  const accountsState = useSelector(
-    (state: RootState) => state.accountsManagement
-  )
+  const courseState = useSelector((state: RootState) => state.coursesManagement)
   const categoriesState = useSelector(
     (state: RootState) => state.categoriesManagement
   )
@@ -84,12 +90,12 @@ const CourseInfoForm: NextPage<Props> = ({ onClose, selectedCourse }) => {
     )
   }
 
-  const handleDeleteAccount =  () => {
+  const handleDeleteAccount = () => {
     if (!selectedCourse || !selectedCourse?._id) return
     dispatch(
-    deleteCourseThunkAction(selectedCourse._id, async () => {
-      await router.replace('/manage-courses')
-    })
+      deleteCourseThunkAction(selectedCourse._id, async () => {
+        await router.replace('/manage-courses')
+      })
     )
   }
 
@@ -105,7 +111,7 @@ const CourseInfoForm: NextPage<Props> = ({ onClose, selectedCourse }) => {
         category => category._id === formik.values.categoryId
       )
     )
-  }, [formik.values.categoryId])
+  }, [categoriesState.categories, formik.values.categoryId])
 
   useEffect(() => {
     setSelectedTopic(
@@ -113,7 +119,7 @@ const CourseInfoForm: NextPage<Props> = ({ onClose, selectedCourse }) => {
         topic => topic._id === formik.values.topicId
       )
     )
-  }, [formik.values.topicId])
+  }, [formik.values.topicId, selectedCategory?.topics])
 
   return (
     <form onSubmit={formik.handleSubmit}>
@@ -280,6 +286,25 @@ const CourseInfoForm: NextPage<Props> = ({ onClose, selectedCourse }) => {
                     />
                   </Grid>
                 </Fragment>
+                <Grid item md={12} className='modal-main__body--item'>
+                  <TextField
+                    label='Description'
+                    type='text'
+                    {...formik.getFieldProps('description')}
+                    error={
+                      !!formik.errors.description &&
+                      !!formik.touched.description
+                    }
+                    helperText={
+                      !!formik.errors.description &&
+                      !!formik.touched.description
+                        ? formik.errors.description
+                        : ''
+                    }
+                    fullWidth
+                    multiline
+                  />
+                </Grid>
               </Grid>
             </AccordionDetails>
           </Accordion>
@@ -347,11 +372,11 @@ const CourseInfoForm: NextPage<Props> = ({ onClose, selectedCourse }) => {
                 <Grid item md={12} className='modal-main__body--item'>
                   <TextField
                     label='Total'
-                    value={
-                      ((formik.values.price - formik.values.discount) *
+                    value={(
+                      (formik.values.price - formik.values.discount) *
                       (1 - (selectedCategory?.discountPercent || 0) / 100) *
-                      (1 - (selectedTopic?.discountPercent || 0) / 100)).toFixed(2)
-                    }
+                      (1 - (selectedTopic?.discountPercent || 0) / 100)
+                    ).toFixed(2)}
                     fullWidth
                     disabled
                   />
@@ -364,7 +389,7 @@ const CourseInfoForm: NextPage<Props> = ({ onClose, selectedCourse }) => {
       <ConfirmModal
         open={showConfirmDeleteModal}
         onClose={handleCloseConfirmDeleteModal}
-        loading={accountsState.loading}
+        loading={courseState.loading}
         onCancel={handleCloseConfirmDeleteModal}
         height={150}
         content={
@@ -401,7 +426,7 @@ const CourseInfoForm: NextPage<Props> = ({ onClose, selectedCourse }) => {
         </View>
 
         <Button variant='contained' type='submit' color='primary'>
-          {accountsState.loading && !showConfirmDeleteModal ? (
+          {courseState.loading && !showConfirmDeleteModal ? (
             <LoaderBall
               color1='#ffffff'
               color2='#eeeeee'

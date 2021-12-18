@@ -4,12 +4,14 @@ import { userInfo } from './auth/reducers'
 import { accountsManagement } from './accounts/reducers'
 import { coursesManagement } from './courses/reducers'
 import { categoriesManagement } from './categories/reducers'
+import { chapterManagement } from './chapters/reducers'
 
 const rootReducer = combineReducers({
   userInfo,
   accountsManagement,
   coursesManagement,
   categoriesManagement,
+  chapterManagement,
 })
 
 export default rootReducer
