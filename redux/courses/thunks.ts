@@ -14,7 +14,8 @@ import {
   updateCourseRequest,
   updateCourseSuccess,
 } from './actions'
-import { CourseDetailsResponse, CoursesManagementResponse } from './types'
+import { CourseDetailsResponse, CoursesManagementResponse, UpdateCoursePayload } from './types'
+import { Callback } from '@utils/types'
 
 //call login api
 export const getCoursesManagementThunkAction =
@@ -64,51 +65,49 @@ export const getCourseDetailsThunkAction =
     }
   }
 
-// export const updateCourseDetailsThunkAction =
-//   (
-//     payload: UpdateCoursePayload,
-//     previousQueryUrl: URLSearchParams,
-//     callback: Callback
-//   ) =>
-//   async (dispatch: any) => {
-//     dispatch(updateCourseRequest())
+export const updateCourseDetailsThunkAction =
+  (
+    payload: UpdateCoursePayload,
+    callback: Callback
+  ) =>
+  async (dispatch: any) => {
+    dispatch(updateCourseRequest())
 
-//     try {
-//       const response = (await api({
-//         tokenRequired: true,
-//         path: '/admin/users/profile',
-//         method: 'POST',
-//         data: payload,
-//       })) as CourseDetailsResponse
+    try {
+      const response = (await api({
+        tokenRequired: true,
+        path: `/courses/${payload.id}`,
+        method: 'PUT',
+        data: payload,
+      })) as CourseDetailsResponse
 
-//       dispatch(updateCourseSuccess(response))
-//       toast.success('Course updated successfully!')
-//       callback()
-//       dispatch(getCoursesManagementThunkAction(previousQueryUrl))
-//     } catch (error: any) {
-//       toast.error(error?.message || error || 'Update data failed!')
-//       dispatch(updateCourseFailure(error))
-//     }
-//   }
+      dispatch(updateCourseSuccess(response))
+      toast.success('Course updated successfully!')
+      callback()
+      dispatch(getCourseDetailsThunkAction(payload.id))
+    } catch (error: any) {
+      toast.error(error?.message || error || 'Update data failed!')
+      dispatch(updateCourseFailure(error))
+    }
+  }
 
-// export const deleteCourseThunkAction =
-//   (userId: string, previousQueryUrl: URLSearchParams, callback: Callback) =>
-//   async (dispatch: any) => {
-//     dispatch(deleteCourseRequest())
+export const deleteCourseThunkAction =
+  (courseId: string, callback: Callback) =>
+  async (dispatch: any) => {
+    dispatch(deleteCourseRequest())
 
-//     try {
-//       const response = (await api({
-//         tokenRequired: true,
-//         path: `/admin/users/${userId}`,
-//         method: 'DELETE',
-//       })) as any
+    try {
+      const response = (await api({
+        tokenRequired: true,
+        path: `/courses/${courseId}`,
+        method: 'DELETE',
+      })) as any
 
-//       dispatch(deleteCourseSuccess(response))
-//       toast.success('Course deleted successfully!')
-//       callback()
-//       dispatch(getCoursesManagementThunkAction(previousQueryUrl))
-//     } catch (error: any) {
-//       toast.error(error?.message || error || 'Delete data failed!')
-//       dispatch(deleteCourseFailure(error))
-//     }
-//   }
+      dispatch(deleteCourseSuccess(response))
+      toast.success('Course deleted successfully!')
+      callback()
+    } catch (error: any) {
+      toast.error(error?.message || error || 'Delete data failed!')
+      dispatch(deleteCourseFailure(error))
+    }
+  }
