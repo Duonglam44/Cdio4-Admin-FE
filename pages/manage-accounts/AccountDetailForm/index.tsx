@@ -2,7 +2,7 @@ import type { NextPage } from 'next'
 import { useState, Fragment } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from 'redux/rootReducer'
-import { Button, Grid, TextField } from '@material-ui/core'
+import { Button, Grid, TextareaAutosize, TextField } from '@material-ui/core'
 import Accordion from '@mui/material/Accordion'
 import AccordionDetails from '@mui/material/AccordionDetails'
 import AccordionSummary from '@mui/material/AccordionSummary'
@@ -313,6 +313,7 @@ const AccountForm: NextPage<Props> = ({
                     onBlur={formik.setFieldTouched}
                   />
                 </Grid>
+
                 <Grid item md={6} className='modal-main__body--item'>
                   <p className='label-text mb-16'>Avatar</p>
                   <FileUpload
@@ -345,6 +346,23 @@ const AccountForm: NextPage<Props> = ({
                     </Grid>
                   </Fragment>
                 )}
+              </Grid>
+              <Grid item md={12} className='modal-main__body--item'>
+                <TextField
+                  label='Description'
+                  type='text'
+                  {...formik.getFieldProps('description')}
+                  error={
+                    !!formik.errors.description && !!formik.touched.description
+                  }
+                  helperText={
+                    !!formik.errors.description && !!formik.touched.description
+                      ? formik.errors.description
+                      : ''
+                  }
+                  fullWidth
+                  multiline
+                />
               </Grid>
             </AccordionDetails>
           </Accordion>

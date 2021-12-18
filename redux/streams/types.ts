@@ -1,4 +1,4 @@
-import {CourseDetailData} from '../courses/types'
+import { CourseDetailData } from '../courses/types'
 
 export enum STREAM_ACTIONS {
   GET_STREAM_REQUEST = 'stream-management/GET_STREAM_REQUEST',
@@ -10,7 +10,6 @@ export enum STREAM_ACTIONS {
   DELETE_STREAM_REQUEST = 'stream-management/DELETE_STREAM_REQUEST',
   DELETE_STREAM_SUCCESS = 'stream-management/DELETE_STREAM_SUCCESS',
   DELETE_STREAM_FAILURE = 'stream-management/DELETE_STREAM_FAILURE',
-  
 }
 
 export interface StreamResponse {
@@ -34,4 +33,3 @@ export type UpdateStreamPayload = {
   status: number
   participateNumber: number
 }
-

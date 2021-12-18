@@ -1,3 +1,5 @@
+import { LessonOverviewData } from '@redux/chapters/types'
+
 export enum COURSE_ACTIONS {
   GET_COURSES_MANAGEMENT_REQUEST = 'courses-management/GET_COURSES_MANAGEMENT_REQUEST',
   GET_COURSES_MANAGEMENT_SUCCESS = 'courses-management/GET_COURSES_MANAGEMENT_SUCCESS',
@@ -89,7 +91,7 @@ export type ChapterOverviewData = {
   _id: string
   courseId?: string
   status: number
-  lessons: string[]
+  lessons: LessonOverviewData[]
   number?: number
   title: string
   slug: string
@@ -193,6 +195,3 @@ export type UpdateCoursePayload = {
   status: number
   imageUrl: string
 }
-
-
-

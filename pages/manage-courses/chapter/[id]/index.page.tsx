@@ -8,14 +8,19 @@ import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from 'redux/rootReducer'
 import { LoaderBall } from '@components/common'
 import { useRouter } from 'next/router'
-import { Button, Grid } from '@material-ui/core'
+import { Grid } from '@material-ui/core'
 import { getChapterDetailsThunkAction } from '@redux/chapters/thunks'
 import ChapterInfo from './components/ChapterInfo'
+import ModalMain from '@components/common/Modal'
+import ChapterInfoForm from './components/ChapterInfoForm'
+import LessonsInfo from './components/LessonsInfo'
 
 const ChapterDetail: NextPage<Props> = ({}) => {
   const router = useRouter()
 
-  const { id, num } = router.query
+  const { id, n } = router.query
+  const chapterId = id as string
+  const chapterNumber = parseInt(n as string, 0)
 
   const dispatch = useDispatch()
   const chapterState = useSelector(
@@ -25,27 +30,30 @@ const ChapterDetail: NextPage<Props> = ({}) => {
   const selectedChapter = chapterState.chapter
 
   const [expanded, setExpanded] = useState<number>(1)
-  const [showCourseInfoModal, setShowCourseInfoModal] = useState<boolean>(false)
+  const [showChapterInfoModal, setShowChapterInfoModal] =
+    useState<boolean>(false)
 
   const handleAccordionChange = (panel: number) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : 0)
   }
 
-  const handleEditClickCourseInfo = (
+  const handleEditChapterInfoClick = (
     event: React.MouseEvent<HTMLElement, MouseEvent>
   ) => {
     event.stopPropagation()
-    setShowCourseInfoModal(true)
+    setShowChapterInfoModal(true)
   }
 
-  console.log(`selectedChapter`, selectedChapter)
+  const handleCloseChapterInfoModal = () => {
+    setShowChapterInfoModal(false)
+  }
 
   useEffect(() => {
-    dispatch(getChapterDetailsThunkAction(id as string))
-  }, [dispatch, id])
+    dispatch(getChapterDetailsThunkAction(chapterId))
+  }, [dispatch, chapterId])
 
   return (
-    <div className='page-course-detail'>
+    <Fragment>
       <Head>
         <title>{selectedChapter?.title || 'Course Detail'}</title>
         <meta name='description' content='Manage course to GuruAcademy ADMIN' />
@@ -57,21 +65,41 @@ const ChapterDetail: NextPage<Props> = ({}) => {
             <LoaderBall />
           ) : (
             <Fragment>
-              <Grid
-                container
-                spacing={3}
-                className='page-chapter-detail__chapter-info'
-              >
-                <ChapterInfo
-                  chapterData={selectedChapter}
-                  chapterNumber={num as any}
-                />
+              {/* Modals */}
+              {showChapterInfoModal && (
+                <ModalMain
+                  open={showChapterInfoModal}
+                  onClose={handleCloseChapterInfoModal}
+                  width={600}
+                  height={350}
+                  position='flex-start-center'
+                  preventBackdropClick
+                  label={'Course Detail'}
+                >
+                  <ChapterInfoForm
+                    selectedChapter={selectedChapter}
+                    onClose={handleCloseChapterInfoModal}
+                  />
+                </ModalMain>
+              )}
+              <Grid container spacing={3} className='page-chapter-detail'>
+                <Grid item xs={12} sm={12}>
+                  <ChapterInfo
+                    chapterData={selectedChapter}
+                    chapterNumber={chapterNumber}
+                    className='page-chapter-detail__chapter-info'
+                    onEdit={handleEditChapterInfoClick}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={12}>
+                  <LessonsInfo lessonsData={selectedChapter?.lessons} />
+                </Grid>
               </Grid>
             </Fragment>
           )}
         </PageWithHeader>
       </PageWithSidebar>
-    </div>
+    </Fragment>
   )
 }
 

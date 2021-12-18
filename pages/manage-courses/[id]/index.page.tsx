@@ -13,7 +13,7 @@ import { getCourseDetailsThunkAction } from '@redux/courses/thunks'
 import { getCategoriesThunkAction } from '@redux/categories/thunks'
 import CourseInfo from './components/CourseInfo'
 import LearnersInfo from './components/LearnersInfo'
-import AccordionSection from './components/Accordion'
+import AccordionSection from '../../../components/common/Accordion'
 import CourseInfoForm from './components/CourseInfoForm'
 import ModalMain from '@components/common/Modal'
 import ChaptersInfo from './components/ChaptersInfo'
@@ -63,7 +63,7 @@ const CourseDetail: NextPage<Props> = ({}) => {
       </Head>
       <PageWithSidebar>
         <PageWithHeader title='Course Detail'>
-          {courseState.loading ? (
+          {courseState.loading && !showCourseInfoModal ? (
             <LoaderBall />
           ) : (
             <Fragment>

@@ -37,7 +37,7 @@ export type ChapterDetailsData = {
 export type LessonOverviewData = {
   _id: string
   title: string
-  url: string
+  url?: string
   status: number
   attachments: AttachmentDetailData[]
   tests: TestDetailData[]
@@ -94,4 +94,12 @@ export type CommentDetailData = {
   createdAt: string
   updatedAt: string
   __v: number
+}
+
+export type UpdateChapterPayload = {
+  id: string
+  title?: string
+  description?: string
+  slug?: string
+  status?: number
 }
