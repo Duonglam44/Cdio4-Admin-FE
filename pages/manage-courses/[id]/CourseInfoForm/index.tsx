@@ -13,16 +13,19 @@ import {
 } from '@utils/helpers'
 import FileUpload from '@components/common/FileUpload'
 import Select from '@components/common/Select'
-import { CourseFormSchema, CourseInfoFormType, statusOptions } from './helpers'
+import { CourseFormSchema, CourseInfoFormType, getUpdateCoursePayload, statusOptions } from './helpers'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import View from '@components/common/View'
 import { CourseDetailData } from '@redux/courses/types'
 import { LoaderBall } from '@components/common'
 import ConfirmModal from '@components/ConfirmModal'
 import { CategoryDetailData, TopicDetailData } from '@redux/categories/types'
+import { deleteCourseThunkAction, updateCourseDetailsThunkAction } from '@redux/courses/thunks'
+import { useRouter } from 'next/router'
 
 // tslint:disable-next-line: cyclomatic-complexity
 const CourseInfoForm: NextPage<Props> = ({ onClose, selectedCourse }) => {
+  const router = useRouter()
   const dispatch = useDispatch()
   const accountsState = useSelector(
     (state: RootState) => state.accountsManagement
@@ -73,22 +76,21 @@ const CourseInfoForm: NextPage<Props> = ({ onClose, selectedCourse }) => {
   }
 
   const handleSubmit = (values: any) => {
-    // const updatePayload = getUpdateAccountPayload(values)
-    // dispatch(
-    //   updateAccountDetailsThunkAction(updatePayload, previousQueryUrl, () => {
-    //     onClose()
-    //   })
-    // )
-    // return
+    const updatePayload = getUpdateCoursePayload(values, '')
+    dispatch(
+      updateCourseDetailsThunkAction(updatePayload, () => {
+        onClose()
+      })
+    )
   }
 
-  const handleDeleteAccount = () => {
-    // if (!selectedCourse || !selectedCourse?._id) return
-    // dispatch(
-    // deleteAccountThunkAction(selectedCourse._id, previousQueryUrl, () => {
-    //   onClose()
-    // })
-    // )
+  const handleDeleteAccount =  () => {
+    if (!selectedCourse || !selectedCourse?._id) return
+    dispatch(
+    deleteCourseThunkAction(selectedCourse._id, async () => {
+      await router.replace('/manage-courses')
+    })
+    )
   }
 
   const formik = useFormik({
@@ -346,9 +348,9 @@ const CourseInfoForm: NextPage<Props> = ({ onClose, selectedCourse }) => {
                   <TextField
                     label='Total'
                     value={
-                      (formik.values.price - formik.values.discount) *
+                      ((formik.values.price - formik.values.discount) *
                       (1 - (selectedCategory?.discountPercent || 0) / 100) *
-                      (1 - (selectedTopic?.discountPercent || 0) / 100)
+                      (1 - (selectedTopic?.discountPercent || 0) / 100)).toFixed(2)
                     }
                     fullWidth
                     disabled
@@ -364,10 +366,10 @@ const CourseInfoForm: NextPage<Props> = ({ onClose, selectedCourse }) => {
         onClose={handleCloseConfirmDeleteModal}
         loading={accountsState.loading}
         onCancel={handleCloseConfirmDeleteModal}
-        height={80}
+        height={150}
         content={
           <p>
-            {'Are you sure you want to delete an account with email '}
+            {'Are you sure you want to delete the course '}
             <b>{`"${selectedCourse?.title}"`}</b> {' ?'}
           </p>
         }

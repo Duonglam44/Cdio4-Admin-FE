@@ -1,22 +1,21 @@
 import { CourseStatus } from '@config/constant'
 import {
-  CreateAccountPayload,
-  UpdateAccountPayload,
-} from '@redux/accounts/types'
+  UpdateCoursePayload
+} from '@redux/courses/types'
 import * as Yup from 'yup'
 
 export const CourseFormSchema = Yup.object().shape({
   id: Yup.string().optional(),
   title: Yup.string().required('Title is required'),
-  slug: Yup.string().required('Slug is required'),
-  categoryId: Yup.string().required('Category ID is required'),
-  topicId: Yup.string().required('Topic ID is required'),
+  slug: Yup.string().required('Slug is required').matches(/^[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*$/, 'Incorect format! Expect format-of-slug'),
+  categoryId: Yup.mixed().required('Category ID is required'),
+  topicId: Yup.mixed().required('Topic ID is required'),
   tags: Yup.mixed().optional(),
   description: Yup.string().optional(),
   imageUrl: Yup.mixed().optional(),
   status: Yup.mixed().required('Status is required'),
   price: Yup.number().required('Price is required').min(0),
-  discount: Yup.number().required('Discount is required').min(0).default(0),
+  discount: Yup.number().required('Discount is required').min(0).max(Yup.ref('price'), "Discount must be small than or equal to Price").default(0)
 })
 
 export type CourseInfoFormType = {
@@ -33,68 +32,27 @@ export type CourseInfoFormType = {
   status: number
 }
 
-// export const getUpdateCoursePayload = (
-//   formValues: CourseInfoFormType
-// ): UpdateAccountPayload => {
-//   return {
-//     userId: formValues.id,
-//     firstName: formValues.firstName,
-//     lastName: formValues.lastName,
-//     dateOfBirth: formValues.dateOfBirth,
-//     address: {
-//       street: formValues.street,
-//       city: formValues.city,
-//       country: formValues.country,
-//     },
-//     role: formValues.roleId,
-//     description: formValues.description,
-//     imageUrl: formValues.imageUrl,
-//     socialLinks: {
-//       facebook: formValues.facebook,
-//       twitter: formValues.twitter,
-//       instagram: formValues.instagram,
-//       linkedIn: formValues.linkedIn,
-//       github: formValues.github,
-//     },
-//     status: formValues.status,
-//     phoneNumber: formValues.phoneNumber,
-//   }
-// }
 
-// export const getCreateAccountPayload = (
-//   formValues: AccountFormType
-// ): CreateAccountPayload => {
-//   return {
-//     email: formValues.email,
-//     newPassword: formValues.newPassword,
-//     firstName: formValues.firstName,
-//     lastName: formValues.lastName,
-//     dateOfBirth: formValues.dateOfBirth,
-//     address: {
-//       street: formValues.street,
-//       city: formValues.city,
-//       country: formValues.country,
-//     },
-//     role: formValues.roleId,
-//     description: formValues.description,
-//     imageUrl: formValues.imageUrl,
-//     socialLinks: {
-//       facebook: formValues.facebook,
-//       twitter: formValues.twitter,
-//       instagram: formValues.instagram,
-//       linkedIn: formValues.linkedIn,
-//       github: formValues.github,
-//     },
-//     status: formValues.status,
-//     phoneNumber: formValues.phoneNumber,
-//   }
-// }
 
-// export const roleOptions = [
-//   { label: 'Admin', value: UserRole.ADMIN.id },
-//   { label: 'Teacher', value: UserRole.TEACHER.id },
-//   { label: 'Learner', value: UserRole.LEARNER.id },
-// ]
+export const getUpdateCoursePayload = (
+  formValues: CourseInfoFormType, imageUrl: string
+): UpdateCoursePayload => {
+  return {
+    imageUrl,
+    id: formValues.id,
+    title: formValues.title,
+    description: formValues.description,
+    slug: formValues.slug,
+    price: formValues.price,
+    discount: formValues.discount,
+    topicId: formValues.topicId,
+    categoryId: formValues.categoryId,
+    status: formValues.status,
+    tags: formValues.tags.split(', '),
+  }
+}
+
+
 
 export const statusOptions = [
   { label: 'Inactive', value: CourseStatus.INACTIVE },

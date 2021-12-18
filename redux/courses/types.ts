@@ -85,7 +85,7 @@ export type learnersDetailData = {
   __v: number
 }
 
-export type ChapterDetailData = {
+export type ChapterOverviewData = {
   _id: string
   courseId?: string
   status: number
@@ -99,7 +99,7 @@ export type ChapterDetailData = {
   __v: 0
 }
 
-export type StreamDetailData = {
+export type StreamOverviewData = {
   _id: string
   courseId?: string
   title: string
@@ -109,7 +109,7 @@ export type StreamDetailData = {
   status: number
 }
 
-export type FeedbackDetailData = {
+export type FeedbackOverviewData = {
   _id: string
   courseId?: string
   userId?: {
@@ -166,9 +166,9 @@ export type CourseDetailData = {
   discount: number
   status: number
   learnersDetail: learnersDetailData[]
-  streams: StreamDetailData[]
-  feedbacks: FeedbackDetailData[]
-  chapters: ChapterDetailData[]
+  streams: StreamOverviewData[]
+  feedbacks: FeedbackOverviewData[]
+  chapters: ChapterOverviewData[]
   createdAt: string
   updatedAt: string
   slug: string
@@ -180,53 +180,19 @@ export type CourseDetailsResponse = {
   course: CourseDetailData
 }
 
-export type UpdateAccountPayload = {
-  userId: string
-  // email: 'abc@gmail.com'
-  firstName: string
-  lastName: string
-  dateOfBirth: string | Date
+export type UpdateCoursePayload = {
+  id: string
+  title: string
   description: string
+  slug: string
+  categoryId: string
+  topicId: string
+  tags: string[]
+  price: number
+  discount: number
   status: number
-  phoneNumber: string
-  role: number
-  socialLinks: {
-    facebook: string
-    instagram: string
-    linkedIn: string
-    github: string
-    twitter: string
-  }
-  address: {
-    street: string
-    city: string
-    country: string
-  }
   imageUrl: string
 }
 
-export type CreateAccountPayload = {
-  //  userId: string
-  email: string
-  newPassword: string
-  firstName: string
-  lastName: string
-  dateOfBirth: string | Date
-  description: string
-  status: number
-  phoneNumber: string
-  role: number
-  socialLinks: {
-    facebook: string
-    instagram: string
-    linkedIn: string
-    github: string
-    twitter: string
-  }
-  address: {
-    street: string
-    city: string
-    country: string
-  }
-  imageUrl: string
-}
+
+

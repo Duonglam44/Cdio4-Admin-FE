@@ -1,5 +1,7 @@
 import { CourseDetailData, CourseOverviewData } from './courses/types'
 import { CategoryDetailData } from './categories/types'
+import { StreamDetailData } from './streams/types'
+import {FeedbackDetailData} from './feedbacks/types'
 
 export interface UserInfoState {
   _id: string
@@ -43,25 +45,6 @@ export interface AccountsManagementState {
   error: string
   loading: boolean
   totalUsers: number
-}
-
-export interface CoursesManagementState {
-  courses: (CourseOverviewData & {
-    totalLearners: number
-    totalStreams: number
-    totalChapters: number
-    totalFeedbacks: number
-  })[]
-  error: string
-  loading: boolean
-  totalCourses: number
-  currentCourse: CourseDetailData | null
-}
-
-export interface CategoriesManagementState {
-  categories: CategoryDetailData[]
-  error: string
-  loading: boolean
 }
 
 export interface NotificationsData {
@@ -129,3 +112,37 @@ export interface DecodedTokenData {
   lastName: string
   imageUrl?: string
 }
+
+export interface CoursesManagementState {
+  courses: (CourseOverviewData & {
+    totalLearners: number
+    totalStreams: number
+    totalChapters: number
+    totalFeedbacks: number
+  })[]
+  error: string
+  loading: boolean
+  totalCourses: number
+  currentCourse: CourseDetailData | null
+}
+
+export interface CategoriesManagementState {
+  categories: CategoryDetailData[]
+  error: string
+  loading: boolean
+}
+
+export interface StreamManagementState {
+  currentStream: StreamDetailData
+  error: string
+  loading: boolean
+}
+
+export interface FeedbackManagementState {
+  currentFeedback: FeedbackDetailData
+  error: string
+  loading: boolean
+}
+
+
+
