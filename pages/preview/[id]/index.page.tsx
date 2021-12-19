@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import PageWithHeader from '@components/header'
 import PageWithSidebar from '@components/layout/PageWithSidebar'
-import { Fragment, useState, useEffect } from 'react'
+import { Fragment, useEffect } from 'react'
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import { useDispatch, useSelector } from 'react-redux'
@@ -11,7 +11,6 @@ import { useRouter } from 'next/router'
 import { Grid } from '@material-ui/core'
 import { getCourseDetailsThunkAction } from '@redux/courses/thunks'
 import ChaptersPreview from './ChaptersPreview'
-import LessonsInfo from '@pages/manage-courses/[id]/components/LessonsInfo'
 
 const ChapterDetail: NextPage<Props> = ({}) => {
   const router = useRouter()

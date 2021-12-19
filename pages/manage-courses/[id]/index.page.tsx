@@ -113,7 +113,7 @@ const CourseDetail: NextPage<Props> = ({}) => {
               <Grid container spacing={3}>
                 <AccordionSection
                   expanded={expanded === 3}
-                  onAccordionChange={handleAccordionChange(2)}
+                  onAccordionChange={handleAccordionChange(3)}
                   label='Learners'
                 >
                   <LearnersInfo data={selectedCourse?.learnersDetail} />
@@ -122,7 +122,7 @@ const CourseDetail: NextPage<Props> = ({}) => {
               <Grid container spacing={3}>
                 <AccordionSection
                   expanded={expanded === 4}
-                  onAccordionChange={handleAccordionChange(3)}
+                  onAccordionChange={handleAccordionChange(4)}
                   label='Chapters'
                 >
                   <ChaptersInfo data={selectedCourse?.chapters} />
@@ -131,7 +131,7 @@ const CourseDetail: NextPage<Props> = ({}) => {
               <Grid container spacing={3}>
                 <AccordionSection
                   expanded={expanded === 5}
-                  onAccordionChange={handleAccordionChange(4)}
+                  onAccordionChange={handleAccordionChange(5)}
                   label='Streams'
                 >
                   <LearnersInfo data={selectedCourse?.learnersDetail} />
@@ -140,7 +140,7 @@ const CourseDetail: NextPage<Props> = ({}) => {
               <Grid container spacing={3}>
                 <AccordionSection
                   expanded={expanded === 6}
-                  onAccordionChange={handleAccordionChange(5)}
+                  onAccordionChange={handleAccordionChange(6)}
                   label='Feedbacks'
                 >
                   <LearnersInfo data={selectedCourse?.learnersDetail} />

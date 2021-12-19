@@ -12,7 +12,7 @@ import { deleteChapterThunkAction } from '@redux/chapters/thunks'
 import { useRouter } from 'next/router'
 import { RootState } from '@redux/rootReducer'
 import LessonsInfo from '../LessonsInfo'
-import { Accordion } from '@components/common'
+import { AccordionMain } from '@components/common'
 
 interface Props {
   data: CourseDetailData['chapters'] | undefined
@@ -91,7 +91,7 @@ const ChaptersInfo = ({ data }: Props) => {
           className='page-course-detail__chapter-info--content'
         >
           {data.map((chapter, index) => (
-            <Accordion
+            <AccordionMain
               key={chapter._id || index}
               label={`Chapter ${index + 1}: ${chapter.title}`}
               variant='secondary'
@@ -177,7 +177,7 @@ const ChaptersInfo = ({ data }: Props) => {
                     </Grid>
                   </Grid>
                 </Grid>
-                <Grid item xs={12} spacing={3}>
+                <Grid item xs={12}>
                   <Grid item xs={12}>
                     <p className='text-is-14 fw-bold mb-20'>Lessons</p>
                   </Grid>
@@ -190,7 +190,7 @@ const ChaptersInfo = ({ data }: Props) => {
                   )}
                 </Grid>
               </Grid>
-            </Accordion>
+            </AccordionMain>
           ))}
         </Grid>
       </Grid>
