@@ -1,7 +1,7 @@
 import moment from 'moment'
 import { nanoid } from 'nanoid'
 
-import { CourseStatus, UserStatus } from '../config/constant'
+import { CourseStatus, UserStatus, CategoryStatus } from '../config/constant'
 
 export const getAccountStatusText = (statusId: number) => {
   switch (statusId) {
@@ -27,6 +27,21 @@ export const getCourseStatusText = (statusId: number | undefined) => {
     case CourseStatus.INACTIVE:
       return 'Inactive'
     case CourseStatus.DRAFT:
+      return 'Draft'
+    default:
+      return 'Unknown'
+  }
+}
+
+export const getCategoryStatusText = (statusId: number | undefined) => {
+  switch (statusId) {
+    case CategoryStatus.ACTIVE:
+      return 'Active'
+    case CategoryStatus.PENDING:
+      return 'Pending'
+    case CategoryStatus.INACTIVE:
+      return 'Inactive'
+    case CategoryStatus.DRAFT:
       return 'Draft'
     default:
       return 'Unknown'
@@ -79,6 +94,7 @@ export const getFullNameFromFirstAndLastName = (
 ) => {
   if (!firstName) return '--'
   if (!lastName) return firstName
+
   return `${firstName} ${lastName}`
 }
 

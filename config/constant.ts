@@ -22,6 +22,13 @@ export enum CourseStatus {
   DRAFT = 20,
 }
 
+export enum CategoryStatus {
+  INACTIVE = 0,
+  ACTIVE = 1,
+  PENDING = 2,
+  DRAFT = 20,
+}
+
 export const UserRole = {
   ROOT: {
     id: 0,

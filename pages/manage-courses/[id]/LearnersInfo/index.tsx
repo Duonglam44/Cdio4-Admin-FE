@@ -118,6 +118,7 @@ const LearnersInfo = ({ data }: Props) => {
   const handleRowClick = async (record: any, index) => {
     // setSelectedCourseId(record._id)
     // await router.push(`/manage-courses/${record._id}`)
+    return ''
   }
 
   const handlePaginationChange = (_, page: number) => {
