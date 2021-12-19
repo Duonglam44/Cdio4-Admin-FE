@@ -1,25 +1,39 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 // tslint:disable ter-func-call-spacing
 import React, { useEffect, useState } from 'react'
 import cn from 'classnames'
 import { Button, Grid } from '@material-ui/core'
 import { LessonOverviewData } from '@redux/chapters/types'
-import { Callback } from '@utils/types'
+import { Callback, ChapterContentType } from '@utils/types'
 import { BiEdit } from 'react-icons/bi'
 import { AiOutlineArrowDown, AiOutlineArrowUp } from 'react-icons/ai'
-
-type chapterContentType = 'lesson' | 'attachment' | 'test'
 
 interface Props {
   lessonsData: LessonOverviewData[] | undefined
   className?: string
-  onEdit?: Callback
+  showContentPreview?: boolean
+  label?: string
+  onSave?: Callback
+  onChange?: (
+    type: ChapterContentType | null,
+    url: string | null | undefined
+  ) => void
 }
 
-const LessonsInfo = ({ lessonsData, className, onEdit }: Props) => {
+const LessonsPreview = ({
+  lessonsData,
+  className,
+  showContentPreview = false,
+  label = 'Preview',
+  onSave = () => {
+    return
+  },
+  onChange,
+}: Props) => {
   const [currentLessonUrl, setCurrentLessonUrl] = useState<
     string | null | undefined
-  >(lessonsData?.[0]?.url || null)
-  const [currentType, setCurrentType] = useState<chapterContentType | null>(
+  >(showContentPreview ? lessonsData?.[0]?.url || null : null)
+  const [currentType, setCurrentType] = useState<ChapterContentType | null>(
     'lesson'
   )
   const [lessons, setLessons] = useState<LessonOverviewData[]>(
@@ -53,6 +67,9 @@ const LessonsInfo = ({ lessonsData, className, onEdit }: Props) => {
 
     setCurrentLessonUrl(url)
     setCurrentType('lesson')
+
+    if (!onChange) return
+    onChange('lesson', url)
   }
 
   const handleMoveUp = (index: number) => {
@@ -101,13 +118,15 @@ const LessonsInfo = ({ lessonsData, className, onEdit }: Props) => {
         className={cn(className, 'page-course-detail__course-info--content')}
       >
         <Grid container spacing={3}>
-          <Grid item xs={12} sm={12}>
-            <Grid container spacing={0}>
-              <Grid item xs={12} sm={12}>
-                <h4 className='page-course-detail__title'>Lessons Preview</h4>
+          {showContentPreview && (
+            <Grid item xs={12} sm={12}>
+              <Grid container spacing={0}>
+                <Grid item xs={12} sm={12}>
+                  <h4 className='page-course-detail__title'>{label}</h4>
+                </Grid>
               </Grid>
             </Grid>
-          </Grid>
+          )}
           <Grid
             item
             xs={12}
@@ -115,13 +134,15 @@ const LessonsInfo = ({ lessonsData, className, onEdit }: Props) => {
             className='page-chapter-detail__lesson-preview'
           >
             <Grid container spacing={3}>
-              <Grid item xs={12} sm={7}>
-                {contentPreview}
-              </Grid>
+              {showContentPreview && (
+                <Grid item xs={12} sm={7}>
+                  {contentPreview}
+                </Grid>
+              )}
               <Grid
                 item
                 xs={12}
-                sm={5}
+                sm={showContentPreview ? 5 : 12}
                 className='page-chapter-detail__lesson-preview--sidebar'
               >
                 <Grid container spacing={2} alignItems='center'>
@@ -132,13 +153,13 @@ const LessonsInfo = ({ lessonsData, className, onEdit }: Props) => {
                     <Button
                       variant='outlined'
                       className='has-text-primary '
-                      onClick={onEdit}
+                      onClick={onSave}
                     >
                       Save
                     </Button>
                   </Grid>
                   <Grid item xs={12}>
-                    {lessons.map((lesson, index) => (
+                    {lessons?.map((lesson, index) => (
                       <Grid
                         container
                         key={lesson._id}
@@ -195,4 +216,4 @@ const LessonsInfo = ({ lessonsData, className, onEdit }: Props) => {
   )
 }
 
-export default LessonsInfo
+export default LessonsPreview

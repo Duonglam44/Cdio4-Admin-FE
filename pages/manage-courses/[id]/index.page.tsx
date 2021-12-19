@@ -1,4 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+import Link from 'next/link'
 import PageWithHeader from '@components/header'
 import PageWithSidebar from '@components/layout/PageWithSidebar'
 import { Fragment, useState, useEffect } from 'react'
@@ -103,6 +104,16 @@ const CourseDetail: NextPage<Props> = ({}) => {
                 <AccordionSection
                   expanded={expanded === 2}
                   onAccordionChange={handleAccordionChange(2)}
+                  label='Course Preview'
+                >
+                  <p>View Course preview </p>
+                  <Link href={`/preview/${id}`}> here</Link>
+                </AccordionSection>
+              </Grid>
+              <Grid container spacing={3}>
+                <AccordionSection
+                  expanded={expanded === 3}
+                  onAccordionChange={handleAccordionChange(2)}
                   label='Learners'
                 >
                   <LearnersInfo data={selectedCourse?.learnersDetail} />
@@ -110,7 +121,7 @@ const CourseDetail: NextPage<Props> = ({}) => {
               </Grid>
               <Grid container spacing={3}>
                 <AccordionSection
-                  expanded={expanded === 3}
+                  expanded={expanded === 4}
                   onAccordionChange={handleAccordionChange(3)}
                   label='Chapters'
                 >
@@ -119,7 +130,7 @@ const CourseDetail: NextPage<Props> = ({}) => {
               </Grid>
               <Grid container spacing={3}>
                 <AccordionSection
-                  expanded={expanded === 4}
+                  expanded={expanded === 5}
                   onAccordionChange={handleAccordionChange(4)}
                   label='Streams'
                 >
@@ -128,7 +139,7 @@ const CourseDetail: NextPage<Props> = ({}) => {
               </Grid>
               <Grid container spacing={3}>
                 <AccordionSection
-                  expanded={expanded === 5}
+                  expanded={expanded === 6}
                   onAccordionChange={handleAccordionChange(5)}
                   label='Feedbacks'
                 >

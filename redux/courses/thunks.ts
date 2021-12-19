@@ -14,7 +14,11 @@ import {
   updateCourseRequest,
   updateCourseSuccess,
 } from './actions'
-import { CourseDetailsResponse, CoursesManagementResponse, UpdateCoursePayload } from './types'
+import {
+  CourseDetailsResponse,
+  CoursesManagementResponse,
+  UpdateCoursePayload,
+} from './types'
 import { Callback } from '@utils/types'
 
 //call login api
@@ -54,7 +58,7 @@ export const getCourseDetailsThunkAction =
     try {
       const response = (await api({
         tokenRequired: true,
-        path: `/courses/${id}?sort=date`,
+        path: `/courses/auth/${id}`,
         method: 'GET',
       })) as CourseDetailsResponse
 
@@ -66,10 +70,7 @@ export const getCourseDetailsThunkAction =
   }
 
 export const updateCourseDetailsThunkAction =
-  (
-    payload: UpdateCoursePayload,
-    callback: Callback
-  ) =>
+  (payload: UpdateCoursePayload, callback: Callback) =>
   async (dispatch: any) => {
     dispatch(updateCourseRequest())
 
@@ -92,8 +93,7 @@ export const updateCourseDetailsThunkAction =
   }
 
 export const deleteCourseThunkAction =
-  (courseId: string, callback: Callback) =>
-  async (dispatch: any) => {
+  (courseId: string, callback: Callback) => async (dispatch: any) => {
     dispatch(deleteCourseRequest())
 
     try {

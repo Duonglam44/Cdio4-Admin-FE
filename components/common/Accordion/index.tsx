@@ -17,6 +17,7 @@ interface Props {
     | ((event: React.ChangeEvent<{}>, expanded: boolean) => void)
     | undefined
   label?: string
+  labelNode?: React.ReactNode
   variant?: 'primary' | 'secondary'
   className?: string
   editLabel?: string
@@ -32,6 +33,7 @@ const AccordionSection = ({
   variant = 'primary',
   className,
   editLabel = 'Edit',
+  labelNode,
 }: Props) => {
   return (
     <Accordion
@@ -51,15 +53,19 @@ const AccordionSection = ({
       >
         <Grid container spacing={0} direction='row' alignItems='center'>
           <Grid item xs={11}>
-            <p
-              className={
-                variant === 'primary'
-                  ? 'cmp-accordion__title--primary'
-                  : 'cmp-accordion__title--secondary'
-              }
-            >
-              {label}
-            </p>
+            {labelNode ? (
+              labelNode
+            ) : (
+              <p
+                className={
+                  variant === 'primary'
+                    ? 'cmp-accordion__title--primary'
+                    : 'cmp-accordion__title--secondary'
+                }
+              >
+                {label}
+              </p>
+            )}
           </Grid>
           {onEdit && (
             <Grid item xs={1}>
