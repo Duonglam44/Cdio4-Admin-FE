@@ -64,7 +64,8 @@ export type AccountFormType = {
 }
 
 export const getUpdateAccountPayload = (
-  formValues: AccountFormType
+  formValues: AccountFormType,
+  imageUrl?: string
 ): UpdateAccountPayload => {
   return {
     userId: formValues.id,
@@ -78,7 +79,7 @@ export const getUpdateAccountPayload = (
     },
     role: formValues.roleId,
     description: formValues.description,
-    imageUrl: formValues.imageUrl,
+    imageUrl: imageUrl || '',
     socialLinks: {
       facebook: formValues.facebook,
       twitter: formValues.twitter,
@@ -92,7 +93,8 @@ export const getUpdateAccountPayload = (
 }
 
 export const getCreateAccountPayload = (
-  formValues: AccountFormType
+  formValues: AccountFormType,
+  imageUrl?: string
 ): CreateAccountPayload => {
   return {
     email: formValues.email,
@@ -107,7 +109,7 @@ export const getCreateAccountPayload = (
     },
     role: formValues.roleId,
     description: formValues.description,
-    imageUrl: formValues.imageUrl,
+    imageUrl: imageUrl || '',
     socialLinks: {
       facebook: formValues.facebook,
       twitter: formValues.twitter,

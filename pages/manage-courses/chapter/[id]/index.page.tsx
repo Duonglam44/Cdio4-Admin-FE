@@ -92,7 +92,10 @@ const ChapterDetail: NextPage<Props> = ({}) => {
                   />
                 </Grid>
                 <Grid item xs={12} sm={12}>
-                  <LessonsInfo lessonsData={selectedChapter?.lessons} />
+                  <LessonsInfo
+                    lessonsData={selectedChapter?.lessons}
+                    className='page-chapter-detail__chapter-info'
+                  />
                 </Grid>
               </Grid>
             </Fragment>

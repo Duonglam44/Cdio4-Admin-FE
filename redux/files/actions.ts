@@ -5,7 +5,16 @@ export const uploadFileRequest = () => {
     type: UploadFile.UPLOAD_REQUEST,
   }
 }
-export const uploadFileSuccess = payload => {
+export const uploadFileProgress = (payload: {
+  uploadProgress: number
+  uploadState: string
+}) => {
+  return {
+    payload,
+    type: UploadFile.UPLOAD_PROGRESS,
+  }
+}
+export const uploadFileSuccess = (payload: { uploadedUrl: string }) => {
   return {
     payload,
     type: UploadFile.UPLOAD_SUCCESS,

@@ -10,6 +10,7 @@ import { useFormik } from 'formik'
 import {
   formatDateFromApi,
   getFullNameFromFirstAndLastName,
+  isEmpty,
 } from '@utils/helpers'
 import FileUpload from '@components/common/FileUpload'
 import Select from '@components/common/Select'
@@ -30,6 +31,7 @@ import {
   updateCourseDetailsThunkAction,
 } from '@redux/courses/thunks'
 import { useRouter } from 'next/router'
+import { uploadFileThunkAction } from '@redux/files/thunks'
 
 // tslint:disable-next-line: cyclomatic-complexity
 const CourseInfoForm: NextPage<Props> = ({ onClose, selectedCourse }) => {
@@ -38,6 +40,9 @@ const CourseInfoForm: NextPage<Props> = ({ onClose, selectedCourse }) => {
   const courseState = useSelector((state: RootState) => state.coursesManagement)
   const categoriesState = useSelector(
     (state: RootState) => state.categoriesManagement
+  )
+  const uploadFileLoading = useSelector(
+    (state: RootState) => state.files.loading
   )
 
   const [thumbnailFile, setThumbnailFile] = useState<File[]>()
@@ -81,13 +86,30 @@ const CourseInfoForm: NextPage<Props> = ({ onClose, selectedCourse }) => {
     tags: selectedCourse?.tags.join(', ') || '',
   }
 
-  const handleSubmit = (values: any) => {
-    const updatePayload = getUpdateCoursePayload(values, '')
-    dispatch(
-      updateCourseDetailsThunkAction(updatePayload, () => {
-        onClose()
-      })
-    )
+  const handleSubmit = (values: CourseInfoFormType) => {
+    const handleDispatchSubmit = (
+      formValues: CourseInfoFormType,
+      imageUrl?: string
+    ) => {
+      const updatePayload = getUpdateCoursePayload(formValues, imageUrl)
+      dispatch(
+        updateCourseDetailsThunkAction(updatePayload, () => {
+          onClose()
+        })
+      )
+    }
+
+    if (!isEmpty(thumbnailFile) && thumbnailFile) {
+      dispatch(
+        uploadFileThunkAction(thumbnailFile[0], (url: string) => {
+          handleDispatchSubmit(values, url)
+        })
+      )
+
+      return
+    }
+
+    handleDispatchSubmit(values)
   }
 
   const handleDeleteAccount = () => {
@@ -257,11 +279,24 @@ const CourseInfoForm: NextPage<Props> = ({ onClose, selectedCourse }) => {
                   />
                 </Grid>
                 <Grid item md={6} className='modal-main__body--item'>
-                  <p className='label-text mb-16'>Thumbnail</p>
+                  <p className='label-text mb-16'>Change Thumbnail</p>
                   <FileUpload
                     type='image'
                     onChange={(value: any) => setThumbnailFile(value)}
                     numberAllow={1}
+                  />
+                </Grid>
+                <Grid
+                  item
+                  md={6}
+                  className='modal-main__body--item'
+                  style={{ overflow: 'hidden' }}
+                >
+                  <p className='label-text'>Thumbnail</p>
+                  <img
+                    src={formik.values.imageUrl}
+                    alt='Invalid or empty thumbnail'
+                    className='img-contain'
                   />
                 </Grid>
                 <Fragment>
@@ -426,7 +461,8 @@ const CourseInfoForm: NextPage<Props> = ({ onClose, selectedCourse }) => {
         </View>
 
         <Button variant='contained' type='submit' color='primary'>
-          {courseState.loading && !showConfirmDeleteModal ? (
+          {(courseState.loading || uploadFileLoading) &&
+          !showConfirmDeleteModal ? (
             <LoaderBall
               color1='#ffffff'
               color2='#eeeeee'

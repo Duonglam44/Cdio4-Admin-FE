@@ -41,10 +41,10 @@ export type CourseInfoFormType = {
 
 export const getUpdateCoursePayload = (
   formValues: CourseInfoFormType,
-  imageUrl: string
+  imageUrl?: string
 ): UpdateCoursePayload => {
   return {
-    imageUrl,
+    imageUrl: imageUrl ? imageUrl : formValues.imageUrl,
     id: formValues.id,
     title: formValues.title,
     description: formValues.description,

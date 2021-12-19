@@ -2,6 +2,7 @@ import {
   uploadFileRequest,
   uploadFileSuccess,
   uploadFileFailure,
+  uploadFileProgress,
 } from './actions'
 import { toast } from 'react-toastify'
 import { storage } from '../../services/firebase'
@@ -14,9 +15,10 @@ import {
 } from '@firebase/storage'
 
 export const uploadFileThunkAction =
-  (file: any, callback: (responseUrl: string) => void) =>
+  (file: File, callback: (responseUrl: string) => void) =>
   async (dispatch: any) => {
     dispatch(uploadFileRequest())
+
     if (!file) return
     const storageRef = ref(storage, `/files/${file.name}`)
     const uploadTask = uploadBytesResumable(storageRef, file)
@@ -27,6 +29,12 @@ export const uploadFileThunkAction =
         const progress = Math.round(
           (snapshot.bytesTransferred / snapshot.totalBytes) * 100
         )
+        dispatch(
+          uploadFileProgress({
+            uploadProgress: progress,
+            uploadState: snapshot.state,
+          })
+        )
       },
       (err: StorageError) => {
         toast.error(err.message)
@@ -34,8 +42,8 @@ export const uploadFileThunkAction =
       },
       async () => {
         const responseUrl = await getDownloadURL(uploadTask.snapshot.ref)
+        dispatch(uploadFileSuccess({ uploadedUrl: responseUrl }))
         callback(responseUrl)
-        dispatch(uploadFileSuccess(responseUrl))
       }
     )
   }

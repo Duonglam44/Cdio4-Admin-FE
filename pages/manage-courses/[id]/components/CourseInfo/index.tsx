@@ -42,8 +42,8 @@ const CourseInfo = ({ selectedCourse }: Props) => {
           <Grid item xs={12} sm={2}>
             <ViewItem
               className='page-course-detail__course-info--item'
-              label='Status'
-              value={getCourseStatusText(selectedCourse?.status)}
+              label='Author Email'
+              value={selectedCourse?.author?.email}
             />
           </Grid>
           <Grid item xs={12} sm={2}>
@@ -53,11 +53,18 @@ const CourseInfo = ({ selectedCourse }: Props) => {
               value={`${selectedCourse?.author?.firstName} ${selectedCourse?.author?.lastName}`}
             />
           </Grid>
-          <Grid item xs={12} sm={4}>
+          <Grid item xs={12} sm={1}>
             <ViewItem
               className='page-course-detail__course-info--item'
-              label='Author Email'
-              value={selectedCourse?.author?.email}
+              label='Status'
+              value={getCourseStatusText(selectedCourse?.status)}
+            />
+          </Grid>
+          <Grid item xs={12} sm={3}>
+            <ViewItem
+              className='page-course-detail__course-info--item'
+              label='ID'
+              value={selectedCourse?._id}
             />
           </Grid>
           <Grid item xs={12} sm={4}>
@@ -88,6 +95,14 @@ const CourseInfo = ({ selectedCourse }: Props) => {
               value={selectedCourse?.tags?.join(', ')}
             />
           </Grid>
+          <Grid item xs={12} sm={4}>
+            <ViewItem
+              className='page-course-detail__course-info--item'
+              label='Total Price'
+              value={`$${totalPrice}`}
+              boldValue
+            />
+          </Grid>
           <Grid item xs={12} sm={2}>
             <ViewItem
               className='page-course-detail__course-info--item'
@@ -116,19 +131,18 @@ const CourseInfo = ({ selectedCourse }: Props) => {
               value={`${topicDiscountPercent}%`}
             />
           </Grid>
-          <Grid item xs={12} sm={4}>
-            <ViewItem
-              className='page-course-detail__course-info--item'
-              label='Total Price'
-              value={`$${totalPrice}`}
-              boldValue
-            />
-          </Grid>
-          <Grid item xs={12} sm={4}>
-            <ViewItem
-              className='page-course-detail__course-info--item'
-              label='ID'
-              value={selectedCourse?._id}
+          <Grid
+            item
+            xs={12}
+            md={4}
+            className='modal-main__body--item'
+            style={{ overflow: 'hidden' }}
+          >
+            <p className='label-text'>Thumbnail</p>
+            <img
+              src={selectedCourse?.imageUrl}
+              alt='Invalid or empty thumbnail'
+              className='img-contain'
             />
           </Grid>
           <Grid item xs={12} sm={8}>

@@ -3,6 +3,7 @@ import { StreamDetailData } from './streams/types'
 import { FeedbackDetailData } from './feedbacks/types'
 import { CourseDetailData, CourseOverviewData } from './courses/types'
 import { ChapterDetailsData } from './chapters/types'
+import { UploadTaskSnapshot } from 'firebase/storage'
 
 export interface UserInfoState {
   _id: string
@@ -135,8 +136,10 @@ export interface ChapterManagementState {
 
 export interface FilesState {
   loading: boolean
-  uploadLoading: boolean
+  error: string
   uploadedUrl: string
+  uploadProgress: number
+  uploadState: UploadTaskSnapshot['state'] | null | ''
 }
 
 export interface NotificationsData {

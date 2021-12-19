@@ -1,11 +1,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState, CSSProperties } from 'react'
+import React, { useEffect, useState, CSSProperties, Fragment } from 'react'
 import { FileRejection, useDropzone } from 'react-dropzone'
 import cn from 'classnames'
 import { UploadFileType } from '@config/constant'
 import { toast } from 'react-toastify'
 import { Grid } from '@material-ui/core'
 import { AiFillPlusCircle } from 'react-icons/ai'
+import { IoMdCloseCircleOutline } from 'react-icons/io'
 
 const thumbsContainer: CSSProperties = {
   display: 'flex',
@@ -20,10 +21,11 @@ const thumb: CSSProperties = {
   border: '1px solid #eaeaea',
   marginBottom: 8,
   marginRight: 8,
-  width: 100,
+  minWidth: 100,
   height: 100,
   padding: 4,
   boxSizing: 'border-box',
+  position: 'relative',
 }
 
 const thumbInner: CSSProperties = {
@@ -33,9 +35,20 @@ const thumbInner: CSSProperties = {
 }
 
 const img: CSSProperties = {
+  objectFit: 'contain',
   display: 'block',
   width: 'auto',
   height: '100%',
+}
+
+const removeBtn: CSSProperties = {
+  position: 'absolute',
+  top: 0,
+  right: 0,
+  zIndex: 10,
+  background: '#fff',
+  borderRadius: '50%',
+  cursor: 'pointer',
 }
 
 const FileUpload: React.FC<Props> = ({
@@ -80,6 +93,18 @@ const FileUpload: React.FC<Props> = ({
     fileUploadConfig = UploadFileType.VIDEO
   }
 
+  const handleRemovePreviewFile = (index: number) => {
+    const newFilePreviews = [...filePreviews]
+    newFilePreviews.splice(index, 1)
+
+    setFilePreviews(newFilePreviews)
+
+    const newMyFiles = [...myFiles]
+    newMyFiles.splice(index, 1)
+
+    setMyFiles(newMyFiles)
+  }
+
   // List MIME can be found here:
   // https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types
   const { getRootProps, getInputProps } = useDropzone({
@@ -88,12 +113,17 @@ const FileUpload: React.FC<Props> = ({
     maxSize: fileUploadConfig.maxSize,
   })
 
-  const thumbs = filePreviews.map(file => (
-    <div style={thumb} key={file.name}>
+  const thumbs = filePreviews.map((file, idx) => (
+    <div style={thumb} key={idx}>
       <div style={thumbInner}>
         {type === 'image' && (
           <img src={file.preview} alt='previews' style={img} />
         )}
+        <IoMdCloseCircleOutline
+          size={20}
+          style={removeBtn}
+          onClick={() => handleRemovePreviewFile(idx)}
+        />
       </div>
     </div>
   ))

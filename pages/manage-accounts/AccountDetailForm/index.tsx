@@ -2,7 +2,7 @@ import type { NextPage } from 'next'
 import { useState, Fragment } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from 'redux/rootReducer'
-import { Button, Grid, TextareaAutosize, TextField } from '@material-ui/core'
+import { Button, Grid, TextField } from '@material-ui/core'
 import Accordion from '@mui/material/Accordion'
 import AccordionDetails from '@mui/material/AccordionDetails'
 import AccordionSummary from '@mui/material/AccordionSummary'
@@ -26,6 +26,7 @@ import {
   deleteAccountThunkAction,
   updateAccountDetailsThunkAction,
 } from '@redux/accounts/thunks'
+import { uploadFileThunkAction } from '@redux/files/thunks'
 import { LoaderBall } from '@components/common'
 import ModalMain from '@components/common/Modal'
 import ChangePasswordForm from '../ChangePasswordForm'
@@ -41,8 +42,11 @@ const AccountForm: NextPage<Props> = ({
   const accountsState = useSelector(
     (state: RootState) => state.accountsManagement
   )
+  const uploadFileLoading = useSelector(
+    (state: RootState) => state.files.loading
+  )
 
-  const [avatarFile, setAvatarFile] = useState<File[]>()
+  const [avatarFile, setAvatarFile] = useState<File>()
   const [expanded, setExpanded] = useState<number>(1)
   const [showChangePasswordModal, setShowChangePasswordModal] =
     useState<boolean>(false)
@@ -57,7 +61,7 @@ const AccountForm: NextPage<Props> = ({
     setShowChangePasswordModal(false)
   }
 
-  const handleAccordionChange = (panel: number) => (event, isExpanded) => {
+  const handleAccordionChange = (panel: number) => (_, isExpanded) => {
     setExpanded(isExpanded ? panel : 0)
   }
 
@@ -96,26 +100,47 @@ const AccountForm: NextPage<Props> = ({
     confirmPassword: '',
   }
 
-  const handleSubmit = (values: any) => {
-    //update account
-    if (!isEmpty(formik.values.id)) {
-      const updatePayload = getUpdateAccountPayload(values)
+  const handleSubmit = (values: AccountFormType) => {
+    const handleDispatchSubmit = (
+      formValues: AccountFormType,
+      imageUrl: string
+    ) => {
+      //update account
+      if (!isEmpty(formik.values.id)) {
+        const updatePayload = getUpdateAccountPayload(formValues, imageUrl)
+        dispatch(
+          updateAccountDetailsThunkAction(
+            updatePayload,
+            previousQueryUrl,
+            () => {
+              onClose()
+            }
+          )
+        )
+
+        return
+      }
+
+      //create account
+      const createPayload = getCreateAccountPayload(formValues, imageUrl)
       dispatch(
-        updateAccountDetailsThunkAction(updatePayload, previousQueryUrl, () => {
+        createAccountDetailsThunkAction(createPayload, previousQueryUrl, () => {
           onClose()
+        })
+      )
+    }
+
+    if (!isEmpty(avatarFile) && avatarFile) {
+      dispatch(
+        uploadFileThunkAction(avatarFile[0], (url: string) => {
+          handleDispatchSubmit(values, url)
         })
       )
 
       return
     }
 
-    //create account
-    const createPayload = getCreateAccountPayload(values)
-    dispatch(
-      createAccountDetailsThunkAction(createPayload, previousQueryUrl, () => {
-        onClose()
-      })
-    )
+    handleDispatchSubmit(values, formik.values.imageUrl ?? '')
   }
 
   const handleDeleteAccount = () => {
@@ -313,13 +338,25 @@ const AccountForm: NextPage<Props> = ({
                     onBlur={formik.setFieldTouched}
                   />
                 </Grid>
-
                 <Grid item md={6} className='modal-main__body--item'>
-                  <p className='label-text mb-16'>Avatar</p>
+                  <p className='label-text mb-16'>Change Avatar</p>
                   <FileUpload
                     type='image'
-                    onChange={(value: any) => setAvatarFile(value)}
+                    onChange={(value: File) => setAvatarFile(value)}
                     numberAllow={1}
+                  />
+                </Grid>
+                <Grid
+                  item
+                  md={6}
+                  className='modal-main__body--item'
+                  style={{ overflow: 'hidden' }}
+                >
+                  <p className='label-text'>Avatar</p>
+                  <img
+                    src={formik.values.imageUrl}
+                    alt='Invalid or empty user avatar'
+                    className='img-contain'
                   />
                 </Grid>
                 {selectedAccount && (
@@ -346,23 +383,25 @@ const AccountForm: NextPage<Props> = ({
                     </Grid>
                   </Fragment>
                 )}
-              </Grid>
-              <Grid item md={12} className='modal-main__body--item'>
-                <TextField
-                  label='Description'
-                  type='text'
-                  {...formik.getFieldProps('description')}
-                  error={
-                    !!formik.errors.description && !!formik.touched.description
-                  }
-                  helperText={
-                    !!formik.errors.description && !!formik.touched.description
-                      ? formik.errors.description
-                      : ''
-                  }
-                  fullWidth
-                  multiline
-                />
+                <Grid item md={12} className='modal-main__body--item'>
+                  <TextField
+                    label='Description'
+                    type='text'
+                    {...formik.getFieldProps('description')}
+                    error={
+                      !!formik.errors.description &&
+                      !!formik.touched.description
+                    }
+                    helperText={
+                      !!formik.errors.description &&
+                      !!formik.touched.description
+                        ? formik.errors.description
+                        : ''
+                    }
+                    fullWidth
+                    multiline
+                  />
+                </Grid>
               </Grid>
             </AccordionDetails>
           </Accordion>
@@ -597,7 +636,8 @@ const AccountForm: NextPage<Props> = ({
           </Button>
         )}
         <Button variant='contained' type='submit' color='primary'>
-          {accountsState.loading && !showConfirmDeleteModal ? (
+          {(accountsState.loading || uploadFileLoading) &&
+          !showConfirmDeleteModal ? (
             <LoaderBall
               color1='#ffffff'
               color2='#eeeeee'

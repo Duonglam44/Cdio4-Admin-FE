@@ -1,4 +1,5 @@
 // tslint:disable: cyclomatic-complexity
+import Link from 'next/link'
 import ViewItem from '@components/common/ViewItem'
 import { Grid } from '@material-ui/core'
 import { CourseDetailData } from '@redux/courses/types'
@@ -122,7 +123,7 @@ const ChaptersInfo = ({ data }: Props) => {
                         value={chapter.lessons.length}
                       />
                     </Grid>
-                    <Grid item xs={5}>
+                    <Grid item xs={4}>
                       <ViewItem
                         label={'Slug'}
                         value={chapter.slug || '(no slug)'}
@@ -140,7 +141,7 @@ const ChaptersInfo = ({ data }: Props) => {
                         value={formatDateFromApi(chapter.createdAt)}
                       />
                     </Grid>
-                    {/* <Grid item xs={1}>
+                    <Grid item xs={1}>
                       <ViewItem
                         label={'View'}
                         value={
@@ -160,7 +161,7 @@ const ChaptersInfo = ({ data }: Props) => {
                         }
                         className='ml-16'
                       />
-                    </Grid> */}
+                    </Grid>
                     <Grid item xs={1}>
                       <ViewItem
                         label={'Delete'}
