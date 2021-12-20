@@ -2,51 +2,57 @@
 import React, { useEffect, useState } from 'react'
 import cn from 'classnames'
 import { Button, Grid } from '@material-ui/core'
-import { LessonOverviewData } from '@redux/chapters/types'
+import {
+  AttachmentDetailData,
+  LessonOverviewData,
+  TestDetailData,
+} from '@redux/chapters/types'
 import { Callback, ChapterContentType } from '@utils/types'
 import { BiEdit } from 'react-icons/bi'
 import { AiOutlineArrowDown, AiOutlineArrowUp } from 'react-icons/ai'
 import { ChapterOverviewData } from '@redux/courses/types'
 import { AccordionMain } from '@components/common'
 import LessonsPreview from '../LessonsPreview'
+import TestPreview from '../TestPreview'
 
 interface Props {
   chaptersData: ChapterOverviewData[] | undefined
   className?: string
   label?: string
+  maxHeightSidebar?: string | number
   onSave?: Callback
 }
 
-const ChaptersPreview = ({
+// tslint:disable-next-line: cyclomatic-complexity
+const ChaptersPreview: React.FC<Props> = ({
   chaptersData,
   className,
   label = 'Preview',
+  maxHeightSidebar = 'auto',
   onSave = () => {
     return
   },
-}: Props) => {
+}) => {
   const [chapters, setChapters] = useState<ChapterOverviewData[]>(
     chaptersData || []
   )
   const [currentType, setCurrentType] = useState<ChapterContentType | null>(
     'lesson'
   )
-  const firstLoadLessonUrl =
-    chapters && chapters.length > 0 ? chapters?.[0]?.lessons?.[0]?.url : null
-  const [currentLessonUrl, setCurrentLessonUrl] = useState<
-    string | null | undefined
-  >(firstLoadLessonUrl)
+  const firstLoadLesson =
+    chapters && chapters.length > 0 ? chapters?.[0]?.lessons?.[0] : null
+  const [currentLessonData, setCurrentLessonData] = useState<
+    LessonOverviewData | null | undefined
+  >(firstLoadLesson)
+  const [currentTestData, setCurrentTestData] = useState<TestDetailData | null>(
+    null
+  )
+  const [currentAttachmentData, setCurrentAttachmentData] =
+    useState<AttachmentDetailData | null>(null)
 
   useEffect(() => {
     setChapters(chaptersData ? chaptersData : [])
   }, [chaptersData])
-
-  const contentPreview =
-    currentType === 'lesson' && currentLessonUrl ? (
-      <video width='100%' controls src={currentLessonUrl} />
-    ) : (
-      <p>No Data</p>
-    )
 
   const handleMoveUp = (event: any, index: number) => {
     event.stopPropagation()
@@ -78,16 +84,45 @@ const ChaptersPreview = ({
 
   const handleLessonsPreviewChange = (
     type: ChapterContentType | null,
-    url: string | undefined | null
+    value: TestDetailData | LessonOverviewData | AttachmentDetailData | null
   ) => {
     setCurrentType(type)
-    setCurrentLessonUrl(url)
+    if (type === 'lesson') {
+      setCurrentLessonData(value as LessonOverviewData)
+      setCurrentTestData(null)
+      setCurrentAttachmentData(null)
+    } else if (type === 'test') {
+      setCurrentTestData(value as TestDetailData)
+      setCurrentLessonData(null)
+      setCurrentAttachmentData(null)
+    } else if (type === 'attachment') {
+      setCurrentAttachmentData(value as AttachmentDetailData)
+      setCurrentLessonData(null)
+      setCurrentTestData(null)
+    }
   }
 
   const handleOpenEditLessonModal = (lessonData: LessonOverviewData) => {
     // setSelectedLessonData(lessonData)
     // setShowEditLessonModal(true)
   }
+
+  const contentPreview =
+    currentType === 'lesson' && currentLessonData ? (
+      <video width='100%' controls src={currentLessonData?.url} />
+    ) : currentType === 'test' && currentTestData ? (
+      <TestPreview testData={currentTestData} />
+    ) : currentType === 'attachment' && currentAttachmentData ? (
+      <div>
+        Click{' '}
+        <a href={currentAttachmentData?.url} target='_blank' rel='noreferrer'>
+          here
+        </a>{' '}
+        to download the attachment
+      </div>
+    ) : (
+      <p>No Data</p>
+    )
 
   if (!chaptersData) {
     return (
@@ -123,7 +158,12 @@ const ChaptersPreview = ({
             className='page-chapter-detail__lesson-preview'
           >
             <Grid container spacing={3}>
-              <Grid item xs={12} sm={7}>
+              <Grid
+                item
+                xs={12}
+                sm={7}
+                style={{ maxHeight: maxHeightSidebar, overflow: 'auto' }}
+              >
                 {contentPreview}
               </Grid>
               <Grid
@@ -145,7 +185,11 @@ const ChaptersPreview = ({
                       Save
                     </Button>
                   </Grid>
-                  <Grid item xs={12}>
+                  <Grid
+                    item
+                    xs={12}
+                    style={{ maxHeight: maxHeightSidebar, overflow: 'auto' }}
+                  >
                     {chapters?.map((chapter, index) => (
                       <AccordionMain
                         key={chapter._id}
@@ -160,9 +204,9 @@ const ChaptersPreview = ({
                             alignItems='center'
                           >
                             <Grid item xs={9}>
-                              <button className='my-8 button-text-no-color'>{`${
+                              <button className='my-8 button-text-no-color'>{`Chapter ${
                                 index + 1
-                              }. ${chapter.title}`}</button>
+                              }: ${chapter.title}`}</button>
                             </Grid>
                             <Grid item xs={1}>
                               {index !== 0 ? (
@@ -197,6 +241,16 @@ const ChaptersPreview = ({
                         <LessonsPreview
                           lessonsData={chapter.lessons}
                           onChange={handleLessonsPreviewChange}
+                          currentTypeFromChapters={currentType || undefined}
+                          currentLessonDataFromChapters={
+                            currentLessonData || undefined
+                          }
+                          currentTestDataFromChapters={
+                            currentTestData || undefined
+                          }
+                          currentAttachmentDataFromChapters={
+                            currentAttachmentData || undefined
+                          }
                         />
                       </AccordionMain>
                     ))}

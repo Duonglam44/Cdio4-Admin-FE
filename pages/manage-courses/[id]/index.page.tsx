@@ -50,6 +50,13 @@ const CourseDetail: NextPage<Props> = ({}) => {
     handleShowCourseInfoModal()
   }
 
+  const handleRedirectToCoursePreview = async (
+    event: React.MouseEvent<HTMLElement, MouseEvent>
+  ) => {
+    event.stopPropagation()
+    await router.push(`/preview/${id}`)
+  }
+
   useEffect(() => {
     dispatch(getCourseDetailsThunkAction(id as string))
     dispatch(getCategoriesThunkAction())
@@ -105,8 +112,10 @@ const CourseDetail: NextPage<Props> = ({}) => {
                   expanded={expanded === 2}
                   onAccordionChange={handleAccordionChange(2)}
                   label='Course Preview'
+                  onEdit={e => handleRedirectToCoursePreview(e)}
+                  editLabel='Preview'
                 >
-                  <p>View Course preview </p>
+                  <p className='mr-8'>View course preview </p>
                   <Link href={`/preview/${id}`}> here</Link>
                 </AccordionSection>
               </Grid>

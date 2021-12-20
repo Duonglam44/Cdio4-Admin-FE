@@ -63,6 +63,7 @@ export type AttachmentDetailData = {
 }
 
 export type TestDetailData = {
+  _id: string
   number?: number
   title: string
   description?: string

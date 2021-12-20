@@ -120,7 +120,19 @@
         &-active {
           background: rgba(1, 151, 252, 0.05) !important;
         }
+        &-item {
+          &-active {
+            background: rgba(1, 151, 252, 0.05) !important;
+          }
+
+          &:hover {
+            background: rgba(1, 151, 252, 0.05) !important;
+
+            transition: all 0.3s ease;
+          }
+        }
       }
+
       &__icon {
         cursor: pointer;
         color: rgb(175, 174, 174);

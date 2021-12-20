@@ -38,7 +38,7 @@ const ChaptersInfo = ({ data }: Props) => {
   }
 
   const handleViewDetailClick = async (
-    event: any,
+    event: React.MouseEvent<HTMLElement, MouseEvent>,
     chapterId: string,
     chapterNumber: number
   ) => {

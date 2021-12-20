@@ -3,10 +3,18 @@
 import React, { useEffect, useState } from 'react'
 import cn from 'classnames'
 import { Button, Grid } from '@material-ui/core'
-import { LessonOverviewData } from '@redux/chapters/types'
+import {
+  AttachmentDetailData,
+  LessonOverviewData,
+  TestDetailData,
+} from '@redux/chapters/types'
 import { Callback, ChapterContentType } from '@utils/types'
-import { BiEdit } from 'react-icons/bi'
-import { AiOutlineArrowDown, AiOutlineArrowUp } from 'react-icons/ai'
+import { BiBook, BiEdit } from 'react-icons/bi'
+import {
+  AiOutlineArrowDown,
+  AiOutlineArrowUp,
+  AiOutlineFileText,
+} from 'react-icons/ai'
 
 interface Props {
   lessonsData: LessonOverviewData[] | undefined
@@ -14,9 +22,14 @@ interface Props {
   showContentPreview?: boolean
   label?: string
   onSave?: Callback
+  maxHeightSidebar?: number | string
+  currentTypeFromChapters?: ChapterContentType
+  currentLessonDataFromChapters?: LessonOverviewData
+  currentTestDataFromChapters?: TestDetailData
+  currentAttachmentDataFromChapters?: AttachmentDetailData
   onChange?: (
     type: ChapterContentType | null,
-    url: string | null | undefined
+    value: TestDetailData | AttachmentDetailData | LessonOverviewData | null
   ) => void
 }
 
@@ -25,20 +38,31 @@ const LessonsPreview = ({
   className,
   showContentPreview = false,
   label = 'Preview',
+  maxHeightSidebar = 'auto',
+  currentTypeFromChapters,
+  currentLessonDataFromChapters,
+  currentTestDataFromChapters,
+  currentAttachmentDataFromChapters,
   onSave = () => {
     return
   },
   onChange,
 }: Props) => {
-  const [currentLessonUrl, setCurrentLessonUrl] = useState<
-    string | null | undefined
-  >(showContentPreview ? lessonsData?.[0]?.url || null : null)
   const [currentType, setCurrentType] = useState<ChapterContentType | null>(
     'lesson'
   )
   const [lessons, setLessons] = useState<LessonOverviewData[]>(
     lessonsData || []
   )
+  const [currentLessonData, setCurrentLessonData] =
+    useState<LessonOverviewData | null>(
+      showContentPreview ? lessonsData?.[0] || null : null
+    )
+  const [currentTestData, setCurrentTestData] = useState<TestDetailData | null>(
+    null
+  )
+  const [currentAttachmentData, setCurrentAttachmentData] =
+    useState<AttachmentDetailData | null>(null)
   const [showEditLessonModal, setShowEditLessonModal] = useState<boolean>(false)
   const [selectedLessonDate, setSelectedLessonData] =
     useState<LessonOverviewData | null>(null)
@@ -46,6 +70,32 @@ const LessonsPreview = ({
   useEffect(() => {
     setLessons(lessonsData ? lessonsData : [])
   }, [lessonsData])
+
+  useEffect(() => {
+    if (!currentTypeFromChapters) return
+    setCurrentType(currentTypeFromChapters)
+  }, [currentTypeFromChapters])
+
+  useEffect(() => {
+    if (!currentLessonDataFromChapters) return
+    setCurrentLessonData(currentLessonDataFromChapters)
+    setCurrentTestData(null)
+    setCurrentAttachmentData(null)
+  }, [currentLessonDataFromChapters])
+
+  useEffect(() => {
+    if (!currentTestDataFromChapters) return
+    setCurrentTestData(currentTestDataFromChapters)
+    setCurrentAttachmentData(null)
+    setCurrentLessonData(null)
+  }, [currentTestDataFromChapters])
+
+  useEffect(() => {
+    if (!currentAttachmentDataFromChapters) return
+    setCurrentAttachmentData(currentAttachmentDataFromChapters)
+    setCurrentLessonData(null)
+    setCurrentTestData(null)
+  }, [currentAttachmentDataFromChapters])
 
   if (!lessonsData) {
     return (
@@ -59,17 +109,17 @@ const LessonsPreview = ({
     )
   }
 
-  const handleLessonClick = (url: string | undefined) => {
-    if (!url) {
-      setCurrentLessonUrl('')
+  const handleLessonClick = (lessonData: LessonOverviewData | null) => {
+    if (!lessonData) {
+      setCurrentLessonData(null)
       setCurrentType(null)
     }
 
-    setCurrentLessonUrl(url)
+    setCurrentLessonData(lessonData)
     setCurrentType('lesson')
 
     if (!onChange) return
-    onChange('lesson', url)
+    onChange('lesson', lessonData)
   }
 
   const handleMoveUp = (index: number) => {
@@ -103,9 +153,25 @@ const LessonsPreview = ({
     setShowEditLessonModal(true)
   }
 
+  const handleTestClick = (testData: TestDetailData) => {
+    setCurrentTestData(testData)
+    setCurrentType('test')
+
+    if (!onChange) return
+    onChange('test', testData)
+  }
+
+  const handleAttachmentClick = (attachmentData: AttachmentDetailData) => {
+    setCurrentAttachmentData(attachmentData)
+    setCurrentType('attachment')
+
+    if (!onChange) return
+    onChange('attachment', attachmentData)
+  }
+
   const contentPreview =
-    currentType === 'lesson' && currentLessonUrl ? (
-      <video width='100%' controls src={currentLessonUrl} />
+    currentType === 'lesson' && currentLessonData ? (
+      <video width='100%' controls src={currentLessonData?.url} />
     ) : (
       <p>No Data</p>
     )
@@ -158,14 +224,18 @@ const LessonsPreview = ({
                       Save
                     </Button>
                   </Grid>
-                  <Grid item xs={12}>
+                  <Grid
+                    item
+                    xs={12}
+                    style={{ maxHeight: maxHeightSidebar, overflow: 'auto' }}
+                  >
                     {lessons?.map((lesson, index) => (
                       <Grid
                         container
                         key={lesson._id}
                         className={cn(
                           'page-chapter-detail__lesson-preview--sidebar__lesson',
-                          lesson.url === currentLessonUrl
+                          lesson._id === currentLessonData?._id
                             ? 'page-chapter-detail__lesson-preview--sidebar__lesson-active'
                             : ''
                         )}
@@ -175,7 +245,7 @@ const LessonsPreview = ({
                         <Grid item xs={9}>
                           <button
                             className='my-8 button-text-no-color'
-                            onClick={() => handleLessonClick(lesson.url)}
+                            onClick={() => handleLessonClick(lesson)}
                           >{`${index + 1}. ${lesson.title}`}</button>
                         </Grid>
                         <Grid item xs={1}>
@@ -202,6 +272,104 @@ const LessonsPreview = ({
                             className='page-chapter-detail__lesson-preview--sidebar__icon'
                             onClick={() => handleOpenEditLessonModal(lesson)}
                           />
+                        </Grid>
+                        <Grid item xs={12}>
+                          {lesson.tests &&
+                            lesson.tests.length > 0 &&
+                            lesson.tests.map((test, idx) => (
+                              <Grid
+                                container
+                                direction='row'
+                                alignItems='center'
+                                justifyContent='space-between'
+                                key={test._id}
+                                className={cn(
+                                  'page-chapter-detail__lesson-preview--sidebar__lesson',
+                                  'page-chapter-detail__lesson-preview--sidebar__lesson-item',
+                                  test._id === currentTestData?._id
+                                    ? 'page-chapter-detail__lesson-preview--sidebar__lesson-item-active'
+                                    : ''
+                                )}
+                                onClick={() => handleTestClick(test)}
+                                style={{
+                                  cursor: 'pointer',
+                                }}
+                              >
+                                <Grid item xs={1}>
+                                  <BiBook
+                                    size={18}
+                                    style={{
+                                      cursor: 'pointer',
+                                    }}
+                                    className='mt-8'
+                                  />
+                                </Grid>
+                                <Grid item xs={10}>
+                                  <p className='button-text-no-color'>
+                                    {test.title}
+                                  </p>
+                                </Grid>
+                                <Grid item xs={1}>
+                                  <BiEdit
+                                    size={20}
+                                    className='page-chapter-detail__lesson-preview--sidebar__icon'
+                                    onClick={() =>
+                                      handleOpenEditLessonModal(lesson)
+                                    }
+                                  />
+                                </Grid>
+                              </Grid>
+                            ))}
+                        </Grid>
+                        <Grid item xs={12}>
+                          {lesson.attachments &&
+                            lesson.attachments.length > 0 &&
+                            lesson.attachments.map((attachment, idx) => (
+                              <Grid
+                                container
+                                direction='row'
+                                alignItems='center'
+                                justify='space-between'
+                                key={attachment._id}
+                                className={cn(
+                                  'page-chapter-detail__lesson-preview--sidebar__lesson',
+                                  'page-chapter-detail__lesson-preview--sidebar__lesson-item',
+                                  attachment._id === currentAttachmentData?._id
+                                    ? 'page-chapter-detail__lesson-preview--sidebar__lesson-item-active'
+                                    : ''
+                                )}
+                                onClick={() =>
+                                  handleAttachmentClick(attachment)
+                                }
+                                style={{
+                                  cursor: 'pointer',
+                                }}
+                              >
+                                <Grid item xs={1}>
+                                  <AiOutlineFileText
+                                    size={18}
+                                    style={{
+                                      cursor: 'pointer',
+                                    }}
+                                    className='mt-8'
+                                  />
+                                </Grid>
+                                <Grid item xs={10}>
+                                  <p className='button-text-no-color'>
+                                    {attachment.title}
+                                  </p>
+                                </Grid>
+                                <Grid item xs={1}>
+                                  <BiEdit
+                                    size={20}
+                                    className='page-chapter-detail__lesson-preview--sidebar__icon'
+                                    onClick={() =>
+                                      handleOpenEditLessonModal(lesson)
+                                    }
+                                  />
+                                </Grid>
+                              </Grid>
+                            ))}
                         </Grid>
                       </Grid>
                     ))}

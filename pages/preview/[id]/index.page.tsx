@@ -33,7 +33,7 @@ const ChapterDetail: NextPage<Props> = ({}) => {
         <link rel='icon' href='/favicon.ico' />
       </Head>
       <PageWithSidebar>
-        <PageWithHeader title='Chapter Detail'>
+        <PageWithHeader title='Course Preview'>
           {courseState.loading ? (
             <LoaderBall />
           ) : (
@@ -41,6 +41,7 @@ const ChapterDetail: NextPage<Props> = ({}) => {
               <ChaptersPreview
                 chaptersData={courseData?.chapters}
                 label={'Content Preview'}
+                maxHeightSidebar={'72vh'}
               />
             </Fragment>
           )}
