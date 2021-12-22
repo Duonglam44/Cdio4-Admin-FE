@@ -4,6 +4,21 @@ export enum CATEGORIES_ACTIONS {
   GET_CATEGORIES_FAILURE = 'categories/GET_CATEGORIES_FAILURE',
 }
 
+export interface CategoryOverviewData {
+  _id: string
+  title: string
+  topic: string[]
+  status: number
+  discountPercent: number
+  slug: string
+  __v: number
+}
+
+export type CategoryManagementResponse = {
+  categories: CategoryOverviewData[]
+  totalCategories: number
+}
+
 export interface CategoriesResponse {
   courseCategories: CategoryDetailData[]
 }
