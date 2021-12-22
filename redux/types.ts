@@ -1,5 +1,5 @@
 import { CourseDetailData, CourseOverviewData } from './courses/types'
-import { CategoryDetailData, CategoryOverviewData } from './category/types'
+import { CategoryDetailData } from './categories/types'
 export interface UserInfoState {
   _id: string
   firstName: string
@@ -44,14 +44,12 @@ export interface AccountsManagementState {
   totalUsers: number
 }
 
-export interface CategoryManagementState {
-  categorys: (CategoryOverviewData & {
-    totalTopic: number
+export interface CategoriesManagementState {
+  categories: (CategoryDetailData & {
+    totalTopics: number
   })[]
   error: string
   loading: boolean
-  totalCategory: number
-  currentCourse: CategoryDetailData | null
 }
 
 export interface CoursesManagementState {

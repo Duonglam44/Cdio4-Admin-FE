@@ -3,13 +3,13 @@ import { combineReducers } from 'redux'
 import { userInfo } from './auth/reducers'
 import { accountsManagement } from './accounts/reducers'
 import { coursesManagement } from './courses/reducers'
-import { categoryManagement } from './category/reducers'
+import { categoriesManagement } from './categories/reducers'
 
 const rootReducer = combineReducers({
   userInfo,
   accountsManagement,
   coursesManagement,
-  categoryManagement,
+  categoriesManagement,
 })
 
 export default rootReducer

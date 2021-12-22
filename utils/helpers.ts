@@ -33,7 +33,7 @@ export const getCourseStatusText = (statusId: number | undefined) => {
   }
 }
 
-export const getCategoryStatusText = (statusId: number | undefined) => {
+export const getCategoriesStatusText = (statusId: number | undefined) => {
   switch (statusId) {
     case CategoryStatus.ACTIVE:
       return 'Active'

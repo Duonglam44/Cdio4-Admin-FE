@@ -5,7 +5,7 @@ import { useRouter } from 'next/router';
 import { COUNT_PER_PAGE } from '@config/constant';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'redux/rootReducer';
-import { getCategoryManagementThunkAction } from '@redux/category/thunks';
+import { getCategoriesThunkAction } from '@redux/categories/thunks';
 import Head from 'next/head';
 import Table from 'rc-table';
 import PageWithSidebar from '@components/layout/PageWithSidebar';
@@ -35,22 +35,15 @@ const columns = [
   },
   {
     title: 'Discount Percent',
-    dataIndex: 'discount',
-    key: 'discount',
+    dataIndex: 'discountPercent',
+    key: 'discountPercent',
     width: 100,
     align: 'center' as AlignType,
   },
   {
-    title: 'Topic',
-    dataIndex: 'topic',
-    key: 'topic',
-    width: 200,
-    align: 'center' as AlignType,
-  },
-  {
-    title: 'Total Topic',
-    dataIndex: 'totalTopic',
-    key: 'totalTopic',
+    title: 'Total Topics',
+    dataIndex: 'totalTopics',
+    key: ' ',
     width: 200,
     align: 'center' as AlignType,
   },
@@ -67,18 +60,18 @@ const ManageCategory: NextPage<Props> = ({}) => {
   if (!page) query.set('page', '1');
   if (!count) query.set('count', COUNT_PER_PAGE.toString());
   const dispatch = useDispatch();
-  const categoryState = useSelector(
-    (state: RootState) => state.categoryManagement
+  const categoriesState = useSelector(
+    (state: RootState) => state.categoriesManagement
   );
 
-  const totalPage = Math.ceil(categoryState.totalCategory / COUNT_PER_PAGE);
-  const categoryData = categoryState.categorys.map(category => ({
+  // const totalPage = Math.ceil(categoriesState / COUNT_PER_PAGE);
+  const categoryData = categoriesState.categories.map(category => ({
     ...category,
-    totalTopics: category.totalTopic,
+    totalTopics: category.totalTopics,
   }));
 
   useEffect(() => {
-    dispatch(getCategoryManagementThunkAction(query));
+    dispatch(getCategoriesThunkAction());
   }, [dispatch, query]);
   const handleRowClick = async (record: any, index) => {
     // setSelectedCourseId(record._id)
@@ -97,7 +90,7 @@ const ManageCategory: NextPage<Props> = ({}) => {
       </Head>
       <PageWithSidebar>
         <PageWithHeader title='Category Management'>
-          {categoryState.loading ? (
+          {categoriesState.loading ? (
             <LoaderBall />
           ) : (
             <Table
@@ -113,7 +106,7 @@ const ManageCategory: NextPage<Props> = ({}) => {
                 },
               })}
               footer={_ => (
-                <PaginationLink totalPage={totalPage} count={COUNT_PER_PAGE} />
+                <PaginationLink totalPage={1} count={COUNT_PER_PAGE} />
               )}
             />
           )}
