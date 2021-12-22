@@ -12,19 +12,7 @@ export enum CHAPTER_ACTIONS {
 
 export type ChapterDetailsData = {
   _id: string
-  courseId?:
-    | {
-        _id: string
-        title: string
-        description: string
-        author: {
-          _id: string
-          email: string
-          firstName: string
-          lastName: string
-        }
-      }
-    | string
+  courseId: courseIdOverviewType | string
   status: number
   lessons: LessonOverviewData[]
   number?: number
@@ -34,6 +22,18 @@ export type ChapterDetailsData = {
   createdAt: string
   updatedAt: string
   __v: 0
+}
+
+type courseIdOverviewType = {
+  _id: string
+  title: string
+  description: string
+  author: {
+    _id: string
+    email: string
+    firstName: string
+    lastName: string
+  }
 }
 
 export type ChapterDetailResponse = {
