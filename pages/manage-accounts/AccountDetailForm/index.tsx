@@ -95,7 +95,7 @@ const AccountForm: NextPage<Props> = ({
     instagram: selectedAccount?.socialLinks?.instagram || '',
     linkedIn: selectedAccount?.socialLinks?.linkedin || '',
     github: selectedAccount?.socialLinks?.github || '',
-    status: selectedAccount?.status || 1,
+    status: selectedAccount?.status === 0 ? 0 : selectedAccount?.status || 1,
     newPassword: '',
     confirmPassword: '',
   }

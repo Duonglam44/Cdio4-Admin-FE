@@ -42,6 +42,7 @@ const ChapterDetail: NextPage<Props> = ({}) => {
                 chaptersData={courseData?.chapters}
                 label={'Content Preview'}
                 maxHeightSidebar={'72vh'}
+                maxHeightContent={'78vh'}
               />
             </Fragment>
           )}

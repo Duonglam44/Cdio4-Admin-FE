@@ -77,7 +77,7 @@ const CourseInfoForm: NextPage<Props> = ({ onClose, selectedCourse }) => {
     title: selectedCourse?.title || '',
     description: selectedCourse?.description || '',
     imageUrl: selectedCourse?.imageUrl || '',
-    status: selectedCourse?.status || 1,
+    status: selectedCourse?.status === 0 ? 0 : selectedCourse?.status || 1,
     categoryId: selectedCourse?.topic.courseCategoryId._id || '',
     topicId: selectedCourse?.topic?._id || '',
     price: selectedCourse?.price || 0,

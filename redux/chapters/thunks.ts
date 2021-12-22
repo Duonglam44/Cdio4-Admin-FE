@@ -11,7 +11,11 @@ import {
   updateChapterRequest,
   updateChapterSuccess,
 } from './actions'
-import { ChapterDetailsData, UpdateChapterPayload } from './types'
+import {
+  ChapterDetailResponse,
+  ChapterDetailsData,
+  UpdateChapterPayload,
+} from './types'
 import { Callback } from '@utils/types'
 import { getCourseDetailsThunkAction } from '@redux/courses/thunks'
 
@@ -44,12 +48,14 @@ export const updateChapterDetailsThunkAction =
         path: `/chapters/${payload.id}`,
         method: 'PUT',
         data: payload,
-      })) as ChapterDetailsData
+      })) as ChapterDetailResponse
 
-      dispatch(updateChapterSuccess(response))
+      dispatch(updateChapterSuccess(response.chapter))
       toast.success('Chapter updated successfully!')
       callback()
       dispatch(getChapterDetailsThunkAction(payload.id))
+      if (!response?.chapter?.courseId) return
+      dispatch(getCourseDetailsThunkAction(response.chapter.courseId as string))
     } catch (error: any) {
       toast.error(error?.message || error || 'Update data failed!')
       dispatch(updateChapterFailure(error))

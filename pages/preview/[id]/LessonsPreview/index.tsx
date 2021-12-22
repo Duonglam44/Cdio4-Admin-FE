@@ -15,6 +15,7 @@ import {
   AiOutlineArrowUp,
   AiOutlineFileText,
 } from 'react-icons/ai'
+import StatusDot from '@components/Status/StatusDot'
 
 interface Props {
   lessonsData: LessonOverviewData[] | undefined
@@ -243,6 +244,7 @@ const LessonsPreview = ({
                         alignItems='center'
                       >
                         <Grid item xs={9}>
+                          <StatusDot status={lesson?.status} />
                           <button
                             className='my-8 button-text-no-color'
                             onClick={() => handleLessonClick(lesson)}
@@ -310,13 +312,14 @@ const LessonsPreview = ({
                                   </p>
                                 </Grid>
                                 <Grid item xs={1}>
-                                  <BiEdit
+                                  {/* <BiEdit
                                     size={20}
                                     className='page-chapter-detail__lesson-preview--sidebar__icon'
                                     onClick={() =>
                                       handleOpenEditLessonModal(lesson)
                                     }
-                                  />
+                                  /> */}
+                                  <StatusDot status={test?.status} />
                                 </Grid>
                               </Grid>
                             ))}
@@ -329,7 +332,7 @@ const LessonsPreview = ({
                                 container
                                 direction='row'
                                 alignItems='center'
-                                justify='space-between'
+                                justifyContent='space-between'
                                 key={attachment._id}
                                 className={cn(
                                   'page-chapter-detail__lesson-preview--sidebar__lesson',
@@ -360,13 +363,14 @@ const LessonsPreview = ({
                                   </p>
                                 </Grid>
                                 <Grid item xs={1}>
-                                  <BiEdit
+                                  {/* <BiEdit
                                     size={20}
                                     className='page-chapter-detail__lesson-preview--sidebar__icon'
                                     onClick={() =>
                                       handleOpenEditLessonModal(lesson)
                                     }
-                                  />
+                                  /> */}
+                                  <StatusDot status={attachment?.status} />
                                 </Grid>
                               </Grid>
                             ))}
