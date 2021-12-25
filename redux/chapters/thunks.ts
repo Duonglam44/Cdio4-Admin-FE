@@ -10,11 +10,15 @@ import {
   updateChapterFailure,
   updateChapterRequest,
   updateChapterSuccess,
+  updateLessonFailure,
+  updateLessonRequest,
+  updateLessonSuccess,
 } from './actions'
 import {
   ChapterDetailResponse,
   ChapterDetailsData,
   UpdateChapterPayload,
+  UpdateLessonPayload,
 } from './types'
 import { Callback } from '@utils/types'
 import { getCourseDetailsThunkAction } from '@redux/courses/thunks'
@@ -81,5 +85,33 @@ export const deleteChapterThunkAction =
     } catch (error: any) {
       toast.error(error?.message || error || 'Delete data failed!')
       dispatch(deleteChapterFailure(error))
+    }
+  }
+
+export const updateLessonDetailsThunkAction =
+  (payload: UpdateLessonPayload, callback: Callback) =>
+  async (dispatch: any) => {
+    dispatch(updateLessonRequest())
+
+    try {
+      const response = (await api({
+        tokenRequired: true,
+        path: `/lessons/${payload.id}`,
+        method: 'PUT',
+        data: payload,
+      })) as any
+
+      dispatch(updateLessonSuccess(response))
+      toast.success('Lesson updated successfully!')
+      callback()
+      if (payload?.chapterId) {
+        return dispatch(getChapterDetailsThunkAction(payload.chapterId))
+      }
+      if (payload?.courseId) {
+        dispatch(getCourseDetailsThunkAction(payload.courseId))
+      }
+    } catch (error: any) {
+      toast.error(error?.message || error || 'Update data failed!')
+      dispatch(updateLessonFailure(error))
     }
   }

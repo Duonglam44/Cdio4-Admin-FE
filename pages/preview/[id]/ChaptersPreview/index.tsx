@@ -25,6 +25,8 @@ interface Props {
   label?: string
   maxHeightSidebar?: string | number
   maxHeightContent?: string | number
+  courseId?: string | null | undefined
+  chapterId?: string | null | undefined
   onSave?: Callback
 }
 
@@ -35,6 +37,8 @@ const ChaptersPreview: React.FC<Props> = ({
   label = 'Preview',
   maxHeightSidebar = 'auto',
   maxHeightContent = 'auto',
+  courseId,
+  chapterId,
   onSave = () => {
     return
   },
@@ -127,7 +131,7 @@ const ChaptersPreview: React.FC<Props> = ({
 
   const contentPreview =
     currentType === 'lesson' && currentLessonData ? (
-      <LessonPreview lessonData={currentLessonData} />
+      <LessonPreview lessonData={currentLessonData} courseId={courseId} />
     ) : currentType === 'test' && currentTestData ? (
       <TestPreview testData={currentTestData} />
     ) : currentType === 'attachment' && currentAttachmentData ? (
@@ -292,6 +296,8 @@ const ChaptersPreview: React.FC<Props> = ({
                             currentAttachmentDataFromChapters={
                               currentAttachmentData || undefined
                             }
+                            courseId={courseId}
+                            chapterId={chapterId}
                           />
                         </AccordionMain>
                       ))}

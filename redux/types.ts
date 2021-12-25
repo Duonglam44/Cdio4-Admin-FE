@@ -132,6 +132,10 @@ export interface ChapterManagementState {
   chapter: ChapterDetailsData | null
   error: string
   loading: boolean
+  lessonLoading: boolean
+  testLoading: boolean
+  attachmentLoading: boolean
+  commentLoading: boolean
 }
 
 export interface FilesState {

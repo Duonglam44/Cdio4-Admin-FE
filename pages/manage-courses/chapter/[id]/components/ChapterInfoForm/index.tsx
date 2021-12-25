@@ -26,7 +26,7 @@ const ChapterInfoForm: NextPage<Props> = ({ onClose, selectedChapter }) => {
     id: selectedChapter?._id || '',
     title: selectedChapter?.title || '',
     description: selectedChapter?.description || '',
-    status: selectedChapter?.status === 0 ? 0 : selectedChapter?.status || 1,
+    status: selectedChapter?.status ?? 1,
     number: selectedChapter?.number || 0,
     slug: selectedChapter?.slug || '',
   }

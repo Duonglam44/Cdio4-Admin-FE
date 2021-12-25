@@ -8,7 +8,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from 'redux/rootReducer'
 import { LoaderBall } from '@components/common'
 import { useRouter } from 'next/router'
-import { Grid } from '@material-ui/core'
 import { getCourseDetailsThunkAction } from '@redux/courses/thunks'
 import ChaptersPreview from './ChaptersPreview'
 
@@ -43,6 +42,7 @@ const ChapterDetail: NextPage<Props> = ({}) => {
                 label={'Content Preview'}
                 maxHeightSidebar={'72vh'}
                 maxHeightContent={'78vh'}
+                courseId={id as string}
               />
             </Fragment>
           )}

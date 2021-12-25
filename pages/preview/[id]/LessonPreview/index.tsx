@@ -2,56 +2,57 @@ import ModalMain from '@components/common/Modal'
 import ViewItem from '@components/common/ViewItem'
 import { Button } from '@material-ui/core'
 import { Grid } from '@mui/material'
-import ChapterInfoForm from '@pages/manage-courses/chapter/[id]/components/ChapterInfoForm'
+import LessonInfoForm from '@pages/manage-courses/chapter/[id]/components/LessonInfoForm'
 import { LessonOverviewData } from '@redux/chapters/types'
 import { formatDateFromApi, getStatusText } from '@utils/helpers'
 import React, { Fragment, useState } from 'react'
 
 interface Props {
   lessonData: LessonOverviewData | null
+  courseId?: string | null | undefined
 }
 
-const LessonPreview = ({ lessonData }: Props) => {
-  const [showChapterInfoModal, setShowChapterInfoModal] =
-    useState<boolean>(false)
+const LessonPreview = ({ lessonData, courseId }: Props) => {
+  const [showLessonInfoModal, setShowLessonInfoModal] = useState<boolean>(false)
 
   if (!lessonData) {
     return <p>No Data</p>
   }
 
-  const handleEditChapterInfoClick = (
+  const handleEditLessonInfoClick = (
     event: React.MouseEvent<HTMLElement, MouseEvent>
   ) => {
     event.stopPropagation()
-    setShowChapterInfoModal(true)
+    setShowLessonInfoModal(true)
   }
 
   const handleCloseChapterInfoModal = () => {
-    setShowChapterInfoModal(false)
+    setShowLessonInfoModal(false)
   }
 
   return (
     <Fragment>
       {/* Modals */}
-      {showChapterInfoModal && (
+      {showLessonInfoModal && (
         <ModalMain
-          open={showChapterInfoModal}
+          open={showLessonInfoModal}
           onClose={handleCloseChapterInfoModal}
           width={600}
-          height={350}
+          height={450}
           position='flex-start-center'
           preventBackdropClick
-          label={'Course Detail'}
+          label={'Lesson Detail'}
         >
-          <ChapterInfoForm
-            selectedChapter={null}
+          <LessonInfoForm
+            selectedLesson={lessonData}
             onClose={handleCloseChapterInfoModal}
+            courseId={courseId}
           />
         </ModalMain>
       )}
       <Grid container spacing={1}>
         <Grid item xs={12}>
-          <video width='100%' controls src={lessonData?.url} />
+          <video width='99%' controls src={lessonData?.url} />
         </Grid>
         <Grid item xs={12} my={2}>
           <div className='justify-space-between'>
@@ -59,7 +60,7 @@ const LessonPreview = ({ lessonData }: Props) => {
             <Button
               variant='outlined'
               className='has-text-primary '
-              onClick={handleEditChapterInfoClick}
+              onClick={handleEditLessonInfoClick}
             >
               Edit
             </Button>
