@@ -459,9 +459,8 @@ const CourseInfoForm: NextPage<Props> = ({ onClose, selectedCourse }) => {
             Delete
           </Button>
         </View>
-
         <Button variant='contained' type='submit' color='primary'>
-          {(courseState.loading || uploadFileLoading) &&
+          {(courseState.updateLoading || uploadFileLoading) &&
           !showConfirmDeleteModal ? (
             <LoaderBall
               color1='#ffffff'

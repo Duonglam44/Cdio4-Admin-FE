@@ -17,6 +17,7 @@ import {
 import {
   CourseDetailsResponse,
   CoursesManagementResponse,
+  UpdateChaptersOfCoursePayload,
   UpdateCoursePayload,
 } from './types'
 import { Callback } from '@utils/types'
@@ -70,7 +71,10 @@ export const getCourseDetailsThunkAction =
   }
 
 export const updateCourseDetailsThunkAction =
-  (payload: UpdateCoursePayload, callback: Callback) =>
+  (
+    payload: UpdateCoursePayload | UpdateChaptersOfCoursePayload,
+    callback: Callback
+  ) =>
   async (dispatch: any) => {
     dispatch(updateCourseRequest())
 
@@ -85,7 +89,9 @@ export const updateCourseDetailsThunkAction =
       dispatch(updateCourseSuccess(response))
       toast.success('Course updated successfully!')
       callback()
-      dispatch(getCourseDetailsThunkAction(payload.id))
+      if (payload.reloadCourseDetail) {
+        dispatch(getCourseDetailsThunkAction(payload.id))
+      }
     } catch (error: any) {
       toast.error(error?.message || error || 'Update data failed!')
       dispatch(updateCourseFailure(error))

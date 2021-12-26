@@ -40,6 +40,7 @@ export const api = async ({
       .then((response: AxiosResponse) => {
         if (!response) reject('Cannot send request to server!')
         if (!response.data.success) reject(response.data.message)
+        if (response?.data?.name === 'TokenExpiredError') return logout()
         resolve(response.data.data)
       })
       .catch((error: any) => {
@@ -49,7 +50,7 @@ export const api = async ({
             : error.response.data.message
 
         if (errorMessage === 'jwt expired') {
-          logout()
+          return logout()
         }
 
         reject(errorMessage)

@@ -44,7 +44,6 @@ export const logoutThunkAction = () => (dispatch: any) => {
     logout()
     toast.info('You have been logout of the system!')
     dispatch(logoutSuccess())
-    window.location.replace('/login')
   } catch (error: any) {
     toast.error('Logout failed!')
     dispatch(logoutFailure(error))

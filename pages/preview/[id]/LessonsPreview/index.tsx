@@ -18,6 +18,9 @@ import {
 import StatusDot from '@components/Status/StatusDot'
 import ModalMain from '@components/common/Modal'
 import LessonInfoForm from '@pages/manage-courses/chapter/[id]/components/LessonInfoForm'
+import { LoaderBall } from '@components/common'
+import { useSelector } from 'react-redux'
+import { RootState } from '@redux/rootReducer'
 
 interface Props {
   lessonsData: LessonOverviewData[] | undefined
@@ -32,6 +35,7 @@ interface Props {
   currentAttachmentDataFromChapters?: AttachmentDetailData
   courseId?: string | null | undefined
   chapterId?: string | null | undefined
+  reloadChapterDetail?: boolean
   onChange?: (
     type: ChapterContentType | null,
     value: TestDetailData | AttachmentDetailData | LessonOverviewData | null
@@ -51,16 +55,20 @@ const LessonsPreview = ({
   currentAttachmentDataFromChapters,
   courseId,
   chapterId,
+  reloadChapterDetail = true,
   onSave = () => {
     return
   },
   onChange,
 }: Props) => {
-  const [currentType, setCurrentType] = useState<ChapterContentType | null>(
-    'lesson'
+  const chapterState = useSelector(
+    (state: RootState) => state.chapterManagement
   )
   const [lessons, setLessons] = useState<LessonOverviewData[]>(
     lessonsData || []
+  )
+  const [currentType, setCurrentType] = useState<ChapterContentType | null>(
+    'lesson'
   )
   const [currentLessonData, setCurrentLessonData] =
     useState<LessonOverviewData | null>(
@@ -205,6 +213,7 @@ const LessonsPreview = ({
             selectedLesson={selectedLessonData}
             onClose={handleCloseLessonInfoModal}
             courseId={courseId}
+            chapterId={reloadChapterDetail ? chapterId : null}
           />
         </ModalMain>
       )}
@@ -250,9 +259,18 @@ const LessonsPreview = ({
                       <Button
                         variant='outlined'
                         className='has-text-primary '
-                        onClick={onSave}
+                        onClick={() =>
+                          onSave({
+                            chapterId,
+                            lessonIds: lessons.map(lesson => lesson._id),
+                          })
+                        }
                       >
-                        Save
+                        {chapterState.loading ? (
+                          <LoaderBall height={16} width={'80%'} />
+                        ) : (
+                          'Save'
+                        )}
                       </Button>
                     </Grid>
                     <Grid
@@ -308,7 +326,7 @@ const LessonsPreview = ({
                           <Grid item xs={12}>
                             {lesson.tests &&
                               lesson.tests.length > 0 &&
-                              lesson.tests.map((test, idx) => (
+                              lesson.tests.map(test => (
                                 <Grid
                                   container
                                   direction='row'
@@ -357,7 +375,7 @@ const LessonsPreview = ({
                           <Grid item xs={12}>
                             {lesson.attachments &&
                               lesson.attachments.length > 0 &&
-                              lesson.attachments.map((attachment, idx) => (
+                              lesson.attachments.map(attachment => (
                                 <Grid
                                   container
                                   direction='row'

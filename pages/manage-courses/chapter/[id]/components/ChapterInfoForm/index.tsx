@@ -13,14 +13,28 @@ import {
 } from './helpers'
 import View from '@components/common/View'
 import { LoaderBall } from '@components/common'
-import { updateChapterDetailsThunkAction } from '@redux/chapters/thunks'
+import {
+  deleteChapterThunkAction,
+  updateChapterDetailsThunkAction,
+} from '@redux/chapters/thunks'
+import { useState } from 'react'
+import ConfirmModal from '@components/ConfirmModal'
+import { useRouter } from 'next/router'
 
 // tslint:disable-next-line: cyclomatic-complexity
-const ChapterInfoForm: NextPage<Props> = ({ onClose, selectedChapter }) => {
+const ChapterInfoForm: NextPage<Props> = ({
+  onClose,
+  selectedChapter,
+  courseId,
+  redirectUrl,
+}) => {
   const dispatch = useDispatch()
   const chapterState = useSelector(
     (state: RootState) => state.chapterManagement
   )
+  const router = useRouter()
+  const [showConfirmDeleteModal, setShowConfirmDeleteModal] =
+    useState<boolean>(false)
 
   const initialValues: ChapterInfoFormType = {
     id: selectedChapter?._id || '',
@@ -45,6 +59,30 @@ const ChapterInfoForm: NextPage<Props> = ({ onClose, selectedChapter }) => {
     validationSchema: ChapterFormSchema,
     onSubmit: handleSubmit,
   })
+
+  const handleShowConfirmDeleteModal = () => {
+    setShowConfirmDeleteModal(true)
+  }
+
+  const handleCloseConfirmDeleteModal = () => {
+    setShowConfirmDeleteModal(false)
+  }
+
+  const handleDeleteLesson = () => {
+    if (!selectedChapter || !selectedChapter?._id) return
+    dispatch(
+      deleteChapterThunkAction(
+        { courseId, chapterId: selectedChapter._id },
+        async () => {
+          if (redirectUrl) {
+            await router.push(redirectUrl)
+          }
+
+          onClose()
+        }
+      )
+    )
+  }
 
   return (
     <form onSubmit={formik.handleSubmit}>
@@ -136,6 +174,22 @@ const ChapterInfoForm: NextPage<Props> = ({ onClose, selectedChapter }) => {
           </Grid>
         </Grid>
       </Grid>
+      <ConfirmModal
+        open={showConfirmDeleteModal}
+        onClose={handleCloseConfirmDeleteModal}
+        loading={chapterState.lessonLoading}
+        onCancel={handleCloseConfirmDeleteModal}
+        height={120}
+        content={
+          <p>
+            {'Are you sure you want to delete the course '}
+            <b>{`"${selectedChapter?.title}"`}</b> {' ?'}
+          </p>
+        }
+        onConfirm={handleDeleteLesson}
+        position='justify-center'
+        type='danger'
+      />
       <Grid
         container
         direction='row'
@@ -151,14 +205,15 @@ const ChapterInfoForm: NextPage<Props> = ({ onClose, selectedChapter }) => {
         <View isRow>
           <Button
             variant='outlined'
+            className='has-text-danger'
             style={{ marginRight: '15px' }}
-            onClick={onClose}
+            onClick={handleShowConfirmDeleteModal}
           >
-            Cancel
+            Delete
           </Button>
         </View>
         <Button variant='contained' type='submit' color='primary'>
-          {chapterState.loading ? (
+          {chapterState.loading && !showConfirmDeleteModal ? (
             <LoaderBall
               color1='#ffffff'
               color2='#eeeeee'
@@ -178,6 +233,8 @@ const ChapterInfoForm: NextPage<Props> = ({ onClose, selectedChapter }) => {
 
 type Props = {
   selectedChapter: any
+  courseId?: string | null | undefined
+  redirectUrl?: string
   onClose: () => void
 }
 

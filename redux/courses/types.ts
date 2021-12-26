@@ -184,6 +184,7 @@ export type CourseDetailsResponse = {
 
 export type UpdateCoursePayload = {
   id: string
+  reloadCourseDetail: boolean
   title: string
   description: string
   slug: string
@@ -194,4 +195,10 @@ export type UpdateCoursePayload = {
   discount: number
   status: number
   imageUrl: string
+}
+
+export type UpdateChaptersOfCoursePayload = {
+  id: string
+  reloadCourseDetail: boolean
+  chapters: string[]
 }

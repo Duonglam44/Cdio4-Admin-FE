@@ -106,6 +106,7 @@ export interface CoursesManagementState {
   })[]
   error: string
   loading: boolean
+  updateLoading: boolean
   totalCourses: number
   currentCourse: CourseDetailData | null
 }

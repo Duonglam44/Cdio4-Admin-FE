@@ -13,7 +13,10 @@ import {
 } from './helpers'
 import View from '@components/common/View'
 import { LoaderBall } from '@components/common'
-import { updateLessonDetailsThunkAction } from '@redux/chapters/thunks'
+import {
+  deleteLessonThunkAction,
+  updateLessonDetailsThunkAction,
+} from '@redux/chapters/thunks'
 import {
   AttachmentDetailData,
   LessonOverviewData,
@@ -23,6 +26,7 @@ import { BiEdit, BiTrash } from 'react-icons/bi'
 import { AiOutlineArrowDown, AiOutlineArrowUp } from 'react-icons/ai'
 import { useState } from 'react'
 import StatusDot from '@components/Status/StatusDot'
+import ConfirmModal from '@components/ConfirmModal'
 
 // tslint:disable-next-line: cyclomatic-complexity
 const LessonInfoForm: NextPage<Props> = ({
@@ -41,6 +45,8 @@ const LessonInfoForm: NextPage<Props> = ({
   const [attachments, setAttachments] = useState<AttachmentDetailData[]>(
     selectedLesson?.attachments || []
   )
+  const [showConfirmDeleteModal, setShowConfirmDeleteModal] =
+    useState<boolean>(false)
 
   const initialValues: LessonInfoFormType = {
     id: selectedLesson?._id || '',
@@ -97,7 +103,9 @@ const LessonInfoForm: NextPage<Props> = ({
     setTests(newTests)
   }
 
-  const handleOpenEditTestModal = (selectedTest: TestDetailData) => {}
+  const handleOpenEditTestModal = (selectedTest: TestDetailData) => {
+    return
+  }
 
   const handleAttachmentMoveUp = (index: number) => {
     if (index === 0) {
@@ -127,7 +135,29 @@ const LessonInfoForm: NextPage<Props> = ({
 
   const handleOpenEditAttachmentModal = (
     selectedAttachment: AttachmentDetailData
-  ) => {}
+  ) => {
+    return
+  }
+
+  const handleShowConfirmDeleteModal = () => {
+    setShowConfirmDeleteModal(true)
+  }
+
+  const handleCloseConfirmDeleteModal = () => {
+    setShowConfirmDeleteModal(false)
+  }
+
+  const handleDeleteLesson = () => {
+    if (!selectedLesson || !selectedLesson?._id) return
+    dispatch(
+      deleteLessonThunkAction(
+        { chapterId, courseId, lessonId: selectedLesson._id },
+        () => {
+          onClose()
+        }
+      )
+    )
+  }
 
   return (
     <form onSubmit={formik.handleSubmit}>
@@ -374,6 +404,22 @@ const LessonInfoForm: NextPage<Props> = ({
           </Grid>
         </Grid>
       </Grid>
+      <ConfirmModal
+        open={showConfirmDeleteModal}
+        onClose={handleCloseConfirmDeleteModal}
+        loading={chapterState.loading}
+        onCancel={handleCloseConfirmDeleteModal}
+        height={120}
+        content={
+          <p>
+            {'Are you sure you want to delete the course '}
+            <b>{`"${selectedLesson?.title}"`}</b> {' ?'}
+          </p>
+        }
+        onConfirm={handleDeleteLesson}
+        position='justify-center'
+        type='danger'
+      />
       <Grid
         container
         direction='row'
@@ -389,14 +435,15 @@ const LessonInfoForm: NextPage<Props> = ({
         <View isRow>
           <Button
             variant='outlined'
+            className='has-text-danger'
             style={{ marginRight: '15px' }}
-            onClick={onClose}
+            onClick={handleShowConfirmDeleteModal}
           >
-            Cancel
+            Delete
           </Button>
         </View>
         <Button variant='contained' type='submit' color='primary'>
-          {chapterState.lessonLoading ? (
+          {chapterState.loading && !showConfirmDeleteModal ? (
             <LoaderBall
               color1='#ffffff'
               color2='#eeeeee'

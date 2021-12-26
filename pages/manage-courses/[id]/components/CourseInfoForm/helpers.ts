@@ -44,6 +44,7 @@ export const getUpdateCoursePayload = (
   imageUrl?: string
 ): UpdateCoursePayload => {
   return {
+    reloadCourseDetail: true,
     imageUrl: imageUrl ? imageUrl : formValues.imageUrl,
     id: formValues.id,
     title: formValues.title,

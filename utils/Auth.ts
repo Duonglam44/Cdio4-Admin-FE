@@ -46,6 +46,8 @@ export function logout() {
   localStorage.removeItem('lastName')
   localStorage.removeItem('email')
   localStorage.removeItem('imageUrl')
+
+  window.location.replace('/login')
 }
 
 export function getJwt() {

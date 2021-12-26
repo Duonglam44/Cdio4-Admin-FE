@@ -5,6 +5,7 @@ const initialState: CoursesManagementState = {
   courses: [],
   error: '',
   loading: false,
+  updateLoading: false,
   totalCourses: 0,
   currentCourse: null,
 }
@@ -58,18 +59,18 @@ export const coursesManagement = (
     case COURSE_ACTIONS.UPDATE_COURSE_REQUEST:
       return {
         ...state,
-        loading: true,
+        updateLoading: true,
       }
     case COURSE_ACTIONS.UPDATE_COURSE_SUCCESS:
       return {
         ...state,
-        loading: false,
+        updateLoading: false,
         error: '',
       }
     case COURSE_ACTIONS.UPDATE_COURSE_FAILURE:
       return {
         ...state,
-        loading: false,
+        updateLoading: false,
         error: action.error,
       }
     //-----------delete course-----------------

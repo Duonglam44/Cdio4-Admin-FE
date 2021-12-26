@@ -55,7 +55,7 @@ const ChapterDetail: NextPage<Props> = ({}) => {
   return (
     <Fragment>
       <Head>
-        <title>{selectedChapter?.title || 'Course Detail'}</title>
+        <title>{selectedChapter?.title || 'Chapter Detail'}</title>
         <meta name='description' content='Manage course to GuruAcademy ADMIN' />
         <link rel='icon' href='/favicon.ico' />
       </Head>
@@ -71,14 +71,19 @@ const ChapterDetail: NextPage<Props> = ({}) => {
                   open={showChapterInfoModal}
                   onClose={handleCloseChapterInfoModal}
                   width={600}
-                  height={350}
+                  height={450}
                   position='flex-start-center'
                   preventBackdropClick
-                  label={'Course Detail'}
+                  label={'Chapter Detail'}
                 >
                   <ChapterInfoForm
                     selectedChapter={selectedChapter}
                     onClose={handleCloseChapterInfoModal}
+                    redirectUrl={
+                      selectedChapter?.courseId
+                        ? `/manage-courses/${selectedChapter.courseId}`
+                        : '/manage-courses'
+                    }
                   />
                 </ModalMain>
               )}

@@ -36,8 +36,8 @@ const LoaderBall = ({
           display: 'block',
           shapeRendering: 'auto',
         }}
-        width={`${width}px`}
-        height={`${height}px`}
+        width={typeof width === 'number' ? `${width}px` : width}
+        height={typeof height === 'number' ? `${height}px` : height}
         viewBox='0 0 100 100'
         preserveAspectRatio='xMidYMid'
       >
@@ -156,8 +156,8 @@ const LoaderBall = ({
 }
 
 type Props = {
-  width?: number
-  height?: number
+  width?: number | string
+  height?: number | string
   backgroundColor?: string
   color1?: string
   color2?: string

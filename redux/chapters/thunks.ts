@@ -4,6 +4,9 @@ import {
   deleteChapterFailure,
   deleteChapterRequest,
   deleteChapterSuccess,
+  deleteLessonFailure,
+  deleteLessonRequest,
+  deleteLessonSuccess,
   getChapterFailure,
   getChapterRequest,
   getChapterSuccess,
@@ -19,6 +22,7 @@ import {
   ChapterDetailsData,
   UpdateChapterPayload,
   UpdateLessonPayload,
+  UpdateLessonsOfChapterPayload,
 } from './types'
 import { Callback } from '@utils/types'
 import { getCourseDetailsThunkAction } from '@redux/courses/thunks'
@@ -42,7 +46,10 @@ export const getChapterDetailsThunkAction =
   }
 
 export const updateChapterDetailsThunkAction =
-  (payload: UpdateChapterPayload, callback: Callback) =>
+  (
+    payload: UpdateChapterPayload | UpdateLessonsOfChapterPayload,
+    callback: Callback
+  ) =>
   async (dispatch: any) => {
     dispatch(updateChapterRequest())
 
@@ -57,9 +64,13 @@ export const updateChapterDetailsThunkAction =
       dispatch(updateChapterSuccess(response.chapter))
       toast.success('Chapter updated successfully!')
       callback()
-      dispatch(getChapterDetailsThunkAction(payload.id))
-      if (!response?.chapter?.courseId) return
-      dispatch(getCourseDetailsThunkAction(response.chapter.courseId as string))
+      if (payload.reloadChapterDetails) {
+        dispatch(getChapterDetailsThunkAction(payload.id))
+        if (!response?.chapter?.courseId) return
+        dispatch(
+          getCourseDetailsThunkAction(response.chapter.courseId as string)
+        )
+      }
     } catch (error: any) {
       toast.error(error?.message || error || 'Update data failed!')
       dispatch(updateChapterFailure(error))
@@ -67,7 +78,10 @@ export const updateChapterDetailsThunkAction =
   }
 
 export const deleteChapterThunkAction =
-  (payload: { chapterId: string; courseId: string }, callback: Callback) =>
+  (
+    payload: { chapterId: string; courseId: string | null | undefined },
+    callback: Callback
+  ) =>
   async (dispatch: any) => {
     dispatch(deleteChapterRequest())
 
@@ -81,7 +95,9 @@ export const deleteChapterThunkAction =
       dispatch(deleteChapterSuccess(response))
       toast.success('Chapter deleted successfully!')
       callback()
-      dispatch(getCourseDetailsThunkAction(payload.courseId))
+      if (payload.courseId) {
+        dispatch(getCourseDetailsThunkAction(payload.courseId))
+      }
     } catch (error: any) {
       toast.error(error?.message || error || 'Delete data failed!')
       dispatch(deleteChapterFailure(error))
@@ -113,5 +129,39 @@ export const updateLessonDetailsThunkAction =
     } catch (error: any) {
       toast.error(error?.message || error || 'Update data failed!')
       dispatch(updateLessonFailure(error))
+    }
+  }
+
+export const deleteLessonThunkAction =
+  (
+    payload: {
+      lessonId: string
+      courseId: string | null | undefined
+      chapterId: string | null | undefined
+    },
+    callback: Callback
+  ) =>
+  async (dispatch: any) => {
+    dispatch(deleteLessonRequest())
+
+    try {
+      const response = (await api({
+        tokenRequired: true,
+        path: `/lessons/${payload.lessonId}`,
+        method: 'DELETE',
+      })) as any
+
+      dispatch(deleteLessonSuccess(response))
+      toast.success('Lesson deleted successfully!')
+      callback()
+      if (payload.courseId) {
+        dispatch(getCourseDetailsThunkAction(payload.courseId))
+      }
+      if (payload.chapterId) {
+        dispatch(getChapterDetailsThunkAction(payload.chapterId))
+      }
+    } catch (error: any) {
+      toast.error(error?.message || error || 'Delete data failed!')
+      dispatch(deleteLessonFailure(error))
     }
   }

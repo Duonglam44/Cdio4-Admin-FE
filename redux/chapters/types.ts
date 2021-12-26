@@ -130,10 +130,17 @@ export type CommentDetailData = {
 
 export type UpdateChapterPayload = {
   id: string
+  reloadChapterDetails: boolean
   title?: string
   description?: string
   slug?: string
   status?: number
+}
+
+export type UpdateLessonsOfChapterPayload = {
+  id: string
+  reloadChapterDetails: boolean
+  lessons: string[]
 }
 
 export type UpdateLessonPayload = {

@@ -8,7 +8,10 @@ import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from 'redux/rootReducer'
 import { LoaderBall } from '@components/common'
 import { useRouter } from 'next/router'
-import { getCourseDetailsThunkAction } from '@redux/courses/thunks'
+import {
+  getCourseDetailsThunkAction,
+  updateCourseDetailsThunkAction,
+} from '@redux/courses/thunks'
 import ChaptersPreview from './ChaptersPreview'
 
 const ChapterDetail: NextPage<Props> = ({}) => {
@@ -23,6 +26,22 @@ const ChapterDetail: NextPage<Props> = ({}) => {
   useEffect(() => {
     dispatch(getCourseDetailsThunkAction(id as string))
   }, [dispatch, id])
+
+  const handleSaveChapters = (chapterIds: string[]) => {
+    if (!courseData || !courseData._id) return
+    dispatch(
+      updateCourseDetailsThunkAction(
+        {
+          id: courseData?._id,
+          chapters: chapterIds,
+          reloadCourseDetail: false,
+        },
+        () => {
+          return
+        }
+      )
+    )
+  }
 
   return (
     <Fragment>
@@ -43,6 +62,7 @@ const ChapterDetail: NextPage<Props> = ({}) => {
                 maxHeightSidebar={'72vh'}
                 maxHeightContent={'78vh'}
                 courseId={id as string}
+                onSave={handleSaveChapters}
               />
             </Fragment>
           )}

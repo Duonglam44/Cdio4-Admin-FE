@@ -26,7 +26,7 @@ const LessonsInfo = ({ lessonsData, className, onEdit }: Props) => {
     lessonsData || []
   )
   const [showEditLessonModal, setShowEditLessonModal] = useState<boolean>(false)
-  const [selectedLessonDate, setSelectedLessonData] =
+  const [selectedLessonData, setSelectedLessonData] =
     useState<LessonOverviewData | null>(null)
 
   useEffect(() => {

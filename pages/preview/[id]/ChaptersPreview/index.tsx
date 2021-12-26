@@ -11,13 +11,16 @@ import { Callback, ChapterContentType } from '@utils/types'
 import { BiEdit } from 'react-icons/bi'
 import { AiOutlineArrowDown, AiOutlineArrowUp } from 'react-icons/ai'
 import { ChapterOverviewData } from '@redux/courses/types'
-import { AccordionMain } from '@components/common'
+import { AccordionMain, LoaderBall } from '@components/common'
 import LessonsPreview from '../LessonsPreview'
 import TestPreview from '../TestPreview'
 import StatusDot from '@components/Status/StatusDot'
 import LessonPreview from '../LessonPreview'
 import ModalMain from '@components/common/Modal'
 import ChapterInfoForm from '@pages/manage-courses/chapter/[id]/components/ChapterInfoForm'
+import { useDispatch, useSelector } from 'react-redux'
+import { RootState } from '@redux/rootReducer'
+import { updateChapterDetailsThunkAction } from '@redux/chapters/thunks'
 
 interface Props {
   chaptersData: ChapterOverviewData[] | undefined
@@ -26,7 +29,6 @@ interface Props {
   maxHeightSidebar?: string | number
   maxHeightContent?: string | number
   courseId?: string | null | undefined
-  chapterId?: string | null | undefined
   onSave?: Callback
 }
 
@@ -38,11 +40,12 @@ const ChaptersPreview: React.FC<Props> = ({
   maxHeightSidebar = 'auto',
   maxHeightContent = 'auto',
   courseId,
-  chapterId,
   onSave = () => {
     return
   },
 }) => {
+  const courseState = useSelector((state: RootState) => state.coursesManagement)
+  const dispatch = useDispatch()
   const [chapters, setChapters] = useState<ChapterOverviewData[]>(
     chaptersData || []
   )
@@ -129,6 +132,25 @@ const ChaptersPreview: React.FC<Props> = ({
     setShowChapterInfoModal(false)
   }
 
+  const handleSaveLessons = (payload: {
+    chapterId: string | null | undefined
+    lessonIds: string[]
+  }) => {
+    if (!payload.chapterId) return
+    dispatch(
+      updateChapterDetailsThunkAction(
+        {
+          id: payload.chapterId,
+          reloadChapterDetails: false,
+          lessons: payload.lessonIds,
+        },
+        () => {
+          return
+        }
+      )
+    )
+  }
+
   const contentPreview =
     currentType === 'lesson' && currentLessonData ? (
       <LessonPreview lessonData={currentLessonData} courseId={courseId} />
@@ -166,14 +188,15 @@ const ChaptersPreview: React.FC<Props> = ({
           open={showChapterInfoModal}
           onClose={handleCloseChapterInfoModal}
           width={600}
-          height={350}
+          height={450}
           position='flex-start-center'
           preventBackdropClick
-          label={'Course Detail'}
+          label={'Chapter Detail'}
         >
           <ChapterInfoForm
             selectedChapter={selectedEditChapter}
             onClose={handleCloseChapterInfoModal}
+            courseId={courseId}
           />
         </ModalMain>
       )}
@@ -220,9 +243,15 @@ const ChaptersPreview: React.FC<Props> = ({
                       <Button
                         variant='outlined'
                         className='has-text-primary '
-                        onClick={onSave}
+                        onClick={() =>
+                          onSave(chapters.map(chapter => chapter._id))
+                        }
                       >
-                        Save
+                        {courseState.updateLoading ? (
+                          <LoaderBall height={16} width={'80%'} />
+                        ) : (
+                          'Save'
+                        )}
                       </Button>
                     </Grid>
                     <Grid
@@ -297,7 +326,9 @@ const ChaptersPreview: React.FC<Props> = ({
                               currentAttachmentData || undefined
                             }
                             courseId={courseId}
-                            chapterId={chapterId}
+                            chapterId={chapter._id}
+                            onSave={handleSaveLessons}
+                            reloadChapterDetail={false}
                           />
                         </AccordionMain>
                       ))}
