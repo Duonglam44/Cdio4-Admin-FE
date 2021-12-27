@@ -273,7 +273,7 @@ const ChaptersPreview: React.FC<Props> = ({
                               alignItems='center'
                             >
                               <Grid item xs={9} className='flex-center'>
-                                <StatusDot status={chapter?.status} />
+                                <StatusDot statusId={chapter?.status} />
                                 <button className='my-8 button-text-no-color'>{`Chapter ${
                                   index + 1
                                 }: ${chapter.title}`}</button>

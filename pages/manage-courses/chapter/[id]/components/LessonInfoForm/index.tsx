@@ -277,7 +277,7 @@ const LessonInfoForm: NextPage<Props> = ({
                       }}
                     >
                       <Grid item xs={8}>
-                        <StatusDot status={test?.status} />
+                        <StatusDot statusId={test?.status} />
                         <button className='my-8 button-text-no-color'>{`${
                           index + 1
                         }. ${test.title}`}</button>
@@ -353,7 +353,7 @@ const LessonInfoForm: NextPage<Props> = ({
                       }}
                     >
                       <Grid item xs={8}>
-                        <StatusDot status={attachment?.status} />
+                        <StatusDot statusId={attachment?.status} />
                         <button className='my-8 button-text-no-color'>{`${
                           index + 1
                         }. ${attachment.title}`}</button>

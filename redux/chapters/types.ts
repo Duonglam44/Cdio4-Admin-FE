@@ -99,22 +99,22 @@ export type TestDetailData = {
   title: string
   description?: string
   slug: string
-  questions: [
-    {
-      question: string
-      a: string
-      b: string
-      c?: string
-      d?: string
-      e?: string
-      answer: string
-    }
-  ]
+  questions: TestQuestionData[]
   status: number
   lesson?: string
   createdAt: string
   updatedAt: string
   __v: number
+}
+
+export type TestQuestionData = {
+  question: string
+  a: string
+  b: string
+  c?: string
+  d?: string
+  e?: string
+  answer: string
 }
 
 export type CommentDetailData = {
@@ -153,4 +153,15 @@ export type UpdateLessonPayload = {
   status?: number
   tests?: string[]
   attachments?: string[]
+}
+
+export type UpdateTestPayload = {
+  chapterId?: string
+  courseId?: string
+  id: string
+  title?: string
+  description?: string
+  slug?: string
+  status?: number
+  questions?: TestQuestionData[]
 }

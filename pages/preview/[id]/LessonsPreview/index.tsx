@@ -27,7 +27,6 @@ interface Props {
   className?: string
   showContentPreview?: boolean
   label?: string
-  onSave?: Callback
   maxHeightSidebar?: number | string
   currentTypeFromChapters?: ChapterContentType
   currentLessonDataFromChapters?: LessonOverviewData
@@ -36,6 +35,7 @@ interface Props {
   courseId?: string | null | undefined
   chapterId?: string | null | undefined
   reloadChapterDetail?: boolean
+  onSave?: Callback
   onChange?: (
     type: ChapterContentType | null,
     value: TestDetailData | AttachmentDetailData | LessonOverviewData | null
@@ -292,7 +292,7 @@ const LessonsPreview = ({
                           alignItems='center'
                         >
                           <Grid item xs={9}>
-                            <StatusDot status={lesson?.status} />
+                            <StatusDot statusId={lesson?.status} />
                             <button
                               className='my-8 button-text-no-color'
                               onClick={() => handleLessonClick(lesson)}
@@ -367,7 +367,7 @@ const LessonsPreview = ({
                                       handleOpenEditLessonModal(lesson)
                                     }
                                   /> */}
-                                    <StatusDot status={test?.status} />
+                                    <StatusDot statusId={test?.status} />
                                   </Grid>
                                 </Grid>
                               ))}
@@ -419,7 +419,7 @@ const LessonsPreview = ({
                                       handleOpenEditLessonModal(lesson)
                                     }
                                   /> */}
-                                    <StatusDot status={attachment?.status} />
+                                    <StatusDot statusId={attachment?.status} />
                                   </Grid>
                                 </Grid>
                               ))}

@@ -1,32 +1,86 @@
+import ModalMain from '@components/common/Modal'
 import ViewItem from '@components/common/ViewItem'
-import { Divider } from '@material-ui/core'
+import StatusDot from '@components/Status/StatusDot'
+import { Button, Divider } from '@material-ui/core'
 import { Grid } from '@mui/material'
+import TestInfoForm from '@pages/manage-courses/chapter/[id]/components/TestInfoForm'
 import { TestDetailData } from '@redux/chapters/types'
-import React, { Fragment } from 'react'
+import React, { Fragment, useState } from 'react'
 
 interface Props {
   testData: TestDetailData | null
 }
 
 const TestPreview = ({ testData }: Props) => {
+  const [showTestInfoModal, setShowTestInfoModal] = useState<boolean>(false)
+
   if (!testData) {
     return <p>No Data</p>
   }
 
+  const handleEditTestInfoClick = (
+    event: React.MouseEvent<HTMLElement, MouseEvent>
+  ) => {
+    event.stopPropagation()
+    setShowTestInfoModal(true)
+  }
+
+  const handleCloseChapterInfoModal = () => {
+    setShowTestInfoModal(false)
+  }
+
   return (
     <Fragment>
-      <Grid container>
+      {/* Modals */}
+      {showTestInfoModal && (
+        <ModalMain
+          open={showTestInfoModal}
+          onClose={handleCloseChapterInfoModal}
+          width={600}
+          height={450}
+          position='flex-start-center'
+          preventBackdropClick
+          label={'Lesson Detail'}
+        >
+          <TestInfoForm
+            selectedTest={testData}
+            onClose={handleCloseChapterInfoModal}
+          />
+        </ModalMain>
+      )}
+      <Grid container spacing={1}>
+        <Grid item xs={12}>
+          <div className='justify-space-between'>
+            <h4>Lesson Information</h4>
+            <Button
+              variant='outlined'
+              className='has-text-primary'
+              onClick={handleEditTestInfoClick}
+            >
+              Edit
+            </Button>
+          </div>
+        </Grid>
         <Grid item xs={12} md={6}>
           <ViewItem label={'Test title'} value={testData?.title} />
         </Grid>
-        <Grid item xs={12} md={6}>
+        <Grid item xs={12} md={2}>
+          <ViewItem
+            label={'Status'}
+            value={<StatusDot statusId={testData?.status} showText />}
+          />
+        </Grid>
+        <Grid item xs={12} md={4}>
+          <ViewItem label={'Slug'} value={testData?.slug} />
+        </Grid>
+        <Grid item xs={12} md={12}>
           <ViewItem label={'Description'} value={testData?.description} />
         </Grid>
         <Grid item xs={12} md={12} py={3}>
           <Divider variant='middle' />
         </Grid>
         <Grid item xs={12}>
-          <Grid container>
+          <Grid container spacing={1}>
             {testData?.questions &&
               testData?.questions.length > 0 &&
               testData.questions.map((question, index) => (
