@@ -2,12 +2,12 @@ import React from 'react'
 import cn from 'classnames'
 import ViewItem from '@components/common/ViewItem'
 import { Button, Grid } from '@material-ui/core'
-import { ChapterDetailsData } from '@redux/chapters/types'
 import { formatDateFromApi, getCourseStatusText } from '@utils/helpers'
 import { Callback } from '@utils/types'
+import { ChapterOverviewData } from '@redux/courses/types'
 
 interface Props {
-  chapterData: ChapterDetailsData | null
+  chapterData: ChapterOverviewData | null
   chapterNumber: number | string | null
   className?: string
   onEdit?: Callback

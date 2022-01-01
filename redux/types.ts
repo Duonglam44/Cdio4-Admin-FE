@@ -1,8 +1,11 @@
 import { CategoryDetailData } from './categories/types'
 import { StreamDetailData } from './streams/types'
 import { FeedbackDetailData } from './feedbacks/types'
-import { CourseDetailData, CourseOverviewData } from './courses/types'
-import { ChapterDetailsData } from './chapters/types'
+import {
+  ChapterOverviewData,
+  CourseDetailData,
+  CourseOverviewData,
+} from './courses/types'
 import { UploadTaskSnapshot } from 'firebase/storage'
 
 export interface UserInfoState {
@@ -130,7 +133,7 @@ export interface FeedbackManagementState {
 }
 
 export interface ChapterManagementState {
-  chapter: ChapterDetailsData | null
+  chapter: ChapterOverviewData | null
   error: string
   loading: boolean
   lessonLoading: boolean

@@ -62,6 +62,7 @@ const ChapterDetail: NextPage<Props> = ({}) => {
                 maxHeightSidebar={'72vh'}
                 maxHeightContent={'78vh'}
                 courseId={id as string}
+                reloadChapterDetailAfterAction={false}
                 onSave={handleSaveChapters}
               />
             </Fragment>

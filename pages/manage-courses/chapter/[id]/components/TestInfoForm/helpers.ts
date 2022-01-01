@@ -21,7 +21,9 @@ export const TestFormSchema = Yup.object().shape({
       c: Yup.string().optional(),
       d: Yup.string().optional(),
       e: Yup.string().optional(),
-      answer: Yup.string().required('Answer is required'),
+      answer: Yup.string()
+        .required('Answer is required')
+        .typeError('Answer is required'),
     })
   ),
 })
@@ -36,7 +38,7 @@ export type TestInfoFormType = {
 }
 
 export const getUpdateTestPayload = (
-  formValues: TestInfoFormType
+  formValues: TestInfoFormType & { chapterId?: string; courseId?: string }
 ): UpdateTestPayload => {
   return {
     id: formValues.id,
@@ -45,6 +47,8 @@ export const getUpdateTestPayload = (
     slug: formValues.slug,
     status: formValues.status,
     questions: formValues.questions,
+    chapterId: formValues.chapterId || undefined,
+    courseId: formValues.courseId || undefined,
   }
 }
 

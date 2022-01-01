@@ -21,14 +21,19 @@ import ChapterInfoForm from '@pages/manage-courses/chapter/[id]/components/Chapt
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '@redux/rootReducer'
 import { updateChapterDetailsThunkAction } from '@redux/chapters/thunks'
+import AttachmentPreview from '../AttachmentPreview'
 
 interface Props {
-  chaptersData: ChapterOverviewData[] | undefined
+  chaptersData: ChapterOverviewData[] | null | undefined
   className?: string
   label?: string
   maxHeightSidebar?: string | number
   maxHeightContent?: string | number
   courseId?: string | null | undefined
+  showSaveChapterButton?: boolean
+  reloadChapterDetailAfterAction?: boolean
+  showEditChapter?: boolean
+  setAllowLoading?: Callback
   onSave?: Callback
 }
 
@@ -40,6 +45,10 @@ const ChaptersPreview: React.FC<Props> = ({
   maxHeightSidebar = 'auto',
   maxHeightContent = 'auto',
   courseId,
+  showSaveChapterButton = true,
+  reloadChapterDetailAfterAction = false,
+  showEditChapter = true,
+  setAllowLoading,
   onSave = () => {
     return
   },
@@ -137,6 +146,9 @@ const ChaptersPreview: React.FC<Props> = ({
     lessonIds: string[]
   }) => {
     if (!payload.chapterId) return
+    if (setAllowLoading) {
+      setAllowLoading(false)
+    }
     dispatch(
       updateChapterDetailsThunkAction(
         {
@@ -145,7 +157,8 @@ const ChaptersPreview: React.FC<Props> = ({
           lessons: payload.lessonIds,
         },
         () => {
-          return
+          if (!setAllowLoading) return
+          setAllowLoading(true)
         }
       )
     )
@@ -153,17 +166,29 @@ const ChaptersPreview: React.FC<Props> = ({
 
   const contentPreview =
     currentType === 'lesson' && currentLessonData ? (
-      <LessonPreview lessonData={currentLessonData} courseId={courseId} />
+      <LessonPreview
+        lessonData={currentLessonData}
+        courseId={courseId}
+        chapterId={
+          reloadChapterDetailAfterAction ? chaptersData?.[0]?._id : null
+        }
+      />
     ) : currentType === 'test' && currentTestData ? (
-      <TestPreview testData={currentTestData} />
+      <TestPreview
+        testData={currentTestData}
+        courseId={courseId}
+        chapterId={
+          reloadChapterDetailAfterAction ? chaptersData?.[0]?._id : null
+        }
+      />
     ) : currentType === 'attachment' && currentAttachmentData ? (
-      <div>
-        Click{' '}
-        <a href={currentAttachmentData?.url} target='_blank' rel='noreferrer'>
-          here
-        </a>{' '}
-        to download the attachment
-      </div>
+      <AttachmentPreview
+        attachmentData={currentAttachmentData}
+        courseId={courseId}
+        chapterId={
+          reloadChapterDetailAfterAction ? chaptersData?.[0]?._id : null
+        }
+      />
     ) : (
       <p>No Data</p>
     )
@@ -240,19 +265,21 @@ const ChaptersPreview: React.FC<Props> = ({
                       <h4 className='ml-8'>Chapters</h4>
                     </Grid>
                     <Grid item xs={2}>
-                      <Button
-                        variant='outlined'
-                        className='has-text-primary '
-                        onClick={() =>
-                          onSave(chapters.map(chapter => chapter._id))
-                        }
-                      >
-                        {courseState.updateLoading ? (
-                          <LoaderBall height={16} width={'80%'} />
-                        ) : (
-                          'Save'
-                        )}
-                      </Button>
+                      {showSaveChapterButton && (
+                        <Button
+                          variant='outlined'
+                          className='has-text-primary '
+                          onClick={() =>
+                            onSave(chapters.map(chapter => chapter._id))
+                          }
+                        >
+                          {courseState.updateLoading ? (
+                            <LoaderBall height={16} width={'80%'} />
+                          ) : (
+                            'Save'
+                          )}
+                        </Button>
+                      )}
                     </Grid>
                     <Grid
                       item
@@ -261,22 +288,27 @@ const ChaptersPreview: React.FC<Props> = ({
                     >
                       {chapters?.map((chapter, index) => (
                         <AccordionMain
-                          key={chapter._id}
+                          key={chapter?._id}
+                          expanded={true}
                           labelNode={
                             <Grid
                               container
-                              key={chapter._id}
+                              key={chapter?._id}
                               className={cn(
                                 'page-chapter-detail__lesson-preview--sidebar__lesson'
                               )}
                               direction='row'
                               alignItems='center'
                             >
-                              <Grid item xs={9} className='flex-center'>
+                              <Grid
+                                item
+                                xs={showEditChapter ? 9 : 10}
+                                className='flex-center'
+                              >
                                 <StatusDot statusId={chapter?.status} />
                                 <button className='my-8 button-text-no-color'>{`Chapter ${
                                   index + 1
-                                }: ${chapter.title}`}</button>
+                                }: ${chapter?.title}`}</button>
                               </Grid>
                               <Grid item xs={1}>
                                 {index !== 0 ? (
@@ -300,20 +332,22 @@ const ChaptersPreview: React.FC<Props> = ({
                                   />
                                 ) : null}
                               </Grid>
-                              <Grid item xs={1}>
-                                <BiEdit
-                                  size={20}
-                                  className='page-chapter-detail__lesson-preview--sidebar__icon'
-                                  onClick={e =>
-                                    handleEditChapterInfoClick(e, chapter)
-                                  }
-                                />
-                              </Grid>
+                              {showEditChapter && (
+                                <Grid item xs={1}>
+                                  <BiEdit
+                                    size={20}
+                                    className='page-chapter-detail__lesson-preview--sidebar__icon'
+                                    onClick={e =>
+                                      handleEditChapterInfoClick(e, chapter)
+                                    }
+                                  />
+                                </Grid>
+                              )}
                             </Grid>
                           }
                         >
                           <LessonsPreview
-                            lessonsData={chapter.lessons}
+                            lessonsData={chapter?.lessons}
                             onChange={handleLessonsPreviewChange}
                             currentTypeFromChapters={currentType || undefined}
                             currentLessonDataFromChapters={
@@ -326,9 +360,9 @@ const ChaptersPreview: React.FC<Props> = ({
                               currentAttachmentData || undefined
                             }
                             courseId={courseId}
-                            chapterId={chapter._id}
+                            chapterId={chapter?._id}
                             onSave={handleSaveLessons}
-                            reloadChapterDetail={false}
+                            reloadChapterDetail={reloadChapterDetailAfterAction}
                           />
                         </AccordionMain>
                       ))}

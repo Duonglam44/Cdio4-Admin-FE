@@ -407,7 +407,7 @@ const LessonInfoForm: NextPage<Props> = ({
       <ConfirmModal
         open={showConfirmDeleteModal}
         onClose={handleCloseConfirmDeleteModal}
-        loading={chapterState.loading}
+        loading={chapterState.lessonLoading}
         onCancel={handleCloseConfirmDeleteModal}
         height={120}
         content={
@@ -443,7 +443,7 @@ const LessonInfoForm: NextPage<Props> = ({
           </Button>
         </View>
         <Button variant='contained' type='submit' color='primary'>
-          {chapterState.loading && !showConfirmDeleteModal ? (
+          {chapterState.lessonLoading && !showConfirmDeleteModal ? (
             <LoaderBall
               color1='#ffffff'
               color2='#eeeeee'

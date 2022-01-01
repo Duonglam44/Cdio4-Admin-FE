@@ -1,4 +1,5 @@
-import { CHAPTER_ACTIONS, ChapterDetailsData } from './types'
+import { ChapterOverviewData } from '@redux/courses/types'
+import { CHAPTER_ACTIONS } from './types'
 
 //-------------------getChapter-------------------
 export const getChapterRequest = () => {
@@ -6,7 +7,7 @@ export const getChapterRequest = () => {
     type: CHAPTER_ACTIONS.GET_CHAPTER_REQUEST,
   }
 }
-export const getChapterSuccess = (payload: ChapterDetailsData) => {
+export const getChapterSuccess = (payload: ChapterOverviewData) => {
   return {
     payload,
     type: CHAPTER_ACTIONS.GET_CHAPTER_SUCCESS,
@@ -24,7 +25,7 @@ export const updateChapterRequest = () => {
     type: CHAPTER_ACTIONS.UPDATE_CHAPTER_REQUEST,
   }
 }
-export const updateChapterSuccess = (payload: ChapterDetailsData) => {
+export const updateChapterSuccess = (payload: ChapterOverviewData) => {
   return {
     payload,
     type: CHAPTER_ACTIONS.UPDATE_CHAPTER_SUCCESS,
@@ -43,7 +44,7 @@ export const deleteChapterRequest = () => {
     type: CHAPTER_ACTIONS.DELETE_CHAPTER_REQUEST,
   }
 }
-export const deleteChapterSuccess = (payload: ChapterDetailsData) => {
+export const deleteChapterSuccess = (payload: ChapterOverviewData) => {
   return {
     payload,
     type: CHAPTER_ACTIONS.DELETE_CHAPTER_SUCCESS,
@@ -62,7 +63,7 @@ export const updateLessonRequest = () => {
     type: CHAPTER_ACTIONS.UPDATE_LESSON_REQUEST,
   }
 }
-export const updateLessonSuccess = (payload: ChapterDetailsData) => {
+export const updateLessonSuccess = (payload: ChapterOverviewData) => {
   return {
     payload,
     type: CHAPTER_ACTIONS.UPDATE_LESSON_SUCCESS,
@@ -81,7 +82,7 @@ export const deleteLessonRequest = () => {
     type: CHAPTER_ACTIONS.DELETE_LESSON_REQUEST,
   }
 }
-export const deleteLessonSuccess = (payload: ChapterDetailsData) => {
+export const deleteLessonSuccess = (payload: ChapterOverviewData) => {
   return {
     payload,
     type: CHAPTER_ACTIONS.DELETE_LESSON_SUCCESS,
@@ -99,7 +100,7 @@ export const updateTestRequest = () => {
     type: CHAPTER_ACTIONS.UPDATE_TEST_REQUEST,
   }
 }
-export const updateTestSuccess = (payload: ChapterDetailsData) => {
+export const updateTestSuccess = (payload: ChapterOverviewData) => {
   return {
     payload,
     type: CHAPTER_ACTIONS.UPDATE_TEST_SUCCESS,
@@ -118,7 +119,7 @@ export const deleteTestRequest = () => {
     type: CHAPTER_ACTIONS.DELETE_TEST_REQUEST,
   }
 }
-export const deleteTestSuccess = (payload: ChapterDetailsData) => {
+export const deleteTestSuccess = (payload: ChapterOverviewData) => {
   return {
     payload,
     type: CHAPTER_ACTIONS.DELETE_TEST_SUCCESS,
@@ -136,7 +137,7 @@ export const updateAttachmentRequest = () => {
     type: CHAPTER_ACTIONS.UPDATE_ATTACHMENT_REQUEST,
   }
 }
-export const updateAttachmentSuccess = (payload: ChapterDetailsData) => {
+export const updateAttachmentSuccess = (payload: ChapterOverviewData) => {
   return {
     payload,
     type: CHAPTER_ACTIONS.UPDATE_ATTACHMENT_SUCCESS,
@@ -155,7 +156,7 @@ export const deleteAttachmentRequest = () => {
     type: CHAPTER_ACTIONS.DELETE_ATTACHMENT_REQUEST,
   }
 }
-export const deleteAttachmentSuccess = (payload: ChapterDetailsData) => {
+export const deleteAttachmentSuccess = (payload: ChapterOverviewData) => {
   return {
     payload,
     type: CHAPTER_ACTIONS.DELETE_ATTACHMENT_SUCCESS,
@@ -173,7 +174,7 @@ export const updateCommentRequest = () => {
     type: CHAPTER_ACTIONS.UPDATE_COMMENT_REQUEST,
   }
 }
-export const updateCommentSuccess = (payload: ChapterDetailsData) => {
+export const updateCommentSuccess = (payload: ChapterOverviewData) => {
   return {
     payload,
     type: CHAPTER_ACTIONS.UPDATE_COMMENT_SUCCESS,
@@ -192,7 +193,7 @@ export const deleteCommentRequest = () => {
     type: CHAPTER_ACTIONS.DELETE_COMMENT_REQUEST,
   }
 }
-export const deleteCommentSuccess = (payload: ChapterDetailsData) => {
+export const deleteCommentSuccess = (payload: ChapterOverviewData) => {
   return {
     payload,
     type: CHAPTER_ACTIONS.DELETE_COMMENT_SUCCESS,

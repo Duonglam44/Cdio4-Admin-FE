@@ -6,26 +6,28 @@ import { useFormik } from 'formik'
 import { formatDateFromApi } from '@utils/helpers'
 import Select from '@components/common/Select'
 import {
-  ChapterFormSchema,
-  ChapterInfoFormType,
-  getUpdateChapterPayload,
+  AttachmentFormSchema,
+  AttachmentInfoFormType,
+  getUpdateAttachmentPayload,
   statusOptions,
 } from './helpers'
 import View from '@components/common/View'
 import { LoaderBall } from '@components/common'
 import {
-  deleteChapterThunkAction,
-  updateChapterDetailsThunkAction,
+  deleteAttachmentThunkAction,
+  updateAttachmentDetailsThunkAction,
 } from '@redux/chapters/thunks'
 import { useState } from 'react'
 import ConfirmModal from '@components/ConfirmModal'
 import { useRouter } from 'next/router'
+import { AttachmentDetailData } from '@redux/chapters/types'
 
 // tslint:disable-next-line: cyclomatic-complexity
-const ChapterInfoForm: NextPage<Props> = ({
+const AttachmentInfoForm: NextPage<Props> = ({
   onClose,
-  selectedChapter,
+  selectedAttachment,
   courseId,
+  chapterId,
   redirectUrl,
 }) => {
   const dispatch = useDispatch()
@@ -36,19 +38,23 @@ const ChapterInfoForm: NextPage<Props> = ({
   const [showConfirmDeleteModal, setShowConfirmDeleteModal] =
     useState<boolean>(false)
 
-  const initialValues: ChapterInfoFormType = {
-    id: selectedChapter?._id || '',
-    title: selectedChapter?.title || '',
-    description: selectedChapter?.description || '',
-    status: selectedChapter?.status ?? 1,
-    number: selectedChapter?.number || 0,
-    slug: selectedChapter?.slug || '',
+  const initialValues: AttachmentInfoFormType = {
+    id: selectedAttachment?._id || '',
+    title: selectedAttachment?.title || '',
+    description: selectedAttachment?.description || '',
+    status: selectedAttachment?.status ?? 1,
+    number: selectedAttachment?.number || 0,
+    slug: selectedAttachment?.slug || '',
   }
 
   const handleSubmit = (values: any) => {
-    const payload = getUpdateChapterPayload(values)
+    const payload = getUpdateAttachmentPayload({
+      ...values,
+      courseId,
+      chapterId,
+    })
     dispatch(
-      updateChapterDetailsThunkAction(payload, () => {
+      updateAttachmentDetailsThunkAction(payload, () => {
         onClose()
       })
     )
@@ -56,7 +62,7 @@ const ChapterInfoForm: NextPage<Props> = ({
 
   const formik = useFormik({
     initialValues,
-    validationSchema: ChapterFormSchema,
+    validationSchema: AttachmentFormSchema,
     onSubmit: handleSubmit,
   })
 
@@ -69,10 +75,10 @@ const ChapterInfoForm: NextPage<Props> = ({
   }
 
   const handleDeleteLesson = () => {
-    if (!selectedChapter || !selectedChapter?._id) return
+    if (!selectedAttachment || !selectedAttachment?._id) return
     dispatch(
-      deleteChapterThunkAction(
-        { courseId, chapterId: selectedChapter._id },
+      deleteAttachmentThunkAction(
+        { courseId, chapterId, attachmentId: selectedAttachment?._id },
         async () => {
           if (redirectUrl) {
             await router.push(redirectUrl)
@@ -139,7 +145,7 @@ const ChapterInfoForm: NextPage<Props> = ({
               <TextField
                 label='Created Date'
                 type='text'
-                value={formatDateFromApi(selectedChapter?.createdAt) || '--'}
+                value={formatDateFromApi(selectedAttachment?.createdAt) || '--'}
                 disabled
                 fullWidth
               />
@@ -148,7 +154,7 @@ const ChapterInfoForm: NextPage<Props> = ({
               <TextField
                 label='Updated Date'
                 type='text'
-                value={formatDateFromApi(selectedChapter?.updatedAt) || '--'}
+                value={formatDateFromApi(selectedAttachment?.updatedAt) || '--'}
                 disabled
                 fullWidth
               />
@@ -177,13 +183,13 @@ const ChapterInfoForm: NextPage<Props> = ({
       <ConfirmModal
         open={showConfirmDeleteModal}
         onClose={handleCloseConfirmDeleteModal}
-        loading={chapterState.lessonLoading}
+        loading={chapterState.attachmentLoading}
         onCancel={handleCloseConfirmDeleteModal}
         height={120}
         content={
           <p>
-            {'Are you sure you want to delete the course '}
-            <b>{`"${selectedChapter?.title}"`}</b> {' ?'}
+            {'Are you sure you want to delete the attachment '}
+            <b>{`"${selectedAttachment?.title}"`}</b> {' ?'}
           </p>
         }
         onConfirm={handleDeleteLesson}
@@ -213,7 +219,7 @@ const ChapterInfoForm: NextPage<Props> = ({
           </Button>
         </View>
         <Button variant='contained' type='submit' color='primary'>
-          {chapterState.loading && !showConfirmDeleteModal ? (
+          {chapterState.attachmentLoading && !showConfirmDeleteModal ? (
             <LoaderBall
               color1='#ffffff'
               color2='#eeeeee'
@@ -232,10 +238,11 @@ const ChapterInfoForm: NextPage<Props> = ({
 }
 
 type Props = {
-  selectedChapter: any
+  selectedAttachment: AttachmentDetailData
   courseId?: string | null | undefined
+  chapterId?: string | null | undefined
   redirectUrl?: string
   onClose: () => void
 }
 
-export default ChapterInfoForm
+export default AttachmentInfoForm

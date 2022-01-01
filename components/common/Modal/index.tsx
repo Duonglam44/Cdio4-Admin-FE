@@ -87,6 +87,10 @@ const ModalMain: React.FC<ModalProps> = ({
       className={`${modalClassName} ${position} ${
         position === 'flex-start-center' && 'mt-100'
       }`}
+      style={{
+        maxHeight: '90vh',
+        overflowY: 'auto',
+      }}
     >
       <Fade in={open}>
         <div

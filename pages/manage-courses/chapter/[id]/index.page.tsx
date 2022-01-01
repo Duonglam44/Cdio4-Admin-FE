@@ -13,7 +13,7 @@ import { getChapterDetailsThunkAction } from '@redux/chapters/thunks'
 import ChapterInfo from './components/ChapterInfo'
 import ModalMain from '@components/common/Modal'
 import ChapterInfoForm from './components/ChapterInfoForm'
-import LessonsInfo from './components/LessonsInfo'
+import ChaptersPreview from '@pages/preview/[id]/ChaptersPreview'
 
 const ChapterDetail: NextPage<Props> = ({}) => {
   const router = useRouter()
@@ -29,13 +29,9 @@ const ChapterDetail: NextPage<Props> = ({}) => {
 
   const selectedChapter = chapterState.chapter
 
-  const [expanded, setExpanded] = useState<number>(1)
   const [showChapterInfoModal, setShowChapterInfoModal] =
     useState<boolean>(false)
-
-  const handleAccordionChange = (panel: number) => (event, isExpanded) => {
-    setExpanded(isExpanded ? panel : 0)
-  }
+  const [allowLoading, setAllowLoading] = useState<boolean>(true)
 
   const handleEditChapterInfoClick = (
     event: React.MouseEvent<HTMLElement, MouseEvent>
@@ -61,7 +57,7 @@ const ChapterDetail: NextPage<Props> = ({}) => {
       </Head>
       <PageWithSidebar>
         <PageWithHeader title='Chapter Detail'>
-          {chapterState.loading ? (
+          {allowLoading && chapterState.loading && !showChapterInfoModal ? (
             <LoaderBall />
           ) : (
             <Fragment>
@@ -97,9 +93,15 @@ const ChapterDetail: NextPage<Props> = ({}) => {
                   />
                 </Grid>
                 <Grid item xs={12} sm={12}>
-                  <LessonsInfo
-                    lessonsData={selectedChapter?.lessons}
+                  <ChaptersPreview
+                    chaptersData={selectedChapter ? [selectedChapter] : []}
+                    showSaveChapterButton={false}
+                    reloadChapterDetailAfterAction
+                    maxHeightSidebar={'85vh'}
+                    maxHeightContent={'90vh'}
                     className='page-chapter-detail__chapter-info'
+                    setAllowLoading={setAllowLoading}
+                    showEditChapter={false}
                   />
                 </Grid>
               </Grid>

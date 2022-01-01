@@ -9,9 +9,11 @@ import React, { Fragment, useState } from 'react'
 
 interface Props {
   testData: TestDetailData | null
+  courseId?: string | null | undefined
+  chapterId?: string | null | undefined
 }
 
-const TestPreview = ({ testData }: Props) => {
+const TestPreview = ({ testData, courseId, chapterId }: Props) => {
   const [showTestInfoModal, setShowTestInfoModal] = useState<boolean>(false)
 
   if (!testData) {
@@ -36,22 +38,24 @@ const TestPreview = ({ testData }: Props) => {
         <ModalMain
           open={showTestInfoModal}
           onClose={handleCloseChapterInfoModal}
-          width={600}
-          height={450}
+          width={850}
+          height={520}
           position='flex-start-center'
           preventBackdropClick
-          label={'Lesson Detail'}
+          label={'Test Detail'}
         >
           <TestInfoForm
             selectedTest={testData}
             onClose={handleCloseChapterInfoModal}
+            courseId={courseId}
+            chapterId={chapterId}
           />
         </ModalMain>
       )}
       <Grid container spacing={1}>
         <Grid item xs={12}>
           <div className='justify-space-between'>
-            <h4>Lesson Information</h4>
+            <h4>Test Information</h4>
             <Button
               variant='outlined'
               className='has-text-primary'

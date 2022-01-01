@@ -1,8 +1,8 @@
 import * as Yup from 'yup'
 import { CommonStatus } from '@config/constant'
-import { UpdateChapterPayload } from '@redux/chapters/types'
+import { UpdateAttachmentPayload } from '@redux/chapters/types'
 
-export const ChapterFormSchema = Yup.object().shape({
+export const AttachmentFormSchema = Yup.object().shape({
   id: Yup.string().optional(),
   title: Yup.string().required('Title is required'),
   slug: Yup.string()
@@ -15,7 +15,7 @@ export const ChapterFormSchema = Yup.object().shape({
   status: Yup.mixed().required('Status is required'),
 })
 
-export type ChapterInfoFormType = {
+export type AttachmentInfoFormType = {
   id: string
   title: string
   slug: string
@@ -24,15 +24,17 @@ export type ChapterInfoFormType = {
   status: number
 }
 
-export const getUpdateChapterPayload = (
-  formValues: ChapterInfoFormType
-): UpdateChapterPayload => {
+export const getUpdateAttachmentPayload = (
+  formValues: AttachmentInfoFormType & { chapterId?: string; courseId?: string }
+): UpdateAttachmentPayload => {
   return {
     id: formValues.id,
     title: formValues.title,
     description: formValues.description,
     slug: formValues.slug,
     status: formValues.status,
+    chapterId: formValues.chapterId || undefined,
+    courseId: formValues.courseId || undefined,
   }
 }
 

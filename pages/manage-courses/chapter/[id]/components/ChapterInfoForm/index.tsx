@@ -182,7 +182,7 @@ const ChapterInfoForm: NextPage<Props> = ({
         height={120}
         content={
           <p>
-            {'Are you sure you want to delete the course '}
+            {'Are you sure you want to delete the chapter '}
             <b>{`"${selectedChapter?.title}"`}</b> {' ?'}
           </p>
         }

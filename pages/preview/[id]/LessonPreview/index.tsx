@@ -10,9 +10,10 @@ import React, { Fragment, useState } from 'react'
 interface Props {
   lessonData: LessonOverviewData | null
   courseId?: string | null | undefined
+  chapterId?: string | null | undefined
 }
 
-const LessonPreview = ({ lessonData, courseId }: Props) => {
+const LessonPreview = ({ lessonData, courseId, chapterId }: Props) => {
   const [showLessonInfoModal, setShowLessonInfoModal] = useState<boolean>(false)
 
   if (!lessonData) {
@@ -47,6 +48,7 @@ const LessonPreview = ({ lessonData, courseId }: Props) => {
             selectedLesson={lessonData}
             onClose={handleCloseChapterInfoModal}
             courseId={courseId}
+            chapterId={chapterId}
           />
         </ModalMain>
       )}

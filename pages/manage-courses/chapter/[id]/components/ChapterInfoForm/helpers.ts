@@ -25,9 +25,10 @@ export type ChapterInfoFormType = {
 }
 
 export const getUpdateChapterPayload = (
-  formValues: ChapterInfoFormType
+  formValues: ChapterInfoFormType & { reloadChapterDetails?: boolean }
 ): UpdateChapterPayload => {
   return {
+    reloadChapterDetails: formValues.reloadChapterDetails || true,
     id: formValues.id,
     title: formValues.title,
     description: formValues.description,

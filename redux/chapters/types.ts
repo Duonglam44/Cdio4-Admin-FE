@@ -1,3 +1,5 @@
+import { ChapterOverviewData } from '@redux/courses/types'
+
 export enum CHAPTER_ACTIONS {
   UPDATE_CHAPTER_REQUEST = 'chapter-management/UPDATE_CHAPTER_REQUEST',
   UPDATE_CHAPTER_SUCCESS = 'chapter-management/UPDATE_CHAPTER_SUCCESS',
@@ -34,21 +36,7 @@ export enum CHAPTER_ACTIONS {
   DELETE_COMMENT_FAILURE = 'chapter-management/DELETE_COMMENT_FAILURE',
 }
 
-export type ChapterDetailsData = {
-  _id: string
-  courseId: courseIdOverviewType | string
-  status: number
-  lessons: LessonOverviewData[]
-  number?: number
-  title: string
-  slug: string
-  description?: string
-  createdAt: string
-  updatedAt: string
-  __v: 0
-}
-
-type courseIdOverviewType = {
+export type courseIdOverviewType = {
   _id: string
   title: string
   description: string
@@ -61,7 +49,7 @@ type courseIdOverviewType = {
 }
 
 export type ChapterDetailResponse = {
-  chapter: ChapterDetailsData
+  chapter: ChapterOverviewData
 }
 
 export type LessonOverviewData = {
@@ -86,6 +74,7 @@ export type AttachmentDetailData = {
   title: string
   description?: string
   url: string
+  slug: string
   status: number
   lesson?: string
   createdAt: string
@@ -164,4 +153,14 @@ export type UpdateTestPayload = {
   slug?: string
   status?: number
   questions?: TestQuestionData[]
+}
+
+export type UpdateAttachmentPayload = {
+  chapterId?: string
+  courseId?: string
+  id: string
+  title?: string
+  description?: string
+  slug?: string
+  status?: number
 }

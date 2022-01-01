@@ -1,4 +1,4 @@
-import { LessonOverviewData } from '@redux/chapters/types'
+import { courseIdOverviewType, LessonOverviewData } from '@redux/chapters/types'
 
 export enum COURSE_ACTIONS {
   GET_COURSES_MANAGEMENT_REQUEST = 'courses-management/GET_COURSES_MANAGEMENT_REQUEST',
@@ -89,7 +89,7 @@ export type learnersDetailData = {
 
 export type ChapterOverviewData = {
   _id: string
-  courseId?: string
+  courseId?: string | courseIdOverviewType
   status: number
   lessons: LessonOverviewData[]
   number?: number
