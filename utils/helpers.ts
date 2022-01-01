@@ -1,3 +1,4 @@
+import { CourseDetailData, CourseOverviewData } from '@redux/courses/types'
 import moment from 'moment'
 import { nanoid } from 'nanoid'
 
@@ -105,4 +106,20 @@ export function convertArrayObjectToObject<T extends { [key: string]: any }>(
   })
 
   return obj
+}
+
+export const getTotalPriceCourse = (
+  courseInfo: CourseDetailData | CourseOverviewData
+) => {
+  const coursePrice = courseInfo?.price || 0
+  const courseDiscount = courseInfo?.discount || 0
+  const categoryDiscountPercent =
+    courseInfo?.topic?.courseCategoryId?.discountPercent || 0
+  const topicDiscountPercent = courseInfo?.topic?.discountPercent || 0
+  const totalPrice =
+    (coursePrice - courseDiscount) *
+    (1 - categoryDiscountPercent / 100) *
+    (1 - topicDiscountPercent / 100)
+
+  return totalPrice.toFixed(2)
 }

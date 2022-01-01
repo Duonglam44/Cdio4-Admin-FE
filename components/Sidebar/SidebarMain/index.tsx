@@ -105,10 +105,7 @@ const SidebarMain: React.FC<Props> = ({
                 <Link href='/manage-courses'>All</Link>
               </MenuItem>
               <MenuItem>
-                <Link href='/manage-courses/lessons'>By Category</Link>
-              </MenuItem>
-              <MenuItem>
-                <Link href='/manage-courses/tests'>By Topic</Link>
+                <Link href='/browse/courses'>Browse / Filter / Search</Link>
               </MenuItem>
             </SubMenu>
             <MenuItem icon={<MdCategory size={20} />}>
@@ -120,7 +117,7 @@ const SidebarMain: React.FC<Props> = ({
           </Menu>
           <Menu iconShape='circle' className='sidebar__main--content__menu'>
             <MenuItem icon={<MdOndemandVideo size={20} />}>
-              <Link href='/manage-category'>Course Preview</Link>
+              <Link href='/preview'>Course Preview</Link>
             </MenuItem>
             <SubMenu title='Browse' icon={<BiGridHorizontal size={20} />}>
               <MenuItem>

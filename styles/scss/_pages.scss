@@ -143,3 +143,23 @@
     }
   }
 }
+
+.page-preview {
+  &__course {
+    cursor: pointer;
+    // border: $default-border;
+
+    img {
+      transition: all 0.25s linear;
+      height: 30vh;
+
+      &:hover {
+        object-fit: contain;
+      }
+    }
+
+    &:hover {
+      // border: none;
+    }
+  }
+}

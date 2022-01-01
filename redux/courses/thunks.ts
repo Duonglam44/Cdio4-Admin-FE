@@ -24,7 +24,7 @@ import { Callback } from '@utils/types'
 
 //call login api
 export const getCoursesManagementThunkAction =
-  (query: URLSearchParams) => async (dispatch: any) => {
+  (query?: URLSearchParams) => async (dispatch: any) => {
     dispatch(getCoursesManagementRequest())
 
     try {
