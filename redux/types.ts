@@ -1,3 +1,4 @@
+import { DashboardReportResponse } from './report/types'
 import { CategoryDetailData } from './categories/types'
 import { StreamDetailData } from './streams/types'
 import { FeedbackDetailData } from './feedbacks/types'
@@ -128,6 +129,12 @@ export interface StreamManagementState {
 
 export interface FeedbackManagementState {
   currentFeedback: FeedbackDetailData
+  error: string
+  loading: boolean
+}
+
+export interface ReportManagementState {
+  dashboard: DashboardReportResponse | null
   error: string
   loading: boolean
 }

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import cn from 'classnames'
 import {
   Accordion,
@@ -13,6 +13,7 @@ import { Callback } from '@utils/types'
 interface Props {
   children: React.ReactNode
   expanded?: boolean
+  initExpanded?: boolean
   onAccordionChange?:
     | ((event: React.ChangeEvent<{}>, expanded: boolean) => void)
     | undefined
@@ -27,6 +28,7 @@ interface Props {
 const AccordionSection = ({
   children,
   expanded,
+  initExpanded,
   onAccordionChange,
   onEdit,
   label = 'Title',
@@ -35,10 +37,20 @@ const AccordionSection = ({
   editLabel = 'Edit',
   labelNode,
 }: Props) => {
+  const [currentExpanded, setCurrentExpanded] = useState(initExpanded || false)
+  // tslint:disable-next-line: no-shadowed-variable
+  const handleChange = (event, expanded) => {
+    if (onAccordionChange) {
+      return onAccordionChange(event, expanded)
+    }
+
+    setCurrentExpanded(prev => !prev)
+  }
+
   return (
     <Accordion
-      expanded={expanded}
-      onChange={onAccordionChange}
+      expanded={expanded ?? currentExpanded}
+      onChange={handleChange}
       className={cn('cmp-accordion__section', className)}
       style={{
         boxShadow: 'none',

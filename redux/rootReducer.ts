@@ -6,6 +6,7 @@ import { coursesManagement } from './courses/reducers'
 import { categoriesManagement } from './categories/reducers'
 import { chapterManagement } from './chapters/reducers'
 import { filesReducers as files } from './files/reducers'
+import { reportManagement } from './report/reducers'
 
 const rootReducer = combineReducers({
   userInfo,
@@ -14,6 +15,7 @@ const rootReducer = combineReducers({
   categoriesManagement,
   chapterManagement,
   files,
+  reportManagement,
 })
 
 export default rootReducer

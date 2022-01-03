@@ -31,12 +31,15 @@ import { LoaderBall } from '@components/common'
 import ModalMain from '@components/common/Modal'
 import ChangePasswordForm from '../ChangePasswordForm'
 import ConfirmModal from '@components/ConfirmModal'
+import { Callback } from '@utils/types'
 
 // tslint:disable-next-line: cyclomatic-complexity
 const AccountForm: NextPage<Props> = ({
-  onClose,
   previousQueryUrl,
   accountId,
+  accountData,
+  onClose,
+  callbackAfterAction,
 }) => {
   const dispatch = useDispatch()
   const accountsState = useSelector(
@@ -73,9 +76,8 @@ const AccountForm: NextPage<Props> = ({
     setShowConfirmDeleteModal(false)
   }
 
-  const selectedAccount = accountsState.users.find(
-    user => user._id === accountId
-  )
+  const selectedAccount =
+    accountData ?? accountsState.users.find(user => user._id === accountId)
 
   const initialValues: AccountFormType = {
     id: selectedAccount?._id || '',
@@ -113,7 +115,10 @@ const AccountForm: NextPage<Props> = ({
             updatePayload,
             previousQueryUrl,
             () => {
+              if (!onClose) return
               onClose()
+              if (!callbackAfterAction) return
+              callbackAfterAction()
             }
           )
         )
@@ -125,7 +130,10 @@ const AccountForm: NextPage<Props> = ({
       const createPayload = getCreateAccountPayload(formValues, imageUrl)
       dispatch(
         createAccountDetailsThunkAction(createPayload, previousQueryUrl, () => {
+          if (!onClose) return
           onClose()
+          if (!callbackAfterAction) return
+          callbackAfterAction()
         })
       )
     }
@@ -148,7 +156,10 @@ const AccountForm: NextPage<Props> = ({
 
     dispatch(
       deleteAccountThunkAction(selectedAccount._id, previousQueryUrl, () => {
+        if (!onClose) return
         onClose()
+        if (!callbackAfterAction) return
+        callbackAfterAction()
       })
     )
   }
@@ -656,9 +667,11 @@ const AccountForm: NextPage<Props> = ({
 }
 
 type Props = {
-  accountId: string
-  previousQueryUrl: URLSearchParams
-  onClose: () => void
+  accountId?: string
+  previousQueryUrl?: URLSearchParams
+  accountData?: any
+  onClose?: () => void
+  callbackAfterAction?: Callback
 }
 
 export default AccountForm

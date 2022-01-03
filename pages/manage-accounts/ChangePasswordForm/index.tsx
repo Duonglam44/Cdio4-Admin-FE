@@ -129,9 +129,9 @@ const ChangePasswordForm: NextPage<Props> = ({
 }
 
 type Props = {
-  userId: string | undefined
-  email: string | undefined
-  previousQueryUrl: URLSearchParams
+  userId?: string
+  email?: string
+  previousQueryUrl?: URLSearchParams
   onClose: () => void
 }
 

@@ -25,6 +25,7 @@ const PageWithHeader: React.FC<Props> = ({
   title = 'Dashboard',
   pagePosition = 'on-top-page',
   showSearchBar = false,
+  backgroundColor = '#ffffff',
   ...props
 }) => {
   const [search, setSearch] = useState<string>('')
@@ -68,7 +69,16 @@ const PageWithHeader: React.FC<Props> = ({
 
   return (
     <Grid container className={pagePosition}>
-      <Grid className='section__card' item md={11} sm={10} xs={11}>
+      <Grid
+        className='section__card'
+        item
+        md={11}
+        sm={10}
+        xs={11}
+        style={{
+          background: backgroundColor,
+        }}
+      >
         <Grid
           container
           alignItems='center'
@@ -169,6 +179,7 @@ type Props = {
   title?: string
   pagePosition?: 'on-top-page' | 'on-bottom-page' | 'center-page'
   showSearchBar?: boolean
+  backgroundColor?: string
 }
 
 export default PageWithHeader

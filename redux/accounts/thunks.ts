@@ -27,7 +27,7 @@ import { Callback } from '@utils/types'
 
 //call login api
 export const getAccountsManagementThunkAction =
-  (query: URLSearchParams) => async (dispatch: any) => {
+  (query: URLSearchParams | undefined) => async (dispatch: any) => {
     dispatch(getAccountManagementRequest())
 
     try {
@@ -47,7 +47,7 @@ export const getAccountsManagementThunkAction =
 export const updateAccountDetailsThunkAction =
   (
     payload: UpdateAccountPayload,
-    previousQueryUrl: URLSearchParams,
+    previousQueryUrl: URLSearchParams | undefined,
     callback: Callback
   ) =>
   async (dispatch: any) => {
@@ -74,7 +74,7 @@ export const updateAccountDetailsThunkAction =
 export const createAccountDetailsThunkAction =
   (
     payload: CreateAccountPayload,
-    previousQueryUrl: URLSearchParams,
+    previousQueryUrl: URLSearchParams | undefined,
     callback: Callback
   ) =>
   async (dispatch: any) => {
@@ -91,6 +91,7 @@ export const createAccountDetailsThunkAction =
       dispatch(createAccountSuccess(response))
       toast.success('Account created successfully!')
       callback()
+      if (!previousQueryUrl) return
       dispatch(getAccountsManagementThunkAction(previousQueryUrl))
     } catch (error: any) {
       toast.error(error?.message || error || 'Create account failed!')
@@ -99,7 +100,11 @@ export const createAccountDetailsThunkAction =
   }
 
 export const deleteAccountThunkAction =
-  (userId: string, previousQueryUrl: URLSearchParams, callback: Callback) =>
+  (
+    userId: string,
+    previousQueryUrl: URLSearchParams | undefined,
+    callback: Callback
+  ) =>
   async (dispatch: any) => {
     dispatch(deleteAccountRequest())
 
@@ -123,7 +128,7 @@ export const deleteAccountThunkAction =
 export const changePasswordAccountThunkAction =
   (
     payload: { userId: string; newPassword: string },
-    previousQueryUrl: URLSearchParams,
+    previousQueryUrl: URLSearchParams | undefined,
     callback: Callback
   ) =>
   async (dispatch: any) => {

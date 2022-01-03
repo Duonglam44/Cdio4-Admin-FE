@@ -1,4 +1,5 @@
 import { CourseDetailData, CourseOverviewData } from '@redux/courses/types'
+import { activityCourseOverviewData } from '@redux/report/types'
 import moment from 'moment'
 import { nanoid } from 'nanoid'
 
@@ -55,8 +56,11 @@ export const formatDateForForm = (date: Date | string | undefined) => {
   return moment(date).format('yyyy-MM-DD')
 }
 
-export const formatDateFromApi = (date: Date | string | undefined) => {
-  return moment(date).format('DD-MM-YYYY')
+export const formatDateFromApi = (
+  date: Date | string | undefined,
+  format = 'DD-MM-YYYY'
+) => {
+  return moment(date).format(format)
 }
 
 export const isEmpty = (value: any): boolean =>
@@ -109,7 +113,7 @@ export function convertArrayObjectToObject<T extends { [key: string]: any }>(
 }
 
 export const getTotalPriceCourse = (
-  courseInfo: CourseDetailData | CourseOverviewData
+  courseInfo: CourseDetailData | CourseOverviewData | activityCourseOverviewData
 ) => {
   const coursePrice = courseInfo?.price || 0
   const courseDiscount = courseInfo?.discount || 0
@@ -122,4 +126,16 @@ export const getTotalPriceCourse = (
     (1 - topicDiscountPercent / 100)
 
   return totalPrice.toFixed(2)
+}
+
+export const getDateXYearsAgo = (x: number) => {
+  return moment().subtract(x, 'year').format('DD/MM/YYYY')
+}
+
+export const getDateXMonthsAgo = (x: number) => {
+  return moment().subtract(x, 'month').format('DD/MM/YYYY')
+}
+
+export const getDateXDaysAgo = (x: number) => {
+  return moment().subtract(x, 'day').format('DD/MM/YYYY')
 }

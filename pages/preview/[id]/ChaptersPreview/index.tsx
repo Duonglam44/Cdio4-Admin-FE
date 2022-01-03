@@ -289,7 +289,7 @@ const ChaptersPreview: React.FC<Props> = ({
                       {chapters?.map((chapter, index) => (
                         <AccordionMain
                           key={chapter?._id}
-                          expanded={true}
+                          initExpanded={true}
                           labelNode={
                             <Grid
                               container
